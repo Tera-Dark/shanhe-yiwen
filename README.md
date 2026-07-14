@@ -8,7 +8,7 @@
 
 - **管理仓库**：[Tera-Dark/shanhe-yiwen](https://github.com/Tera-Dark/shanhe-yiwen)
 - **默认分支**：`main`
-- **可见性**：私有；正式名称与公开时机尚未确定
+- **可见性**：公开；用于项目管理、资料校验与后续规划，正式作品名仍未确定
 - **AI协作规则**：见 `AGENTS.md`
 
 ## 项目定位
