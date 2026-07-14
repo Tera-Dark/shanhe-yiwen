@@ -4,6 +4,13 @@
 
 我们不是在创建一本只围绕一个主角运转的小说，而是在搭建一个能够承载许多普通人、许多年代和许多互相照见的故事世界。
 
+## 仓库状态
+
+- **管理仓库**：[Tera-Dark/shanhe-yiwen](https://github.com/Tera-Dark/shanhe-yiwen)
+- **默认分支**：`main`
+- **可见性**：私有；正式名称与公开时机尚未确定
+- **AI协作规则**：见 `AGENTS.md`
+
 ## 项目定位
 
 这是一个以明朝中后期为主要历史背景的志异群像创作项目。
@@ -39,6 +46,8 @@
 
 ```text
 .
+├── AGENTS.md                    # AI协作入口与不可违反的项目规则
+├── README.md                    # 新人入口与当前状态
 ├── 宪法.md
 ├── 00_创作理念.md
 ├── 01_世界底层规则.md
@@ -65,6 +74,8 @@
 ├── LICENSE-NOTICE.md
 ├── CONTRIBUTING.md
 ├── CHANGELOG.md
+├── 创作日志.md
+├── .github/                     # Issue与PR模板
 └── drafts/legacy-2026-07-14/   # 保留的早期短稿，不作为现行设定
 ```
 

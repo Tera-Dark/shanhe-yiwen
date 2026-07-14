@@ -18,6 +18,8 @@
 - 统一核心文档编号为00—19，消除重复编号和字典序混乱。
 - 新建 `SOURCES.md`、`LICENSE-NOTICE.md` 与 `.gitattributes`。
 - 完善贡献规则、许可范围与 GitHub 模板的来源检查。
+- 创建私有 GitHub 仓库 `Tera-Dark/shanhe-yiwen`，配置 `main`、Issue标签与仓库主题。
+- 新建 `AGENTS.md`，集中记录AI协作入口、史料规则、文档维护边界与私有仓库红线。
 
 ---
 

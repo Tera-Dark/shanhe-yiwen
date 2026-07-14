@@ -28,7 +28,7 @@
 
 正式名称确定前，建议使用：
 
-> Project ShanHe Contributors，《山河异闻计划》（开发代号），CC BY-NC-SA 4.0，来源：本仓库。
+> Project ShanHe Contributors，《山河异闻计划》（开发代号），CC BY-NC-SA 4.0，来源：`https://github.com/Tera-Dark/shanhe-yiwen`。
 
 如使用具体贡献者创作的内容，应同时保留其 Git 提交记录或作者署名。
 
