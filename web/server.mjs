@@ -19,7 +19,9 @@ const types = {
   ".jpeg": "image/jpeg",
   ".webp": "image/webp",
   ".ico": "image/x-icon",
-  ".txt": "text/plain; charset=utf-8"
+  ".txt": "text/plain; charset=utf-8",
+  ".svg": "image/svg+xml",
+  ".woff2": "font/woff2"
 };
 
 function safeJoin(root, pathname) {
@@ -35,7 +37,16 @@ async function listMarkdown(directory, base = directory, depth = 0) {
   if (depth > 5) return [];
   const output = [];
   for (const entry of await readdir(directory, { withFileTypes: true })) {
-    if (entry.name.startsWith(".") || entry.name === "node_modules" || entry.name === "drafts" || entry.name === "archive" || entry.name === "_trash_broken_p001") continue;
+    if (
+      entry.name.startsWith(".") ||
+      entry.name === "node_modules" ||
+      entry.name === "drafts" ||
+      entry.name === "archive" ||
+      entry.name === "_trash_broken_p001" ||
+      entry.name === "api"
+    ) {
+      continue;
+    }
     const full = join(directory, entry.name);
     if (entry.isDirectory()) {
       output.push(...await listMarkdown(full, base, depth + 1));
@@ -62,72 +73,97 @@ async function sendFile(response, target) {
   response.end(data);
 }
 
-const server = http.createServer(async (request, response) => {
-  const url = new URL(request.url || "/", `http://${host}:${port}`);
+function json(response, status, body) {
+  response.writeHead(status, {
+    "Content-Type": "application/json; charset=utf-8",
+    "Cache-Control": "no-store"
+  });
+  response.end(JSON.stringify(body));
+}
 
-  if (url.pathname === "/__health") {
-    response.writeHead(200, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" });
-    response.end(JSON.stringify({ ok: true, app: "shanhe-yiwen", port }));
-    return;
-  }
-
-  if (url.pathname === "/__project-index") {
-    try {
-      const files = await listMarkdown(projectRoot);
-      response.writeHead(200, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" });
-      response.end(JSON.stringify({ ok: true, files }));
-    } catch (error) {
-      response.writeHead(500, { "Content-Type": "application/json; charset=utf-8" });
-      response.end(JSON.stringify({ ok: false, error: error.message }));
-    }
-    return;
-  }
-
-  if (url.pathname === "/stories/catalog.json" || url.pathname.startsWith("/stories/")) {
-    try {
-      const target = safeJoin(projectRoot, url.pathname.slice(1));
-      if (!target) throw new Error("Forbidden");
-      const info = await stat(target);
-      if (info.isDirectory()) throw new Error("Directory");
-      await sendFile(response, target);
-    } catch {
-      response.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
-      response.end("未找到故事资源");
-    }
-    return;
-  }
-
-  if (url.pathname.startsWith("/project/")) {
-    try {
-      const target = safeJoin(projectRoot, url.pathname.slice("/project/".length));
-      if (!target || extname(target).toLowerCase() !== ".md") throw new Error("Only Markdown");
-      await sendFile(response, target);
-    } catch {
-      response.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
-      response.end("未找到项目文档");
-    }
-    return;
-  }
-
+/** Shared request handler for local Node server and Vercel serverless. */
+export async function handler(request, response) {
   try {
-    let target = safeJoin(webRoot, url.pathname === "/" ? "index.html" : url.pathname);
-    if (!target) throw new Error("Forbidden path");
-    const info = await stat(target);
-    if (info.isDirectory()) target = join(target, "index.html");
-    await sendFile(response, target);
-  } catch {
-    response.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
-    response.end("未找到页面");
+    const hostHeader = request.headers?.host || `${host}:${port}`;
+    const url = new URL(request.url || "/", `http://${hostHeader}`);
+
+    if (url.pathname === "/__health") {
+      json(response, 200, { ok: true, app: "shanhe-yiwen", port });
+      return;
+    }
+
+    if (url.pathname === "/__project-index") {
+      try {
+        const files = await listMarkdown(projectRoot);
+        json(response, 200, { ok: true, files });
+      } catch (error) {
+        json(response, 500, { ok: false, error: error.message });
+      }
+      return;
+    }
+
+    if (url.pathname === "/stories/catalog.json" || url.pathname.startsWith("/stories/")) {
+      try {
+        const target = safeJoin(projectRoot, url.pathname.slice(1));
+        if (!target) throw new Error("Forbidden");
+        const info = await stat(target);
+        if (info.isDirectory()) throw new Error("Directory");
+        await sendFile(response, target);
+      } catch {
+        response.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
+        response.end("未找到故事资源");
+      }
+      return;
+    }
+
+    if (url.pathname.startsWith("/project/")) {
+      try {
+        const target = safeJoin(projectRoot, url.pathname.slice("/project/".length));
+        if (!target || extname(target).toLowerCase() !== ".md") throw new Error("Only Markdown");
+        await sendFile(response, target);
+      } catch {
+        response.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
+        response.end("未找到项目文档");
+      }
+      return;
+    }
+
+    try {
+      let target = safeJoin(webRoot, url.pathname === "/" ? "index.html" : url.pathname);
+      if (!target) throw new Error("Forbidden path");
+      const info = await stat(target);
+      if (info.isDirectory()) target = join(target, "index.html");
+      await sendFile(response, target);
+    } catch {
+      response.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
+      response.end("未找到页面");
+    }
+  } catch (error) {
+    response.writeHead(500, { "Content-Type": "text/plain; charset=utf-8" });
+    response.end(error?.message || "Server error");
   }
-});
+}
 
-server.on("error", error => {
-  if (error.code === "EADDRINUSE") console.error(`Port ${port} is already in use.`);
-  else console.error(error);
-  process.exitCode = 1;
-});
+// Local CLI: `node web/server.mjs`. Skip on Vercel (VERCEL=1) and when imported by api/.
+const launchedAsCli =
+  !process.env.VERCEL &&
+  Array.isArray(process.argv) &&
+  process.argv[1] &&
+  /server\.mjs$/i.test(process.argv[1].replace(/\\/g, "/"));
 
-server.listen(port, host, () => {
-  console.log(`山河异闻: http://${host}:${port}/`);
-  console.log("Close this window to stop the local server.");
-});
+if (launchedAsCli) {
+  const server = http.createServer((req, res) => {
+    handler(req, res);
+  });
+
+  server.on("error", error => {
+    if (error.code === "EADDRINUSE") console.error(`Port ${port} is already in use.`);
+    else console.error(error);
+    process.exitCode = 1;
+  });
+
+  server.listen(port, host, () => {
+    console.log(`山河异闻: http://${host}:${port}/`);
+    console.log("Close this window to stop the local server.");
+  });
+}

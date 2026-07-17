@@ -19,5 +19,8 @@ desktop.ini
 # Obsidian
 .obsidian/
 
-# Node (if any tooling added later)
+# Node
 node_modules/
+
+# Vercel
+.vercel/

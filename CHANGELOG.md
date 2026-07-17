@@ -5,6 +5,16 @@
 
 ---
 
+## v0.18 — 2026/7/17
+
+**Vercel 一键部署就绪**
+
+- 根目录 `vercel.json` + `api/index.mjs`：全站 rewrite 到 serverless，复用 `web/server.mjs` 的 `handler`。
+- `package.json`：`npm start` 本地启服；Node ≥18。
+- `web/DEPLOY.md` 部署说明；README 增加 Deploy 按钮链接。
+
+---
+
 ## v0.17 — 2026/7/17
 
 **仓库文件层级规范化 + archive 精简**

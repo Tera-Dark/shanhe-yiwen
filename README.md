@@ -106,11 +106,13 @@
 
 ## 世界观网页
 
-- 入口：双击根目录 `启动世界观网页.bat`。
-- 地址：`http://127.0.0.1:4182/`
+- 本地：双击 `启动世界观网页.bat`，或根目录 `npm start` → `http://127.0.0.1:4182/`
 - 导航：入世 / 地脉 / 体例 / 卷宗 / 时序；正文全屏沉浸阅读。
 - 数据：`stories/catalog.json` + `/project/<路径.md>`
 - 网页是导航与展示，不替代 `docs/` 与正文工程。
+- **线上（Vercel）**：仓库根已含 `vercel.json` + `api/`，Import GitHub 仓库即可部署。步骤见 `web/DEPLOY.md`。
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Tera-Dark/shanhe-yiwen)
 
 ## 贡献与许可
 

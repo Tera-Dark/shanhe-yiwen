@@ -1,0 +1,15 @@
+{
+  "name": "shanhe-yiwen",
+  "private": true,
+  "version": "0.17.0",
+  "description": "山河异闻计划 · 地脉浏览台（本地 Node + Vercel serverless）",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node web/server.mjs",
+    "dev": "node web/server.mjs",
+    "postcheck": "python3 scripts/postcheck_story.py"
+  }
+}
