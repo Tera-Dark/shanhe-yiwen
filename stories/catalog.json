@@ -1,0 +1,236 @@
+{
+  "version": "1.0",
+  "updated": "2026-07-17",
+  "grouping": {
+    "primary": "group",
+    "filters": [
+      "genre",
+      "scent",
+      "people",
+      "factions",
+      "status"
+    ],
+    "spec": "docs/原则/23_内容分组与浏览分类.md"
+  },
+  "groups": [
+    {
+      "id": "hedong",
+      "name": "河东线",
+      "path": "stories/河东线",
+      "kernel": [
+        "半截碑",
+        "勿夜行",
+        "缺脸土地",
+        "雨旗",
+        "桥心钱",
+        "青泥渡",
+        "青驿镖局"
+      ],
+      "status": "正式开写",
+      "summary": "晋南小架空官道。雨后的泥、坑钱、镖旗与说不清的桥。"
+    },
+    {
+      "id": "qiaotou",
+      "name": "桥头震后",
+      "path": "stories/桥头震后",
+      "kernel": [
+        "第二碗",
+        "勘灾册",
+        "宋婆",
+        "陈七",
+        "华县地震余波"
+      ],
+      "status": "有成稿",
+      "summary": "地震余波里的桥头：面、册、人，与说不清的第二碗。"
+    }
+  ],
+  "entries": [
+    {
+      "id": "P001",
+      "legacy_id": "S001",
+      "title": "桥上第二碗",
+      "genre": "P",
+      "group": "qiaotou",
+      "scent": [
+        "市井",
+        "志异",
+        "大事件"
+      ],
+      "people": [
+        "陈七",
+        "宋婆",
+        "胡书吏",
+        "王保正",
+        "韩屠",
+        "秦瞎子",
+        "阿土"
+      ],
+      "factions": [],
+      "links": [],
+      "status": "基础通过",
+      "path": "stories/桥头震后/P001_桥上第二碗/正文.md"
+    },
+    {
+      "id": "Y001",
+      "title": "河东线·雨后的官道",
+      "genre": "Y",
+      "group": "hedong",
+      "scent": [
+        "江湖",
+        "市井"
+      ],
+      "people": [
+        "老成",
+        "卖酱妇人"
+      ],
+      "factions": [
+        "青驿镖局"
+      ],
+      "links": [
+        "Q001",
+        "R001",
+        "G001",
+        "C001"
+      ],
+      "status": "基础通过",
+      "path": "stories/河东线/Y001_雨后的官道/正文.md"
+    },
+    {
+      "id": "R001",
+      "title": "河东三人折",
+      "genre": "R",
+      "group": "hedong",
+      "scent": [
+        "江湖"
+      ],
+      "people": [
+        "冷旗",
+        "阿段",
+        "柳先生",
+        "老成"
+      ],
+      "factions": [
+        "青驿镖局"
+      ],
+      "links": [
+        "Y001",
+        "Q001",
+        "G001"
+      ],
+      "status": "基础通过",
+      "path": "stories/河东线/R001_河东三人折/正文.md"
+    },
+    {
+      "id": "G001",
+      "title": "青驿镖局",
+      "genre": "G",
+      "group": "hedong",
+      "scent": [
+        "江湖"
+      ],
+      "people": [
+        "冷旗",
+        "老局主",
+        "少局主",
+        "记账先生"
+      ],
+      "factions": [
+        "青驿镖局"
+      ],
+      "links": [
+        "Y001",
+        "R001",
+        "Q001",
+        "C001"
+      ],
+      "status": "基础通过",
+      "path": "stories/河东线/G001_青驿镖局/正文.md"
+    },
+    {
+      "id": "Q001",
+      "title": "旗先过桥",
+      "genre": "Q",
+      "group": "hedong",
+      "scent": [
+        "江湖",
+        "志异"
+      ],
+      "people": [
+        "冷旗",
+        "阿牛",
+        "桥心孩"
+      ],
+      "factions": [
+        "青驿镖局"
+      ],
+      "links": [
+        "Y001",
+        "R001",
+        "G001",
+        "C001"
+      ],
+      "status": "基础通过",
+      "path": "stories/河东线/Q001_旗先过桥/正文.md"
+    },
+    {
+      "id": "C001",
+      "title": "拟回目·雨旗不湿",
+      "genre": "C",
+      "group": "hedong",
+      "scent": [
+        "志异",
+        "传闻"
+      ],
+      "people": [
+        "王瘸子"
+      ],
+      "factions": [
+        "青驿镖局"
+      ],
+      "links": [
+        "Y001",
+        "Q001",
+        "G001"
+      ],
+      "status": "基础通过",
+      "path": "stories/河东线/C001_雨旗不湿/正文.md"
+    },
+    {
+      "id": "W001",
+      "title": "土地爷讨债",
+      "genre": "W",
+      "group": "hedong",
+      "scent": [
+        "传闻",
+        "志异",
+        "市井"
+      ],
+      "status": "种子",
+      "path": "stories/河东线/种子_W001_土地爷讨债.md"
+    },
+    {
+      "id": "Q002",
+      "title": "半卷话本",
+      "genre": "Q",
+      "group": "hedong",
+      "scent": [
+        "江湖",
+        "志异"
+      ],
+      "status": "种子",
+      "path": "stories/河东线/种子_Q002_半卷话本.md"
+    },
+    {
+      "id": "P002",
+      "title": "半截杆",
+      "genre": "P",
+      "group": "hedong",
+      "scent": [
+        "江湖",
+        "志异"
+      ],
+      "status": "种子",
+      "path": "stories/河东线/种子_P002_半截杆.md"
+    }
+  ]
+}

@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#1a1410" />
+  <title>山河异闻 · 入世</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600&family=Noto+Serif+SC:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="bg-ink" aria-hidden="true"></div>
+  <div class="bg-grain" aria-hidden="true"></div>
+
+  <!-- 日常浏览壳 -->
+  <div id="appShell" class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#/" data-nav="home">
+        <span class="seal">山</span>
+        <span class="brand-text">
+          <b>山河异闻</b>
+          <small>开发代号 · Project ShanHe</small>
+        </span>
+      </a>
+      <nav class="nav-main" aria-label="主导航">
+        <button type="button" data-nav="home" class="nav-item is-active">入世</button>
+        <button type="button" data-nav="groups" class="nav-item">地脉</button>
+        <button type="button" data-nav="genres" class="nav-item">体例</button>
+        <button type="button" data-nav="archives" class="nav-item">卷宗</button>
+        <button type="button" data-nav="time" class="nav-item">时序</button>
+      </nav>
+      <div class="topbar-right">
+        <span class="era-pill">嘉靖—崇祯 · 1522–1644</span>
+        <button type="button" class="btn-ghost" id="btnSearch" title="检索 (Q)">检索</button>
+      </div>
+    </header>
+
+    <main id="mainView" class="main-view"></main>
+
+    <footer class="statusbar">
+      <span id="statusLeft">世界大于主角，人物大于设定。</span>
+      <span id="statusRight">连接中…</span>
+    </footer>
+  </div>
+
+  <!-- 沉浸阅读：全屏 + 顶栏切换，无侧栏抽屉 -->
+  <div id="reader" class="reader" hidden aria-hidden="true">
+    <header class="reader-bar">
+      <div class="reader-bar-left">
+        <button type="button" class="btn-bar" id="readerBack" title="返回">返回</button>
+        <button type="button" class="btn-bar" id="readerHome" title="入世">入世</button>
+      </div>
+      <div class="reader-bar-center">
+        <span class="reader-kicker" id="readerKicker"></span>
+        <h1 class="reader-title" id="readerTitle"></h1>
+      </div>
+      <div class="reader-bar-right">
+        <button type="button" class="btn-bar" id="readerPrev" title="上一条">上一条</button>
+        <button type="button" class="btn-bar" id="readerNext" title="下一条">下一条</button>
+        <button type="button" class="btn-bar" id="readerClose" title="关闭 (Esc)">关闭</button>
+      </div>
+    </header>
+    <div class="reader-subnav" id="readerSubnav" hidden></div>
+    <article class="reader-scroll" id="readerBody"></article>
+    <footer class="reader-foot">
+      <div id="readerLinks" class="reader-links"></div>
+      <span id="readerPath" class="reader-path"></span>
+    </footer>
+  </div>
+
+  <!-- 检索 -->
+  <div id="searchLayer" class="search-layer" hidden>
+    <div class="search-panel" role="dialog" aria-modal="true" aria-labelledby="searchHeading">
+      <header>
+        <h2 id="searchHeading">通寻</h2>
+        <button type="button" class="btn-bar" id="searchClose">关闭</button>
+      </header>
+      <input type="search" id="searchInput" placeholder="地脉、人物、体例、设定文件名…" autocomplete="off" />
+      <div id="searchResults" class="search-results"></div>
+    </div>
+  </div>
+
+  <script src="./app.js"></script>
+</body>
+</html>
