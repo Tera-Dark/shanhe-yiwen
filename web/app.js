@@ -110,9 +110,59 @@ function genreLabel(code) {
   return GENRE[code] || code || "未分";
 }
 
+/** 读者向短名：去掉「河东线·」等组名前缀，工程 id 不出现 */
+function displayTitle(entry) {
+  if (!entry) return "";
+  let t = String(entry.title || "").trim();
+  const g = groupById(entry.group);
+  if (g?.name) {
+    const prefixes = [
+      g.name + "·",
+      g.name + " · ",
+      g.name + "·",
+      g.name + " "
+    ];
+    for (const p of prefixes) {
+      if (t.startsWith(p)) {
+        t = t.slice(p.length).trim();
+        break;
+      }
+    }
+  }
+  // 常见工程前缀清理
+  t = t.replace(/^(拟回目[·・]\s*)/, "");
+  return t || entry.title || entry.id || "";
+}
+
+/** 卷首角标：探游 · 河东线 */
+function entryKicker(entry) {
+  if (!entry) return "";
+  const g = groupById(entry.group);
+  const parts = [genreLabel(entry.genre)];
+  if (g?.name) parts.push(g.name);
+  return parts.join(" · ");
+}
+
+/** 列表副行：气味 · 人物 */
+function entrySubline(entry) {
+  const scents = (entry.scent || []).slice(0, 3).join(" · ");
+  const people = (entry.people || []).slice(0, 3).join("、");
+  return [scents, people].filter(Boolean).join(" · ");
+}
+
+/** 状态白话：不写「基础通过」工程腔 */
+function statusDisplay(status) {
+  if (!status) return "未录";
+  if (/种子/.test(status)) return "种子";
+  if (/通过|成稿|正式/.test(status)) return "已录";
+  if (/开写|进行/.test(status)) return "进行中";
+  return status;
+}
+
 function statusClass(status) {
   if (!status) return "";
-  if (/通过|正式|成稿/.test(status)) return "ok";
+  if (/种子/.test(status)) return "seed";
+  if (/通过|正式|成稿|已录/.test(status)) return "ok";
   return "";
 }
 
@@ -136,6 +186,33 @@ function entriesOfGenre(genreId) {
 
 function formalEntries() {
   return (state.catalog?.entries || []).filter(e => e.status && !/种子/.test(e.status));
+}
+
+
+function labelMetaKey(key) {
+  const map = {
+    title: "题",
+    标题: "题",
+    group_name: "地脉",
+    地脉: "地脉",
+    scent: "气味",
+    气味: "气味",
+    people: "人物",
+    人物: "人物",
+    era_feel: "时代",
+    时代: "时代",
+    史料: "史料",
+    factions: "势力"
+  };
+  return map[key] || map[key.toLowerCase()] || key;
+}
+
+function stripBrackets(val) {
+  return String(val)
+    .replace(/^\[|\]$/g, "")
+    .replace(/[\[\]]/g, "")
+    .replace(/,\s*/g, " · ")
+    .trim();
 }
 
 /* ---------- Markdown ---------- */
@@ -164,7 +241,34 @@ function markdownToHtml(markdown) {
   };
   const flushFront = () => {
     if (!front.length) return;
-    html += `<div class="reader-frontmatter">${front.map(l => escapeHtml(l)).join("<br>")}</div>`;
+    // 解析 YAML 式 frontmatter，只展示读者向字段；隐藏 path / Version / id 等工程键
+    const map = {};
+    for (const line of front) {
+      const m = line.match(/^([A-Za-z_一-鿿]+)\s*[:：]\s*(.*)$/);
+      if (m) map[m[1].trim()] = m[2].trim();
+    }
+    const hide = /^(version|id|path|legacy_id|group|genre|links|status|title|标题|更新时间)$/i;
+    const prefer = ["group_name", "地脉", "scent", "气味", "people", "人物", "factions", "势力", "era_feel", "时代", "史料"];
+    const chips = [];
+    const used = new Set();
+    for (const key of prefer) {
+      const found = Object.keys(map).find(k => k.toLowerCase() === key.toLowerCase() || k === key);
+      if (found && map[found] && !hide.test(found)) {
+        chips.push(`<span class="meta-chip"><i>${escapeHtml(labelMetaKey(found))}</i>${escapeHtml(stripBrackets(map[found]))}</span>`);
+        used.add(found);
+      }
+    }
+    // 若有 scent/people 等未命中 prefer 的中文键，补充若干
+    for (const [k, v] of Object.entries(map)) {
+      if (used.has(k) || hide.test(k) || !v) continue;
+      if (/title|group_name|scent|people|era|史料|气味|人物|标题/.test(k)) {
+        chips.push(`<span class="meta-chip"><i>${escapeHtml(labelMetaKey(k))}</i>${escapeHtml(stripBrackets(v))}</span>`);
+      }
+    }
+    if (chips.length) {
+      html += `<div class="reader-meta">${chips.join("")}</div>`;
+    }
+    // 默认不展示原始 YAML 块
     front = [];
   };
 
@@ -256,18 +360,17 @@ function inlineMd(text) {
 
 function renderEntryRow(entry) {
   const g = groupById(entry.group);
-  const scents = (entry.scent || []).join(" · ");
-  const people = (entry.people || []).slice(0, 3).join("、");
   const badgeCls = statusClass(entry.status);
+  const sub = entrySubline(entry);
+  const where = g?.name || "";
   return `
     <button type="button" class="entry-row" data-open-entry="${escapeHtml(entry.id)}">
-      <span class="id">${escapeHtml(entry.id)}</span>
-      <span class="genre">${escapeHtml(genreLabel(entry.genre))}</span>
+      <span class="genre-tag">${escapeHtml(genreLabel(entry.genre))}</span>
       <span class="title-block">
-        <b>${escapeHtml(entry.title)}</b>
-        <small>${escapeHtml([g?.name, scents, people].filter(Boolean).join(" · "))}</small>
+        <b>${escapeHtml(displayTitle(entry))}</b>
+        <small>${escapeHtml([where, sub].filter(Boolean).join(" · "))}</small>
       </span>
-      <span class="badge ${badgeCls}">${escapeHtml(entry.status || "—")}</span>
+      <span class="badge ${badgeCls}">${escapeHtml(statusDisplay(entry.status))}</span>
     </button>`;
 }
 
@@ -307,7 +410,7 @@ function renderHome() {
   $("#mainView").innerHTML = `
     <section class="hero">
       <div>
-        <p class="kicker">PROJECT SHANHE · 入世</p>
+        <p class="kicker">入世 · 卷首</p>
         <h1 class="hero-quote">世界大于主角，<em>人物大于设定</em>。</h1>
         <p class="hero-note">轻玄幻武侠的小架空江湖。以地脉为架，以体例为笔——探游、奇遇、旁纪、规矩帖，把路走通，把人立住。</p>
       </div>
@@ -373,7 +476,7 @@ function renderGroups() {
     const formal = list.filter(e => !/种子/.test(e.status || ""));
     const seeds = list.filter(e => /种子/.test(e.status || ""));
     $("#mainView").innerHTML = `
-      <p class="kicker">地脉 · ${escapeHtml(g.id)}</p>
+      <p class="kicker">地脉 · ${escapeHtml(g.name)}</p>
       <h1 class="page-title">${escapeHtml(g.name)}</h1>
       <p class="lead">${escapeHtml(g.summary || "")}</p>
       <div class="filter-row">
@@ -473,8 +576,7 @@ function renderTime() {
     <div class="entry-list">
       ${MYSTERIES.map(m => `
         <button type="button" class="entry-row" data-open-doc="docs/素材/19_伏笔与未解之谜.md">
-          <span class="id">${escapeHtml(m[0])}</span>
-          <span class="genre">谜</span>
+          <span class="genre-tag">未解</span>
           <span class="title-block">
             <b>${escapeHtml(m[1])}</b>
             <small>${escapeHtml(m[2])}</small>
@@ -531,13 +633,16 @@ function buildListFromContext() {
 }
 
 function entryToNav(e) {
-  const g = groupById(e.group);
   return {
     kind: "entry",
     id: e.id,
     path: e.path,
-    title: e.title,
-    kicker: `${e.id} · ${genreLabel(e.genre)}${g ? " · " + g.name : ""}`
+    title: displayTitle(e),
+    kicker: entryKicker(e),
+    placeLabel: (() => {
+      const g = groupById(e.group);
+      return g ? `${g.name} · ${genreLabel(e.genre)}` : genreLabel(e.genre);
+    })()
   };
 }
 
@@ -595,7 +700,7 @@ function applyReaderChrome() {
 
   $("#readerKicker").textContent = item.kicker || "";
   $("#readerTitle").textContent = item.title || "";
-  $("#readerPath").textContent = item.path || "";
+  $("#readerPath").textContent = item.placeLabel || item.kicker || "";
 
   const prev = $("#readerPrev");
   const next = $("#readerNext");
@@ -609,7 +714,7 @@ function applyReaderChrome() {
     if (peers.length > 1) {
       sub.hidden = false;
       sub.innerHTML = peers.map(e =>
-        `<button type="button" class="${e.id === item.id ? "is-active" : ""}" data-sub-entry="${escapeHtml(e.id)}">${escapeHtml(e.id)} ${escapeHtml(e.title)}</button>`
+        `<button type="button" class="${e.id === item.id ? "is-active" : ""}" data-sub-entry="${escapeHtml(e.id)}">${escapeHtml(displayTitle(e))}</button>`
       ).join("");
     } else {
       sub.hidden = true;
@@ -626,7 +731,7 @@ function applyReaderChrome() {
     const links = (entry?.links || []).map(id => entryById(id)).filter(Boolean);
     if (links.length) {
       linksEl.innerHTML = links.map(e =>
-        `<button type="button" data-open-entry="${escapeHtml(e.id)}">另见 ${escapeHtml(e.id)} · ${escapeHtml(e.title)}</button>`
+        `<button type="button" data-open-entry="${escapeHtml(e.id)}">另见 · ${escapeHtml(displayTitle(e))}</button>`
       ).join("");
     } else {
       linksEl.innerHTML = "";
@@ -721,9 +826,9 @@ function allSearchItems() {
   }
   for (const e of state.catalog?.entries || []) {
     items.push({
-      title: e.title,
-      meta: `${e.id} · ${genreLabel(e.genre)} · ${e.status || ""}`,
-      text: `${e.title} ${(e.people || []).join(" ")} ${(e.scent || []).join(" ")} ${(e.factions || []).join(" ")}`,
+      title: displayTitle(e),
+      meta: `${entryKicker(e)} · ${statusDisplay(e.status)}`,
+      text: `${e.title} ${displayTitle(e)} ${(e.people || []).join(" ")} ${(e.scent || []).join(" ")} ${e.status || ""} ${e.id}`,
       action: { type: "entry", id: e.id }
     });
   }
