@@ -3,7 +3,8 @@
   "version": 2,
   "framework": null,
   "installCommand": "npm install --omit=dev",
-  "buildCommand": "echo no-build",
+  "buildCommand": "node -e \"const fs=require('fs');fs.mkdirSync('public',{recursive:true});fs.writeFileSync('public/.keep','');\"",
+  "outputDirectory": "public",
   "functions": {
     "api/index.mjs": {
       "includeFiles": "{docs,stories,web,package.json}/**",

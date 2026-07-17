@@ -24,9 +24,12 @@ npm start
 
 | 文件 | 作用 |
 |---|---|
-| `vercel.json` | 全部路径 rewrite 到 `/api` |
+| `vercel.json` | `outputDirectory: public`（满足 Vercel 静态输出检查）+ 全站 rewrite 到 `/api` |
+| `public/.keep` | 占位；真实页面仍由 serverless `handler` 从 `web/` 读出 |
 | `api/index.mjs` | Vercel 函数入口 → `handler` |
 | `package.json` | `"type": "module"`、Node ≥18 |
+
+若报错 `No Output Directory named "public"`：确认已推送含 `outputDirectory` 的 `vercel.json`，再 Redeploy。
 
 部署后访问：
 

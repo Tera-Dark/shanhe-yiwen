@@ -5,6 +5,15 @@
 
 ---
 
+## v0.18.1 — 2026/7/17
+
+**Vercel 构建：补 public 输出目录**
+
+- `vercel.json` 明确 `outputDirectory: public`；build 生成占位，避免 “No Output Directory named public”。
+- 页面仍由 `/api` → `web/server.mjs` handler 提供；`public/` 仅满足平台检查。
+
+---
+
 ## v0.18 — 2026/7/17
 
 **Vercel 一键部署就绪**
