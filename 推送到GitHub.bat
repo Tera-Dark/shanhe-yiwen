@@ -3,41 +3,58 @@ setlocal EnableExtensions
 cd /d "%~dp0"
 
 echo.
-echo === 山河异闻 · 推送到 GitHub ===
-echo 仓库: https://github.com/Tera-Dark/shanhe-yiwen
+echo === ShanHe YiWen: push to GitHub ===
+echo Repo: https://github.com/Tera-Dark/shanhe-yiwen
 echo.
+
+where git >nul 2>nul
+if errorlevel 1 (
+  echo [ERROR] git not found in PATH.
+  echo Install Git for Windows, then reopen this window:
+  echo   https://git-scm.com/download/win
+  echo Or use "Git Bash" / GitHub Desktop to push.
+  echo.
+  pause
+  exit /b 1
+)
 
 git rev-parse --is-inside-work-tree >nul 2>nul
 if errorlevel 1 (
-  echo [错误] 当前目录不是 Git 仓库。
+  echo [ERROR] Not a git repository: %CD%
   pause
   exit /b 1
 )
 
+echo Working directory:
+cd
+echo.
+echo Status:
 git status -sb
 echo.
+echo Recent commits:
 git log -3 --oneline
 echo.
 
-echo 正在 git push origin main ...
+echo Pushing: git push origin main
+echo.
 git push origin main
 if errorlevel 1 (
   echo.
-  echo [失败] 推送未成功。常见原因：
-  echo   1. 尚未登录 GitHub（Git Credential Manager / gh auth login）
-  echo   2. 无仓库写权限
-  echo   3. 远程地址不对
+  echo [FAILED] Push did not succeed.
+  echo Common fixes:
+  echo   1. Login: run "gh auth login" or sign in via Git Credential Manager
+  echo   2. Check write access to Tera-Dark/shanhe-yiwen
+  echo   3. In GitHub Desktop: Repository -^> Push
   echo.
-  echo 可先执行: gh auth login
-  echo 或在 GitHub Desktop 中 Push。
   pause
   exit /b 1
 )
 
 echo.
-echo [完成] 已推送到 origin/main。
-echo 下一步部署: 打开 https://vercel.com/new/clone?repository-url=https://github.com/Tera-Dark/shanhe-yiwen
-echo 或见 web\DEPLOY.md
+echo [OK] Pushed to origin/main
+echo Next - Vercel:
+echo   https://vercel.com/new/clone?repository-url=https://github.com/Tera-Dark/shanhe-yiwen
+echo Or read: web\DEPLOY.md
 echo.
 pause
 exit /b 0
