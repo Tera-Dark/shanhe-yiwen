@@ -12,3 +12,5 @@
 *.gif binary
 *.webp binary
 *.pdf binary
+# Batch files must stay CRLF on Windows
+*.bat text eol=crlf
