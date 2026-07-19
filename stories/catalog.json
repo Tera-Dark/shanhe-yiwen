@@ -1,21 +1,117 @@
 {
-  "version": "1.0",
-  "updated": "2026-07-17",
+  "version": "1.7",
+  "updated": "2026-07-19",
   "grouping": {
     "primary": "group",
+    "volume": "volumes",
     "filters": [
       "genre",
       "scent",
       "people",
       "factions",
-      "status"
+      "status",
+      "track",
+      "review"
     ],
-    "spec": "docs/原则/23_内容分组与浏览分类.md"
+    "spec": "docs/原则/23_内容分组与浏览分类.md",
+    "volume_spec": "docs/原则/24_卷册与连载阅读体验.md",
+    "mainline_spec": "docs/原则/25_踏线人主章公约.md",
+    "review_spec": "docs/原则/21_故事审查标准.md",
+    "dossier_spec": "docs/原则/26_人物志规范.md"
   },
+  "protagonist": {
+    "id": "shen-mo",
+    "name": "沈陌",
+    "title": "踏线人",
+    "alias": [
+      "走路的",
+      "沈半程"
+    ],
+    "dossier": "stories/河东线/R_沈陌/正文.md",
+    "character_sheet": "stories/人物志/N_沈陌/正文.md"
+  },
+  "volumes": [
+    {
+      "id": "vol-hedong",
+      "name": "河东卷",
+      "group": "hedong",
+      "subtitle": "雨后的官道",
+      "blurb": "雨歇官道泥犹软，旗湿不扬人自远。",
+      "status": "连载中",
+      "main_path": [
+        "HD00",
+        "Z001",
+        "Z002",
+        "Z003",
+        "Z004",
+        "Z005",
+        "Z006",
+        "Z007",
+        "Q001",
+        "W001",
+        "P002",
+        "Q002",
+        "C001"
+      ],
+      "roam_path": [
+        "HD00",
+        "Y001",
+        "G001",
+        "R001",
+        "N-LX",
+        "N-AD",
+        "N-LQ",
+        "N-SM",
+        "Q001",
+        "W001",
+        "Q002",
+        "P002",
+        "C001"
+      ],
+      "reading_path": [
+        "HD00",
+        "Z001",
+        "Z002",
+        "Z003",
+        "Z004",
+        "Z005",
+        "Z006",
+        "Z007",
+        "Q001",
+        "W001",
+        "P002",
+        "Q002",
+        "C001"
+      ],
+      "platform_note": "番茄默认 main_path（沈陌主线+必要副线高峰）；Z005–Z006 第二幕东市与牙。人物志 genre:N 不进 main。漫游见 roam_path。"
+    },
+    {
+      "id": "vol-qiaotou",
+      "name": "桥头卷",
+      "group": "qiaotou",
+      "subtitle": "第二碗",
+      "blurb": "震后桥头烟未散，第二碗面热又凉。",
+      "status": "可发",
+      "main_path": [
+        "QT00",
+        "P001"
+      ],
+      "roam_path": [
+        "QT00",
+        "P001"
+      ],
+      "reading_path": [
+        "QT00",
+        "P001"
+      ],
+      "platform_note": "独立地脉卷，勿并入河东 main_path。现行：QT00 入卷 + P001 副线核（可拆节）。沈陌主线入卷见 Z041+（目录骨架）；河东 Z040《往桥头去》钩渡。P001 气质=震后/勘灾/宋婆，与河东官道镖旗不同卷。"
+    }
+  ],
   "groups": [
     {
       "id": "hedong",
       "name": "河东线",
+      "volume": "vol-hedong",
       "path": "stories/河东线",
       "kernel": [
         "半截碑",
@@ -24,14 +120,18 @@
         "雨旗",
         "桥心钱",
         "青泥渡",
-        "青驿镖局"
+        "青驿镖局",
+        "半截旗杆",
+        "刀鞘",
+        "沈陌"
       ],
-      "status": "正式开写",
-      "summary": "晋南小架空官道。雨后的泥、坑钱、镖旗与说不清的桥。"
+      "status": "主线试点·成稿一组",
+      "summary": "雨歇官道泥犹软，旗湿不扬人自远。"
     },
     {
       "id": "qiaotou",
       "name": "桥头震后",
+      "volume": "vol-qiaotou",
       "path": "stories/桥头震后",
       "kernel": [
         "第二碗",
@@ -41,16 +141,651 @@
         "华县地震余波"
       ],
       "status": "有成稿",
-      "summary": "地震余波里的桥头：面、册、人，与说不清的第二碗。"
+      "summary": "震后桥头烟未散，第二碗面热又凉。"
     }
   ],
   "entries": [
+    {
+      "id": "HD00",
+      "title": "入卷·河东",
+      "genre": "V",
+      "group": "hedong",
+      "volume": "vol-hedong",
+      "track": "main",
+      "scent": [
+        "江湖",
+        "市井"
+      ],
+      "people": [
+        "沈陌"
+      ],
+      "factions": [
+        "青驿镖局"
+      ],
+      "links": [
+        "Z001",
+        "Y001",
+        "Q001",
+        "G001",
+        "R-SM"
+      ],
+      "status": "基础通过",
+      "role": "prologue",
+      "path": "stories/河东线/HD00_入卷/正文.md",
+      "review": {
+        "state": "passed_with_notes",
+        "seal": "朱注",
+        "round": 1,
+        "date": "2026-07-18",
+        "scope": "base",
+        "standard": "docs/原则/21_故事审查标准.md",
+        "standard_version": "0.3",
+        "report": "stories/审查总簿.md",
+        "reviewer": "Codex·总编审",
+        "source_version": "1.3",
+        "note": "卷首说明略显工程化；作为卷首可用，外发前可再减说明。"
+      }
+    },
+    {
+      "id": "Z001",
+      "title": "第一脚泥",
+      "genre": "Z",
+      "group": "hedong",
+      "volume": "vol-hedong",
+      "track": "main",
+      "scent": [
+        "江湖",
+        "市井"
+      ],
+      "people": [
+        "沈陌"
+      ],
+      "factions": [],
+      "links": [
+        "Z002",
+        "Z003",
+        "Z004",
+        "Y001",
+        "HD00",
+        "R-SM"
+      ],
+      "status": "基础通过",
+      "role": "main",
+      "path": "stories/河东线/Z001_第一脚泥/正文.md",
+      "review": {
+        "state": "passed_with_notes",
+        "seal": "朱注",
+        "round": 1,
+        "date": "2026-07-18",
+        "scope": "base",
+        "standard": "docs/原则/21_故事审查标准.md",
+        "standard_version": "0.3",
+        "report": "stories/审查总簿.md",
+        "reviewer": "Codex·总编审",
+        "source_version": "1.0",
+        "note": "主线目标与沈陌视角成立；与 Y001 共用场景较多，后续章须进入新事件。"
+      }
+    },
+    {
+      "id": "Z002",
+      "title": "碑下三文",
+      "genre": "Z",
+      "group": "hedong",
+      "volume": "vol-hedong",
+      "track": "main",
+      "scent": [
+        "江湖",
+        "市井"
+      ],
+      "people": [
+        "沈陌",
+        "老成",
+        "卖酱妇人"
+      ],
+      "factions": [],
+      "links": [
+        "Z001",
+        "Z003",
+        "Y001",
+        "W001",
+        "G001"
+      ],
+      "status": "返修稿",
+      "role": "main",
+      "path": "stories/河东线/Z002_碑下三文/正文.md",
+      "review": {
+        "state": "pending",
+        "seal": "待勘",
+        "round": 2,
+        "date": "2026-07-19",
+        "scope": "base",
+        "standard": "docs/原则/21_故事审查标准.md",
+        "standard_version": "0.3",
+        "report": "stories/审查总簿.md",
+        "reviewer": "",
+        "source_version": "1.1",
+        "note": "v1.1 返修：减 Y001 复写；增辙脊误判/险失信/入龛债未结；待复审。"
+      }
+    },
+    {
+      "id": "Z003",
+      "title": "雨旗过身",
+      "genre": "Z",
+      "group": "hedong",
+      "volume": "vol-hedong",
+      "track": "main",
+      "scent": [
+        "江湖",
+        "市井"
+      ],
+      "people": [
+        "沈陌",
+        "冷旗",
+        "阿牛",
+        "老成"
+      ],
+      "factions": [
+        "青驿镖局"
+      ],
+      "links": [
+        "Z002",
+        "Z004",
+        "Q001",
+        "G001",
+        "R001",
+        "Y001"
+      ],
+      "status": "基础通过",
+      "role": "main",
+      "path": "stories/河东线/Z003_雨旗过身/正文.md",
+      "review": {
+        "state": "passed_with_notes",
+        "seal": "朱注",
+        "round": 1,
+        "date": "2026-07-18",
+        "scope": "base",
+        "standard": "docs/原则/21_故事审查标准.md",
+        "standard_version": "0.3",
+        "report": "stories/审查总簿.md",
+        "reviewer": "Codex·总编审",
+        "source_version": "1.0",
+        "note": "人物互动成立；部分旗规信息与既有篇重复，后续避免继续讲解同一规则。"
+      }
+    },
+    {
+      "id": "Z004",
+      "title": "桥边看旗",
+      "genre": "Z",
+      "group": "hedong",
+      "volume": "vol-hedong",
+      "track": "main",
+      "scent": [
+        "江湖",
+        "志异"
+      ],
+      "people": [
+        "沈陌",
+        "冷旗",
+        "阿牛",
+        "桥心孩"
+      ],
+      "factions": [
+        "青驿镖局"
+      ],
+      "links": [
+        "Z003",
+        "Q001",
+        "P002",
+        "Y001",
+        "C001",
+        "W001"
+      ],
+      "status": "返修稿",
+      "role": "main",
+      "peak": true,
+      "path": "stories/河东线/Z004_桥边看旗/正文.md",
+      "review": {
+        "state": "pending",
+        "seal": "待勘",
+        "round": 2,
+        "date": "2026-07-19",
+        "scope": "base",
+        "standard": "docs/原则/21_故事审查标准.md",
+        "standard_version": "0.3",
+        "report": "stories/审查总簿.md",
+        "reviewer": "",
+        "source_version": "1.1",
+        "note": "v1.1 返修：桥心限知旁观；不与孩同构交易；桥外愣神钱；待复审。"
+      }
+    },
+    {
+      "id": "R-SM",
+      "title": "沈陌",
+      "genre": "R",
+      "group": "hedong",
+      "volume": "vol-hedong",
+      "track": "other",
+      "scent": [
+        "江湖",
+        "市井"
+      ],
+      "people": [
+        "沈陌"
+      ],
+      "factions": [],
+      "links": [
+        "Z001",
+        "Z002",
+        "Z003",
+        "Z004",
+        "Y001",
+        "Q001"
+      ],
+      "status": "基础通过",
+      "role": "main",
+      "path": "stories/河东线/R_沈陌/正文.md",
+      "review": {
+        "state": "passed",
+        "seal": "验讫",
+        "round": 1,
+        "date": "2026-07-18",
+        "scope": "base",
+        "standard": "docs/原则/21_故事审查标准.md",
+        "standard_version": "0.3",
+        "report": "stories/审查总簿.md",
+        "reviewer": "Codex·总编审",
+        "source_version": "1.0",
+        "note": "踏线人边界、懂/债/名与钉子关系清楚，可作连续性基准。"
+      }
+    },
+    {
+      "id": "Y001",
+      "title": "河东线·雨后的官道",
+      "genre": "Y",
+      "group": "hedong",
+      "volume": "vol-hedong",
+      "track": "other",
+      "scent": [
+        "江湖",
+        "市井"
+      ],
+      "people": [
+        "老成",
+        "卖酱妇人"
+      ],
+      "factions": [
+        "青驿镖局"
+      ],
+      "links": [
+        "Q001",
+        "R001",
+        "G001",
+        "C001",
+        "W001",
+        "Z002"
+      ],
+      "status": "基础通过",
+      "role": "main",
+      "path": "stories/河东线/Y001_雨后的官道/正文.md",
+      "review": {
+        "state": "passed_with_notes",
+        "seal": "朱注",
+        "round": 1,
+        "date": "2026-07-18",
+        "scope": "base",
+        "standard": "docs/原则/21_故事审查标准.md",
+        "standard_version": "0.3",
+        "report": "stories/审查总簿.md",
+        "reviewer": "Codex·总编审",
+        "source_version": "1.1",
+        "note": "地脉定场鲜明；母题与口头禅密度偏高，后续勿重复扩写。"
+      }
+    },
+    {
+      "id": "R001",
+      "title": "河东三人折",
+      "genre": "R",
+      "group": "hedong",
+      "volume": "vol-hedong",
+      "track": "other",
+      "scent": [
+        "江湖"
+      ],
+      "people": [
+        "冷旗",
+        "阿段",
+        "柳先生",
+        "老成"
+      ],
+      "factions": [
+        "青驿镖局"
+      ],
+      "links": [
+        "Y001",
+        "Q001",
+        "G001",
+        "Q002",
+        "P002"
+      ],
+      "status": "基础通过",
+      "role": "main",
+      "path": "stories/河东线/R001_河东三人折/正文.md",
+      "review": {
+        "state": "passed_with_notes",
+        "seal": "朱注",
+        "round": 1,
+        "date": "2026-07-18",
+        "scope": "base",
+        "standard": "docs/原则/21_故事审查标准.md",
+        "standard_version": "0.3",
+        "report": "stories/审查总簿.md",
+        "reviewer": "Codex·总编审",
+        "source_version": "1.1",
+        "note": "三人轮廓清楚；人物折偏观念化，正式故事需补非主题性生活。"
+      }
+    },
+    {
+      "id": "G001",
+      "title": "青驿镖局",
+      "genre": "G",
+      "group": "hedong",
+      "volume": "vol-hedong",
+      "track": "other",
+      "scent": [
+        "江湖"
+      ],
+      "people": [
+        "冷旗",
+        "老局主",
+        "少局主",
+        "记账先生"
+      ],
+      "factions": [
+        "青驿镖局"
+      ],
+      "links": [
+        "Y001",
+        "R001",
+        "Q001",
+        "C001",
+        "P002"
+      ],
+      "status": "基础通过",
+      "role": "main",
+      "path": "stories/河东线/G001_青驿镖局/正文.md",
+      "review": {
+        "state": "passed_with_notes",
+        "seal": "朱注",
+        "round": 1,
+        "date": "2026-07-18",
+        "scope": "base",
+        "standard": "docs/原则/21_故事审查标准.md",
+        "standard_version": "0.3",
+        "report": "stories/审查总簿.md",
+        "reviewer": "Codex·总编审",
+        "source_version": "1.1",
+        "note": "规矩帖可用；职业制度均为 D 级小架空，外发时勿当史实说明。"
+      }
+    },
+    {
+      "id": "Q001",
+      "title": "旗先过桥",
+      "genre": "Q",
+      "group": "hedong",
+      "volume": "vol-hedong",
+      "track": "side",
+      "scent": [
+        "江湖",
+        "志异"
+      ],
+      "people": [
+        "冷旗",
+        "阿牛",
+        "桥心孩"
+      ],
+      "factions": [
+        "青驿镖局"
+      ],
+      "links": [
+        "Y001",
+        "R001",
+        "G001",
+        "C001",
+        "W001",
+        "P002",
+        "Z004"
+      ],
+      "status": "基础通过",
+      "role": "main",
+      "peak": true,
+      "path": "stories/河东线/Q001_旗先过桥/正文.md",
+      "review": {
+        "state": "passed",
+        "seal": "验讫",
+        "round": 1,
+        "date": "2026-07-18",
+        "scope": "base",
+        "standard": "docs/原则/21_故事审查标准.md",
+        "standard_version": "0.3",
+        "report": "stories/审查总簿.md",
+        "reviewer": "Codex·总编审",
+        "source_version": "1.1",
+        "note": "事件、选择、代价与双读完整，冷旗主事权清晰。"
+      }
+    },
+    {
+      "id": "C001",
+      "title": "拟回目·雨旗不湿",
+      "genre": "C",
+      "group": "hedong",
+      "volume": "vol-hedong",
+      "track": "other",
+      "scent": [
+        "志异",
+        "传闻"
+      ],
+      "people": [
+        "王瘸子"
+      ],
+      "factions": [
+        "青驿镖局"
+      ],
+      "links": [
+        "Y001",
+        "Q001",
+        "G001",
+        "W001",
+        "Q002"
+      ],
+      "status": "基础通过",
+      "role": "coda",
+      "path": "stories/河东线/C001_雨旗不湿/正文.md",
+      "review": {
+        "state": "passed",
+        "seal": "验讫",
+        "round": 1,
+        "date": "2026-07-18",
+        "scope": "base",
+        "standard": "docs/原则/21_故事审查标准.md",
+        "standard_version": "0.3",
+        "report": "stories/审查总簿.md",
+        "reviewer": "Codex·总编审",
+        "source_version": "1.1",
+        "note": "残章形态成立，第十八回保持阙，未把谜底写死。"
+      }
+    },
+    {
+      "id": "W001",
+      "title": "土地爷讨债",
+      "genre": "W",
+      "group": "hedong",
+      "volume": "vol-hedong",
+      "track": "other",
+      "scent": [
+        "传闻",
+        "志异",
+        "市井"
+      ],
+      "people": [
+        "老成",
+        "脚夫甲",
+        "柳先生"
+      ],
+      "factions": [],
+      "links": [
+        "Y001",
+        "C001",
+        "G001",
+        "Q001",
+        "Z002"
+      ],
+      "status": "基础通过",
+      "role": "interlude",
+      "path": "stories/河东线/W001_土地爷讨债/正文.md",
+      "review": {
+        "state": "passed_with_notes",
+        "seal": "朱注",
+        "round": 1,
+        "date": "2026-07-18",
+        "scope": "base",
+        "standard": "docs/原则/21_故事审查标准.md",
+        "standard_version": "0.3",
+        "report": "stories/审查总簿.md",
+        "reviewer": "Codex·总编审",
+        "source_version": "1.0",
+        "note": "三说并置成立；问字/回字等组内套语已接近饱和。"
+      }
+    },
+    {
+      "id": "Q002",
+      "title": "半卷话本",
+      "genre": "Q",
+      "group": "hedong",
+      "volume": "vol-hedong",
+      "track": "other",
+      "scent": [
+        "江湖",
+        "志异"
+      ],
+      "people": [
+        "阿段"
+      ],
+      "factions": [],
+      "links": [
+        "R001",
+        "C001",
+        "Y001",
+        "W001"
+      ],
+      "status": "基础通过",
+      "role": "main",
+      "path": "stories/河东线/Q002_半卷话本/正文.md",
+      "review": {
+        "state": "passed_with_notes",
+        "seal": "朱注",
+        "round": 1,
+        "date": "2026-07-18",
+        "scope": "base",
+        "standard": "docs/原则/21_故事审查标准.md",
+        "standard_version": "0.3",
+        "report": "stories/审查总簿.md",
+        "reviewer": "Codex·总编审",
+        "source_version": "1.1",
+        "note": "奇遇闭合且保留双读；红痕与残书属于现有公式，后续不宜再复制。"
+      }
+    },
+    {
+      "id": "P002",
+      "title": "半截杆",
+      "genre": "P",
+      "group": "hedong",
+      "volume": "vol-hedong",
+      "track": "side",
+      "scent": [
+        "江湖",
+        "志异"
+      ],
+      "people": [
+        "冷旗",
+        "阿牛",
+        "老成",
+        "少局主",
+        "记账先生"
+      ],
+      "factions": [
+        "青驿镖局"
+      ],
+      "links": [
+        "Q001",
+        "R001",
+        "G001",
+        "Y001",
+        "C001",
+        "Z004"
+      ],
+      "status": "基础通过",
+      "role": "main",
+      "peak": true,
+      "path": "stories/河东线/P002_半截杆/正文.md",
+      "review": {
+        "state": "passed_with_notes",
+        "seal": "朱注",
+        "round": 1,
+        "date": "2026-07-18",
+        "scope": "base",
+        "standard": "docs/原则/21_故事审查标准.md",
+        "standard_version": "0.3",
+        "report": "stories/审查总簿.md",
+        "reviewer": "Codex·总编审",
+        "source_version": "1.1",
+        "note": "冷旗旧案与代价成立；主题解释和既有回声略密，可在外发修订时收束。"
+      }
+    },
+    {
+      "id": "QT00",
+      "title": "入卷·桥头",
+      "genre": "V",
+      "group": "qiaotou",
+      "volume": "vol-qiaotou",
+      "track": "main",
+      "scent": [
+        "市井",
+        "志异",
+        "大事件"
+      ],
+      "people": [
+        "陈七",
+        "宋婆"
+      ],
+      "factions": [],
+      "links": [
+        "P001"
+      ],
+      "status": "基础通过",
+      "role": "prologue",
+      "path": "stories/桥头震后/QT00_入卷/正文.md",
+      "review": {
+        "state": "passed_with_notes",
+        "seal": "朱注",
+        "round": 1,
+        "date": "2026-07-18",
+        "scope": "base",
+        "standard": "docs/原则/21_故事审查标准.md",
+        "standard_version": "0.3",
+        "report": "stories/审查总簿.md",
+        "reviewer": "Codex·总编审",
+        "source_version": "1.2",
+        "note": "桥头卷气味明确；卷首含连载工程说明，宜保持卷首语定位。"
+      }
+    },
     {
       "id": "P001",
       "legacy_id": "S001",
       "title": "桥上第二碗",
       "genre": "P",
       "group": "qiaotou",
+      "volume": "vol-qiaotou",
+      "track": "side",
       "scent": [
         "市井",
         "志异",
@@ -68,169 +803,577 @@
       "factions": [],
       "links": [],
       "status": "基础通过",
-      "path": "stories/桥头震后/P001_桥上第二碗/正文.md"
+      "role": "main",
+      "peak": true,
+      "path": "stories/桥头震后/P001_桥上第二碗/正文.md",
+      "review": {
+        "state": "passed_with_notes",
+        "seal": "朱注",
+        "round": 1,
+        "date": "2026-07-18",
+        "scope": "base",
+        "standard": "docs/原则/21_故事审查标准.md",
+        "standard_version": "0.3",
+        "report": "stories/审查总簿.md",
+        "reviewer": "Codex·总编审",
+        "source_version": "1.1",
+        "note": "人物与制度层完成度高；已清理相邻重复句，保留短段密度黄灯。"
+      }
     },
     {
-      "id": "Y001",
-      "title": "河东线·雨后的官道",
-      "genre": "Y",
+      "id": "Z005",
+      "title": "东市半日",
+      "genre": "Z",
       "group": "hedong",
+      "volume": "vol-hedong",
+      "track": "main",
       "scent": [
         "江湖",
         "市井"
       ],
       "people": [
-        "老成",
-        "卖酱妇人"
+        "沈陌",
+        "柳先生"
       ],
       "factions": [
         "青驿镖局"
       ],
       "links": [
-        "Q001",
-        "R001",
-        "G001",
-        "C001"
-      ],
-      "status": "基础通过",
-      "path": "stories/河东线/Y001_雨后的官道/正文.md"
-    },
-    {
-      "id": "R001",
-      "title": "河东三人折",
-      "genre": "R",
-      "group": "hedong",
-      "scent": [
-        "江湖"
-      ],
-      "people": [
-        "冷旗",
-        "阿段",
-        "柳先生",
-        "老成"
-      ],
-      "factions": [
-        "青驿镖局"
-      ],
-      "links": [
+        "Z004",
+        "Z006",
+        "N-SM",
+        "N-LX",
         "Y001",
-        "Q001",
         "G001"
       ],
-      "status": "基础通过",
-      "path": "stories/河东线/R001_河东三人折/正文.md"
+      "status": "初稿",
+      "role": "main",
+      "path": "stories/河东线/Z005_东市半日/正文.md",
+      "review": {
+        "state": "pending",
+        "seal": "待勘",
+        "round": 0,
+        "date": "2026-07-18",
+        "scope": "base",
+        "standard": "docs/原则/21_故事审查标准.md",
+        "standard_version": "0.3",
+        "report": "",
+        "reviewer": "",
+        "source_version": "1.0",
+        "note": "第二幕开章；市声与康家门脸，不入内斗。"
+      }
     },
     {
-      "id": "G001",
-      "title": "青驿镖局",
-      "genre": "G",
+      "id": "Z006",
+      "title": "茶冷如树",
+      "genre": "Z",
       "group": "hedong",
-      "scent": [
-        "江湖"
-      ],
-      "people": [
-        "冷旗",
-        "老局主",
-        "少局主",
-        "记账先生"
-      ],
-      "factions": [
-        "青驿镖局"
-      ],
-      "links": [
-        "Y001",
-        "R001",
-        "Q001",
-        "C001"
-      ],
-      "status": "基础通过",
-      "path": "stories/河东线/G001_青驿镖局/正文.md"
-    },
-    {
-      "id": "Q001",
-      "title": "旗先过桥",
-      "genre": "Q",
-      "group": "hedong",
+      "volume": "vol-hedong",
+      "track": "main",
       "scent": [
         "江湖",
-        "志异"
-      ],
-      "people": [
-        "冷旗",
-        "阿牛",
-        "桥心孩"
-      ],
-      "factions": [
-        "青驿镖局"
-      ],
-      "links": [
-        "Y001",
-        "R001",
-        "G001",
-        "C001"
-      ],
-      "status": "基础通过",
-      "path": "stories/河东线/Q001_旗先过桥/正文.md"
-    },
-    {
-      "id": "C001",
-      "title": "拟回目·雨旗不湿",
-      "genre": "C",
-      "group": "hedong",
-      "scent": [
-        "志异",
-        "传闻"
-      ],
-      "people": [
-        "王瘸子"
-      ],
-      "factions": [
-        "青驿镖局"
-      ],
-      "links": [
-        "Y001",
-        "Q001",
-        "G001"
-      ],
-      "status": "基础通过",
-      "path": "stories/河东线/C001_雨旗不湿/正文.md"
-    },
-    {
-      "id": "W001",
-      "title": "土地爷讨债",
-      "genre": "W",
-      "group": "hedong",
-      "scent": [
-        "传闻",
-        "志异",
         "市井"
       ],
-      "status": "种子",
-      "path": "stories/河东线/种子_W001_土地爷讨债.md"
+      "people": [
+        "沈陌",
+        "柳先生"
+      ],
+      "factions": [
+        "青驿镖局"
+      ],
+      "links": [
+        "Z005",
+        "Z007",
+        "N-SM",
+        "N-LX",
+        "W001",
+        "G001"
+      ],
+      "status": "初稿",
+      "role": "main",
+      "path": "stories/河东线/Z006_茶冷如树/正文.md",
+      "review": {
+        "state": "pending",
+        "seal": "待勘",
+        "round": 0,
+        "date": "2026-07-18",
+        "scope": "base",
+        "standard": "docs/原则/21_故事审查标准.md",
+        "standard_version": "0.3",
+        "report": "",
+        "reviewer": "",
+        "source_version": "1.0",
+        "note": "第二幕：假蹄忌讳与袖纸；茶冷如树；不查册不入后院。"
+      }
     },
     {
-      "id": "Q002",
-      "title": "半卷话本",
-      "genre": "Q",
+      "id": "N-SM",
+      "title": "人物志·沈陌",
+      "genre": "N",
       "group": "hedong",
+      "volume": "vol-hedong",
+      "track": "other",
+      "scent": [
+        "江湖",
+        "市井"
+      ],
+      "people": [
+        "沈陌"
+      ],
+      "factions": [],
+      "links": [
+        "R-SM",
+        "Z001",
+        "Z002",
+        "Z003",
+        "Z004",
+        "Z005",
+        "HD00"
+      ],
+      "status": "初稿",
+      "role": "main",
+      "path": "stories/人物志/N_沈陌/正文.md",
+      "review": {
+        "state": "pending",
+        "seal": "待勘",
+        "round": 0,
+        "date": "2026-07-18",
+        "scope": "base",
+        "standard": "docs/原则/21_故事审查标准.md",
+        "standard_version": "0.3",
+        "report": "",
+        "reviewer": "",
+        "source_version": "1.0",
+        "note": "中篇开写/人物志初稿，待总编审"
+      }
+    },
+    {
+      "id": "N-LQ",
+      "title": "人物志·冷旗",
+      "genre": "N",
+      "group": "hedong",
+      "volume": "vol-hedong",
+      "track": "other",
+      "scent": [
+        "江湖"
+      ],
+      "people": [
+        "冷旗"
+      ],
+      "factions": [
+        "青驿镖局"
+      ],
+      "links": [
+        "R001",
+        "Q001",
+        "P002",
+        "G001",
+        "Z003",
+        "Z004"
+      ],
+      "status": "初稿",
+      "role": "side",
+      "path": "stories/人物志/N_冷旗/正文.md",
+      "review": {
+        "state": "pending",
+        "seal": "待勘",
+        "round": 0,
+        "date": "2026-07-18",
+        "scope": "base",
+        "standard": "docs/原则/21_故事审查标准.md",
+        "standard_version": "0.3",
+        "report": "",
+        "reviewer": "",
+        "source_version": "1.0",
+        "note": "中篇开写/人物志初稿，待总编审"
+      }
+    },
+    {
+      "id": "N-AD",
+      "title": "人物志·阿段",
+      "genre": "N",
+      "group": "hedong",
+      "volume": "vol-hedong",
+      "track": "other",
+      "scent": [
+        "江湖"
+      ],
+      "people": [
+        "阿段"
+      ],
+      "factions": [],
+      "links": [
+        "R001",
+        "Q002",
+        "C001",
+        "Z011"
+      ],
+      "status": "初稿",
+      "role": "side",
+      "path": "stories/人物志/N_阿段/正文.md",
+      "review": {
+        "state": "pending",
+        "seal": "待勘",
+        "round": 0,
+        "date": "2026-07-18",
+        "scope": "base",
+        "standard": "docs/原则/21_故事审查标准.md",
+        "standard_version": "0.3",
+        "report": "",
+        "reviewer": "",
+        "source_version": "1.0",
+        "note": "中篇开写/人物志初稿，待总编审"
+      }
+    },
+    {
+      "id": "N-LX",
+      "title": "人物志·柳先生",
+      "genre": "N",
+      "group": "hedong",
+      "volume": "vol-hedong",
+      "track": "other",
+      "scent": [
+        "江湖",
+        "市井"
+      ],
+      "people": [
+        "柳先生"
+      ],
+      "factions": [],
+      "links": [
+        "R001",
+        "Z004",
+        "Z005",
+        "Z006",
+        "W001"
+      ],
+      "status": "初稿",
+      "role": "side",
+      "path": "stories/人物志/N_柳先生/正文.md",
+      "review": {
+        "state": "pending",
+        "seal": "待勘",
+        "round": 0,
+        "date": "2026-07-18",
+        "scope": "base",
+        "standard": "docs/原则/21_故事审查标准.md",
+        "standard_version": "0.3",
+        "report": "",
+        "reviewer": "",
+        "source_version": "1.0",
+        "note": "中篇开写/人物志初稿，待总编审"
+      }
+    },
+    {
+      "id": "Z007",
+      "title": "夜不入龛",
+      "genre": "Z",
+      "group": "hedong",
+      "volume": "vol-hedong",
+      "track": "main",
       "scent": [
         "江湖",
         "志异"
       ],
-      "status": "种子",
-      "path": "stories/河东线/种子_Q002_半卷话本.md"
+      "people": [
+        "沈陌",
+        "货栈门房",
+        "夜路人"
+      ],
+      "factions": [],
+      "links": [
+        "Z006",
+        "Z008",
+        "Z002",
+        "W001",
+        "N-SM"
+      ],
+      "status": "初稿",
+      "role": "main",
+      "path": "stories/河东线/Z007_夜不入龛/正文.md",
+      "review": {
+        "state": "pending",
+        "seal": "待勘",
+        "round": 0,
+        "date": "2026-07-19",
+        "scope": "base",
+        "standard": "docs/原则/21_故事审查标准.md",
+        "standard_version": "0.3",
+        "report": "",
+        "reviewer": "",
+        "source_version": "1.0",
+        "note": "第二幕：忌讳落地；差点入龛而止；帖与债钱。"
+      }
+    }
+  ],
+  "world": [
+    {
+      "id": "WLD-DONGCHANG",
+      "name": "东厂",
+      "kind": "faction",
+      "path": "stories/世界/势力/东厂/正文.md",
+      "fullness": 40,
+      "status": "框架",
+      "see": [
+        "docs/社会/07_组织势力.md"
+      ]
     },
     {
-      "id": "P002",
-      "title": "半截杆",
-      "genre": "P",
+      "id": "WLD-KJSY",
+      "name": "康家酱园",
+      "kind": "faction",
+      "path": "stories/世界/势力/康家酱园/正文.md",
+      "fullness": 55,
+      "status": "框架",
       "group": "hedong",
-      "scent": [
-        "江湖",
-        "志异"
-      ],
-      "status": "种子",
-      "path": "stories/河东线/种子_P002_半截杆.md"
+      "see": [
+        "Z005",
+        "Z006"
+      ]
+    },
+    {
+      "id": "WLD-YAHANG",
+      "name": "牙行",
+      "kind": "faction",
+      "path": "stories/世界/势力/牙行/正文.md",
+      "fullness": 50,
+      "status": "框架",
+      "group": "hedong",
+      "see": [
+        "Z005",
+        "Z006",
+        "N-LX"
+      ]
+    },
+    {
+      "id": "WLD-JINYI",
+      "name": "锦衣卫",
+      "kind": "faction",
+      "path": "stories/世界/势力/锦衣卫/正文.md",
+      "fullness": 40,
+      "status": "框架",
+      "see": [
+        "docs/社会/07_组织势力.md"
+      ]
+    },
+    {
+      "id": "WLD-QYBJ",
+      "name": "青驿镖局",
+      "kind": "faction",
+      "path": "stories/世界/势力/青驿镖局/正文.md",
+      "fullness": 80,
+      "status": "成档",
+      "group": "hedong",
+      "see": [
+        "G001",
+        "Q001",
+        "P002"
+      ]
+    },
+    {
+      "id": "WLD-DONGSHI",
+      "name": "东市",
+      "kind": "place",
+      "path": "stories/世界/地标/东市/正文.md",
+      "fullness": 70,
+      "status": "框架",
+      "group": "hedong",
+      "see": [
+        "Z005",
+        "Z006"
+      ]
+    },
+    {
+      "id": "WLD-BANJIEBEI",
+      "name": "半截碑",
+      "kind": "place",
+      "path": "stories/世界/地标/半截碑/正文.md",
+      "fullness": 90,
+      "status": "成档",
+      "group": "hedong",
+      "see": [
+        "Z002",
+        "Y001"
+      ]
+    },
+    {
+      "id": "WLD-QIAOTOU",
+      "name": "桥头",
+      "kind": "place",
+      "path": "stories/世界/地标/桥头/正文.md",
+      "fullness": 75,
+      "status": "成档",
+      "group": "qiaotou",
+      "see": [
+        "P001",
+        "QT00"
+      ]
+    },
+    {
+      "id": "WLD-QINGNIDU",
+      "name": "青泥渡",
+      "kind": "place",
+      "path": "stories/世界/地标/青泥渡/正文.md",
+      "fullness": 45,
+      "status": "框架",
+      "group": "hedong",
+      "see": [
+        "Y001",
+        "HD00"
+      ]
+    },
+    {
+      "id": "WLD-JIAOTI",
+      "name": "假蹄印",
+      "kind": "creature",
+      "path": "stories/世界/生灵/假蹄印/正文.md",
+      "fullness": 55,
+      "status": "框架",
+      "group": "hedong",
+      "see": [
+        "Z006"
+      ]
+    },
+    {
+      "id": "WLD-QUELIANTUDI",
+      "name": "缺脸土地",
+      "kind": "creature",
+      "path": "stories/世界/生灵/缺脸土地/正文.md",
+      "fullness": 75,
+      "status": "成档",
+      "group": "hedong",
+      "see": [
+        "W001",
+        "Y001"
+      ]
+    },
+    {
+      "id": "WLD-YUQ",
+      "name": "雨旗",
+      "kind": "creature",
+      "path": "stories/世界/生灵/雨旗/正文.md",
+      "fullness": 80,
+      "status": "成档",
+      "group": "hedong",
+      "see": [
+        "G001",
+        "Q001"
+      ]
+    },
+    {
+      "id": "WLD-DAOQIAO",
+      "name": "刀鞘",
+      "kind": "material",
+      "path": "stories/世界/物产/刀鞘/正文.md",
+      "fullness": 50,
+      "status": "框架",
+      "group": "hedong",
+      "see": [
+        "N-AD"
+      ]
+    },
+    {
+      "id": "WLD-BANJIEGAN",
+      "name": "半截旗杆",
+      "kind": "material",
+      "path": "stories/世界/物产/半截旗杆/正文.md",
+      "fullness": 80,
+      "status": "成档",
+      "group": "hedong",
+      "see": [
+        "P002",
+        "N-LQ"
+      ]
+    },
+    {
+      "id": "WLD-YAQI",
+      "name": "牙契纸",
+      "kind": "material",
+      "path": "stories/世界/物产/牙契纸/正文.md",
+      "fullness": 65,
+      "status": "成档",
+      "group": "hedong",
+      "see": [
+        "Z006",
+        "N-LX"
+      ]
+    },
+    {
+      "id": "WLD-JIANG",
+      "name": "酱",
+      "kind": "material",
+      "path": "stories/世界/物产/酱/正文.md",
+      "fullness": 70,
+      "status": "成档",
+      "group": "hedong",
+      "see": [
+        "Z005",
+        "WLD-KJSY"
+      ]
+    },
+    {
+      "id": "WLD-MOGAOGUAN",
+      "name": "出事莫告官",
+      "kind": "custom",
+      "path": "stories/世界/风物/出事莫告官/正文.md",
+      "fullness": 55,
+      "status": "框架",
+      "group": "hedong",
+      "see": [
+        "G001",
+        "Z006"
+      ]
+    },
+    {
+      "id": "WLD-WUYEXING",
+      "name": "勿夜行",
+      "kind": "custom",
+      "path": "stories/世界/风物/勿夜行/正文.md",
+      "fullness": 85,
+      "status": "成档",
+      "group": "hedong",
+      "see": [
+        "Y001",
+        "Z003"
+      ]
+    },
+    {
+      "id": "WLD-KENGQIAN",
+      "name": "坑钱",
+      "kind": "custom",
+      "path": "stories/世界/风物/坑钱/正文.md",
+      "fullness": 90,
+      "status": "成档",
+      "group": "hedong",
+      "see": [
+        "Z002",
+        "Y001"
+      ]
+    },
+    {
+      "id": "WLD-QIXIANGUOQIAO",
+      "name": "旗先过桥",
+      "kind": "custom",
+      "path": "stories/世界/风物/旗先过桥/正文.md",
+      "fullness": 90,
+      "status": "成档",
+      "group": "hedong",
+      "see": [
+        "Q001",
+        "G001"
+      ]
+    },
+    {
+      "id": "WLD-CHALENGRUSHU",
+      "name": "茶冷如树",
+      "kind": "custom",
+      "path": "stories/世界/风物/茶冷如树/正文.md",
+      "fullness": 70,
+      "status": "框架",
+      "group": "hedong",
+      "see": [
+        "Z006"
+      ]
     }
   ]
 }

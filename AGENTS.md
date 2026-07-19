@@ -12,8 +12,8 @@
 ```text
 .
 ├── CLAUDE.md / AGENTS.md / PROJECT_MAP.md / README.md
-├── docs/{原则,世界,社会,素材,管理}/     # 设定 00–23
-├── stories/ + catalog.json              # 正文（地脉组）
+├── docs/{原则,世界,社会,素材,管理}/     # 设定 00–26
+├── stories/ + catalog.json              # 正文（地脉组 + volumes 卷 + 主章线）
 ├── web/ · scripts/ · 启动世界观网页.bat
 └── archive/                             # 只读历史
 ```
@@ -27,10 +27,13 @@
 1. `PROJECT_MAP.md`（或先扫 `CLAUDE.md`）
 2. `docs/原则/宪法.md`
 3. `docs/原则/00_创作理念.md`
-4. 与任务相关的 `docs/**` 设定文件（编号 00—23）
+4. 与任务相关的 `docs/**` 设定文件（编号 00—26）
 5. 涉及历史、民俗、制度、物价或语言时，读取 `docs/世界/SOURCES.md`
 6. 写故事前检查 `docs/管理/12_时间线.md`、`docs/管理/13_伏笔回收.md`、`docs/素材/19_伏笔与未解之谜.md`
 7. 已立项故事读取 `stories/<地脉组>/<编号_标题>/` 内文件
+8. 发连载 / 排章前读 `docs/原则/24_卷册与连载阅读体验.md`
+9. 主章线 / 踏线人读 `docs/原则/25_踏线人主章公约.md` 与 `stories/主章线/目录骨架.md`
+10. 人物档案读 `docs/原则/26_人物志规范.md` 与 `stories/人物志/`；河东中篇读 `stories/河东线/中篇总纲.md`
 
 `archive/` 只保存历史短稿与废弃路径，不是现行设定，不得作为创作依据。
 
@@ -52,8 +55,8 @@
 
 ## 文档维护规则
 
-- 00—23 号文件是现行核心文档，编号连续；存放在 `docs/` 分类子目录中。新增或改名必须同步 `docs/README.md`、`PROJECT_MAP.md`、`README.md` 与 `web/app.js` 卷宗列表。
-- 正式正文放在 `stories/<地脉组>/<编号_标题>/正文.md`；分组见 `docs/原则/23_内容分组与浏览分类.md`；索引更新 `stories/catalog.json`。
+- 00—26 号文件是现行核心文档，编号连续；存放在 `docs/` 分类子目录中。新增或改名必须同步 `docs/README.md`、`PROJECT_MAP.md`、`README.md` 与 `web/app.js` 卷宗列表。
+- 正式正文放在 `stories/<地脉组>/<编号_标题>/正文.md`；人物志在 `stories/人物志/<N_名>/正文.md`（genre N）。分组见 `docs/原则/23`；卷与连载见 `docs/原则/24`；主章线见 `docs/原则/25`；人物志见 `docs/原则/26`；索引更新 `stories/catalog.json`（含 `volumes[].main_path` / `reading_path`，条目 `track` / `review`）。
 - P001 在 `stories/桥头震后/P001_桥上第二碗/`（含 `versions/`）。`archive/` 仅保留早期短稿与开工草案，不得当正文源。
 - 修改设定文档时更新头部 Version、更新时间，并在 `CHANGELOG.md` 记录重要变化。
 - 创作决策进入 `创作日志.md`；一次性操作过程留在 Git 历史。
@@ -69,16 +72,20 @@
 
 ## 收尾自检
 
+- 新条目优先：`python3 scripts/scaffold_entry.py`（见 `stories/_templates/交稿清单.md`）；**勿**自动塞 `main_path`。
 - 若本轮改动了 `stories/**/正文.md`：先运行
   `python3 scripts/postcheck_story.py stories/<地脉组>/<编号_标题>/正文.md`
   退出码非 0 不得交稿；交稿前建议加 `--strict`。
+- 运行 `python3 scripts/check_integrity.py`（或 `npm run check`），确认磁盘↔catalog、三 path、world 路径。
+- 运行 `python3 scripts/check_reviews.py`，确认审印登记、报告路径与正文 Version 一致。
+- 世界碎片落 `stories/世界/` 并挂 `catalog.world`；禁止只在 `web/app.js` / `web/js/*` 写死业务清单。
 - 运行 `git diff --check`。
 - 确认 `git status` 没有意外文件。
 - 检查 Markdown 文件引用指向真实路径（含 `docs/` 前缀）。
-- 检查编号仍为 00—23 连续序列。
+- 检查编号仍为 00—26 连续序列（原则文档）。
 - 检查历史与语言新增内容已入 `docs/世界/SOURCES.md` 或标为【待考】。
 - 正文不得出现「公文包」等现代包具词；驿递用「油布包/皮囊/报袋」等。词表见 `scripts/postcheck_story.py` 与 `docs/原则/20_故事创作规范.md`「生成后自检」。
-- 故事交稿前按 `docs/原则/21_故事审查标准.md` 做**基础审查**（R0–R3 + 形态卡上的模块），写入 `07_审查报告.md`；不强制深审全模块。
+- 故事交稿前按 `docs/原则/21_故事审查标准.md` 做**基础审查**（R0–R3 + 形态卡上的模块），写入 `07_审查报告.md` 或合订审查报告，并回写 `stories/catalog.json` 的 `review`；无有效 review 一律「待勘」。
 - 世界方向：轻玄幻武侠、江湖、小架空、现代概念可化用；勿用单一志异公式卡死所有故事。
-- 内容分层见 `docs/原则/22_内容体例与江湖勾勒.md`；分组浏览见 `docs/原则/23_内容分组与浏览分类.md`（地脉组为主架）。
-- 新条目先定**地脉组**再定体例；正文进组目录。
+- 内容分层见 `docs/原则/22`；分组见 `docs/原则/23`；卷册连载见 `docs/原则/24`；踏线人主章见 `docs/原则/25`（沈陌跟脚，主/副/其他分槽，成长=懂/债/名）。
+- 新条目先定**地脉组 / 卷 / track**再定体例；主线占 `Z###` 并挂 `main_path`；正文进组目录。

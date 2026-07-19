@@ -208,9 +208,17 @@ def check_duplicate_lines(path: Path, lines: Sequence[str], report: Report) -> N
             prev
             and len(s) > 12
             and len(prev) > 12
-            and s[:12] == prev[:12]
-            and abs(len(s) - len(prev)) < 25
             and s != prev
+            and (
+                (
+                    s[:12] == prev[:12]
+                    and abs(len(s) - len(prev)) < 25
+                )
+                or (
+                    min(len(s), len(prev)) >= 14
+                    and (s.startswith(prev) or prev.startswith(s))
+                )
+            )
         ):
             report.findings.append(
                 Finding(
@@ -220,7 +228,7 @@ def check_duplicate_lines(path: Path, lines: Sequence[str], report: Report) -> N
                     s,
                     "近重复句",
                     s[:40],
-                    f"与第 {prev_no} 行高度相似，疑似双写",
+                    f"与第 {prev_no} 行高度相似或互为扩写，疑似双写",
                 )
             )
         prev, prev_no = s, i

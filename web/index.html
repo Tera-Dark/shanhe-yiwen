@@ -3,85 +3,97 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#1a1410" />
+  <meta name="theme-color" content="#12100e" />
+  <meta name="description" content="山河异闻 · 地脉浏览台。雨后驿路，卷册可读。" />
   <title>山河异闻 · 入世</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600&family=Noto+Serif+SC:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Sans+SC:wght@300;400;500;600&family=Noto+Serif+SC:wght@300;400;500;600;700&family=ZCOOL+XiaoWei&family=LXGW+WenKai+TC:wght@400;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./review-seals.css" />
 </head>
-<body>
-  <div class="bg-ink" aria-hidden="true"></div>
-  <div class="bg-grain" aria-hidden="true"></div>
+<body data-mode="light" data-theme="mistgold" data-font="shoujin" data-size="medium" data-lh="comfy" data-readw="mid">
 
-  <!-- 日常浏览壳 -->
+  <div class="atm-mist" aria-hidden="true"></div>
+  <div class="atm-grain" aria-hidden="true"></div>
+
   <div id="appShell" class="app-shell">
-    <header class="topbar">
-      <a class="brand" href="#/" data-nav="home">
-        <span class="seal">山</span>
-        <span class="brand-text">
-          <b>山河异闻</b>
-          <small>开发代号 · Project ShanHe</small>
-        </span>
-      </a>
-      <nav class="nav-main" aria-label="主导航">
-        <button type="button" data-nav="home" class="nav-item is-active">入世</button>
-        <button type="button" data-nav="groups" class="nav-item">地脉</button>
-        <button type="button" data-nav="genres" class="nav-item">体例</button>
-        <button type="button" data-nav="archives" class="nav-item">卷宗</button>
-        <button type="button" data-nav="time" class="nav-item">时序</button>
-      </nav>
-      <div class="topbar-right">
-        <span class="era-pill">嘉靖—崇祯 · 1522–1644</span>
-        <button type="button" class="btn-ghost" id="btnSearch" title="检索 (Q)">检索</button>
+    <header class="chrome-top">
+      <div class="chrome-left">
+        <button type="button" class="chrome-key" data-nav="home" title="入世">Q</button>
+        <nav class="chrome-tabs" aria-label="主导航">
+          <button type="button" data-nav="home" class="chrome-tab is-active">入世</button>
+          <button type="button" data-nav="groups" class="chrome-tab">卷</button>
+          <button type="button" data-nav="genres" class="chrome-tab">审印</button>
+          <button type="button" data-nav="world" class="chrome-tab">世界</button>
+          <button type="button" data-nav="archives" class="chrome-tab">卷宗</button>
+          <button type="button" data-nav="time" class="chrome-tab">时序</button>
+        </nav>
+      </div>
+      <div class="chrome-right">
+        <span class="chrome-era" title="时代坐标">嘉靖—崇祯</span>
+        <button type="button" class="chrome-icon-btn" id="btnSearch" title="通寻 (Q)">寻</button>
+        <button type="button" class="chrome-icon-btn" data-nav="settings" title="案前">案</button>
       </div>
     </header>
 
     <main id="mainView" class="main-view"></main>
 
-    <footer class="statusbar">
+    <footer class="chrome-foot">
       <span id="statusLeft">世界大于主角，人物大于设定。</span>
       <span id="statusRight">连接中…</span>
     </footer>
   </div>
 
-  <!-- 沉浸阅读：全屏 + 顶栏切换，无侧栏抽屉 -->
   <div id="reader" class="reader" hidden aria-hidden="true">
     <header class="reader-bar">
       <div class="reader-bar-left">
-        <button type="button" class="btn-bar" id="readerBack" title="返回">返回</button>
+        <button type="button" class="btn-bar" id="readerBack" title="返回">返程</button>
         <button type="button" class="btn-bar" id="readerHome" title="入世">入世</button>
+        <button type="button" class="btn-bar is-toc-toggle" id="readerTocToggle" title="程目" aria-controls="readerToc" aria-expanded="true">程目</button>
       </div>
       <div class="reader-bar-center">
         <span class="reader-kicker" id="readerKicker"></span>
         <h1 class="reader-title" id="readerTitle"></h1>
       </div>
       <div class="reader-bar-right">
-        <button type="button" class="btn-bar" id="readerPrev" title="上一条">上一条</button>
-        <button type="button" class="btn-bar" id="readerNext" title="下一条">下一条</button>
-        <button type="button" class="btn-bar" id="readerClose" title="关闭 (Esc)">关闭</button>
+        <button type="button" class="btn-bar" id="readerPrev" title="上一条">上程</button>
+        <button type="button" class="btn-bar" id="readerNext" title="下一条">下程</button>
+        <button type="button" class="btn-bar" id="readerClose" title="关闭 (Esc)">掩卷</button>
       </div>
     </header>
-    <div class="reader-subnav" id="readerSubnav" hidden></div>
-    <article class="reader-scroll" id="readerBody"></article>
+    <div class="reader-progress" id="readerProgress" hidden aria-hidden="true"></div>
+    <div class="reader-toc-scrim" id="readerTocScrim" hidden></div>
+    <div class="reader-layout">
+      <aside class="reader-toc" id="readerToc" aria-label="程目"></aside>
+      <button type="button" class="reader-toc-edge" id="readerTocEdge" title="展开程目 (T)" aria-label="展开程目" hidden>
+        <span class="edge-mark" aria-hidden="true"></span>
+        <span class="edge-label">程目</span>
+      </button>
+      <div class="reader-main">
+        <div class="reader-review" id="readerReview" hidden></div>
+        <article class="reader-scroll" id="readerBody"></article>
+      </div>
+    </div>
     <footer class="reader-foot">
       <div id="readerLinks" class="reader-links"></div>
       <span id="readerPath" class="reader-path"></span>
     </footer>
   </div>
 
-  <!-- 检索 -->
   <div id="searchLayer" class="search-layer" hidden>
     <div class="search-panel" role="dialog" aria-modal="true" aria-labelledby="searchHeading">
       <header>
         <h2 id="searchHeading">通寻</h2>
-        <button type="button" class="btn-bar" id="searchClose">关闭</button>
+        <button type="button" class="search-close" id="searchClose">关闭</button>
       </header>
-      <input type="search" id="searchInput" placeholder="地脉、人物、体例、设定文件名…" autocomplete="off" />
+      <input type="search" id="searchInput" placeholder="地脉、人物、章名、卷宗…" autocomplete="off" />
       <div id="searchResults" class="search-results"></div>
     </div>
   </div>
 
-  <script src="./app.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
+  <script src="./motion.js"></script>
+  <script type="module" src="./app.js"></script>
 </body>
 </html>

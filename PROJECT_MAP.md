@@ -16,16 +16,19 @@
 | `CHANGELOG.md` | 版本变化 |
 | `创作日志.md` | 创作决策与待讨论事项 |
 
-## 二、核心文档（docs/ · 编号 00—23）
+## 二、核心文档（docs/ · 编号 00—26）
 
 ### 原则 · `docs/原则/`
 
 - `宪法.md`：最高创作准则
 - `00_创作理念.md`：项目目标与叙事气质
 - `20_故事创作规范.md`：从设定到正文的执行规范
-- `21_故事审查标准.md`：基础审查（R0–R3 核心 + 可选模块）；形态开放
-- `22_内容体例与江湖勾勒.md`：主纪/旁纪/残章/奇遇/探游等文本体例
+- `21_故事审查标准.md`：R0–R3 + 模块审查；验讫/朱注/退修/待勘与网页审印
+- `22_内容体例与江湖勾勒.md`：主纪/旁纪/残章/奇遇/探游/人物折·志等
 - `23_内容分组与浏览分类.md`：地脉组主架 + 体例/气味/人物筛
+- `24_卷册与连载阅读体验.md`：地脉成卷、荐读序、番茄等连载指标
+- `25_踏线人主章公约.md`：沈陌·主线/副线/其他·成长边界（懂/债/名）
+- `26_人物志规范.md`：档案体人物志 N · 与 R 折分立
 
 ### 世界 · `docs/世界/`
 
@@ -58,22 +61,31 @@
 - `11_单元剧目录.md`（总目，含多体例）
 - `12_时间线.md`
 - `13_伏笔回收.md`
+- `底架打磨计划_2026-07-19.md`：A–D 收口记录（v0.26 已稳）
 
 ## 三、实际故事工程 · `stories/`
 
 - `stories/README.md`：故事目录与标准结构
-- `stories/河东线/`：地脉组 hedong（正式开写）
-- `stories/桥头震后/P001_桥上第二碗/`：地脉组 qiaotou（旧 S001）
-- `stories/catalog.json`：网页用条目索引
+- `stories/主章线/目录骨架.md`：全书 Z 槽规划（槽≠成稿）
+- `stories/人物志/`：档案体人物志（N-SM 等；目录见内）
+- `stories/河东线/`：地脉组 hedong · **河东卷**（连载中；主线 Z001–**Z007**；中篇总纲）
+- `stories/桥头震后/`：地脉组 qiaotou · **桥头卷**（独立；QT00 + P001）
+- `stories/世界/`：势力/地标/生灵/物产/风物碎片（网页「世界」栏主源）
+- `stories/catalog.json` + `catalog.schema.md`：机器索引（volumes · track · review · world）
+- `stories/审查总簿.md`：总编审结论与返修/待勘说明
 - 长旁纪可含设定、人物、历史、大纲、双解、声纹、正文、版本
-- `scripts/postcheck_story.py`：正文生成后时代语词/重复句自检
-- `stories/_templates/`：条目与审查模板
+- `scripts/`：postcheck · check_reviews · check_integrity · scaffold_entry
+- `stories/_templates/`：条目与审查模板 · 交稿清单
+- `docs/管理/底架打磨计划_2026-07-19.md`：底架 A–D 已收口（v0.26）
 
 ## 四、网页与工具
 
-- `web/`：地脉浏览台（入世/地脉/体例/卷宗/时序 + 沉浸阅读）
+- `web/`：地脉浏览台（**入世 · 卷 · 审印 · 世界 · 卷宗 · 时序** + 沉浸阅读；金线主路 + track 三槽）
+- `web/app.js`（ES module）+ `web/js/constants.js` · `markdown.js` · `motion.js`
+- hash：`#/home` · `#/vol/:id` · `#/read/:id` · `#/seal/:stage` · `#/world/:tab`
 - `启动世界观网页.bat`：Windows 启动本地服务 `http://127.0.0.1:4182/`
-- `scripts/postcheck_story.py`
+- `web/DEPLOY.md` · 根目录 `vercel.json`：Vercel 一键部署
+- `scripts/postcheck_story.py` · `check_reviews.py` · `check_integrity.py` · `scaffold_entry.py` · `npm run check`
 
 ## 五、资料与许可
 
@@ -107,11 +119,9 @@
 
 ## 八、当前状态
 
-- 世界方向（校准中）：轻玄幻武侠底盘、江湖事、小架空、现代概念可化用——详见 `创作日志.md`。
-- 正式作品名：待定
-- 仓库：公开
-- 主时间轴：1522—1644
-- 设定布局：`docs/` 五类子目录（2026-07-17 规范化）
-- 分组：地脉组主架（23）· 河东线正式开写 · 桥头震后已收 P001
-- P001《桥上第二碗》：基础通过
-- 河东线成稿：Y001 R001 G001 Q001 C001；种子 W001 Q002 P002
+- 世界方向：轻玄幻武侠底盘、江湖事、小架空、现代概念可化用——详见 `创作日志.md`。
+- 正式作品名：待定 · 仓库公开 · 主时间轴 1522—1644
+- 设定：`docs/` 五类（原则 00–26）；正文 `stories/` + catalog v1.7（entries 23 · world 21）
+- 河东卷：main_path 至 **Z007**；Z002/Z004 返修待复审；副线/其他见 catalog
+- 桥头卷独立：QT00 + P001（P001 不进河东 main_path）
+- 底架 A–D 收口（v0.26）：世界仓 · scaffold · integrity · hash · app 轻拆

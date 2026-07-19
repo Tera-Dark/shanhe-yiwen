@@ -22,5 +22,12 @@ desktop.ini
 # Node
 node_modules/
 
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
 # Vercel
 .vercel/

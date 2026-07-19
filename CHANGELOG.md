@@ -5,6 +5,103 @@
 
 ---
 
+## v0.26 — 2026/7/19
+
+**底架收口 · 主线返修 · app 轻拆**
+
+- 网页：`app.js` ES module 轻拆 → `js/constants.js` + `js/markdown.js`；hash / 世界栏 / 程目静态抽检通过。
+- 内容：Z002《碑下三文》、Z004《桥边看旗》按总簿返修（v1.1，旧稿入 `versions/`）；审印退修→待勘。
+- 主线：Z007《夜不入龛》初稿；`main_path`/`reading_path` 插入 Z006 后。
+- integrity 0 error；postcheck 三章 PASS。
+- 文件：`web/app.js` · `web/js/*` · `web/index.html` · `stories/河东线/Z00{2,4,7}_*` · catalog · 审查总簿。
+
+---
+
+## v0.25 — 2026/7/19
+
+**底架：世界仓 · 脚手架 · 总检 · 路由**
+
+- `stories/世界/` 碎片仓 + catalog `world[]`（v1.7）；网页世界栏改读真数据。
+- `scripts/scaffold_entry.py` 一键开条/开碎片；`check_integrity.py` 工程一致性。
+- `npm run check` = integrity + reviews；交稿清单模板。
+- 网页 hash 路由：`#/read/:id` · `#/vol/:group` · `#/seal/:stage` · `#/world/:tab`；catalog 失败驿帖提示。
+- 契约 `catalog.schema.md`；入口文档与审查总簿校准；预览 HTML 入 archive。
+- 文件：`scripts/*` · `web/app.js` · `stories/世界/**` · AGENTS · README · 底架计划。
+
+---
+
+## v0.24 — 2026/7/18
+
+**章目全表修复 · 审印台 · 世界设定集**
+
+- 卷页「章目全表」四列布局（程次/标签/标题/审印），修复错位。
+- 导航「体例」更名为 **审印**：按待勘·退修·朱注·验讫分阶段审核列表，附 R0–R3 速查。
+- 新增 **世界** 栏：人物/势力/地脉/生灵/物产/风物/未解/卷宗摘碎片设定集。
+- 文件：`web/index.html` · `app.js` · `styles.css` · README · 创作日志。
+
+---
+
+## v0.23 — 2026/7/18
+
+**程目展开收回完善 + Z006 + 桥头独立卷定调**
+
+- 阅读器程目：桌面收起留窄轨（进度金脊），窄屏抽屉 + 金边拉手；T 键；Esc 分层；桌面/移动分记偏好。
+- 主线 Z006《茶冷如树》初稿（假蹄·袖纸·三处勿入）；`catalog.json` v1.6 插入 main/reading_path。
+- **桥头 = 独立卷** `vol-qiaotou`：P001 不进河东 main_path；沈陌 Z041+ 入卷；河东 Z040 钩渡。中篇总纲四·附已写。
+- 同步：河东 README/中篇总纲、目录骨架、web README、创作日志。
+
+---
+
+## v0.22 — 2026/7/18
+
+**人物志体例 + 河东卷中篇正式开写**
+
+- 新增 `docs/原则/26_人物志规范.md`：档案体 N 与文学折 R 分立；折写魂、志立档。
+- `stories/人物志/`：目录 + 首批 N-SM 沈陌 · N-LQ 冷旗 · N-AD 阿段 · N-LX 柳先生。
+- `stories/河东线/中篇总纲.md`：六幕脊骨，目标约 30–60 万字量级（局势·风土·群像·主线）。
+- 主线 Z005《东市半日》初稿；`catalog.json` v1.5 插入 main_path；体例 N 入网页 GENRE。
+- 同步：22 体例表、11 总目、河东 README/提纲、PROJECT_MAP、AGENTS/CLAUDE、创作日志。
+
+---
+
+## v0.21 — 2026/7/18
+
+**踏线人主章线（沈陌）+ 主/副/其他三槽 + 河东主线样章**
+
+- 新增 `docs/原则/25_踏线人主章公约.md`：沈陌=踏线人；成长=懂/债/名；track main|side|other；不夺钉子弧。
+- 人物折 `stories/河东线/R_沈陌/正文.md`；主线成稿 Z001《第一脚泥》Z002《碑下三文》Z003《雨旗过身》Z004《桥边看旗》。
+- 产能地图 `stories/主章线/目录骨架.md`（约 280 Z + 副线/其他 ≈ 600 槽；槽≠成稿）。
+- `catalog.json` v1.3：`protagonist`、`main_path`/`roam_path`/`reading_path`、条目 `track`；河东 status 连载中。
+- HD00 入卷改为踏线人契约；网页 track 角标、主线脊柱、从 Z001 开读。
+- AGENTS / CLAUDE / stories README 编号至 00–25。
+
+---
+
+## v0.20 — 2026/7/18
+
+**地脉成卷 + 连载阅读体验 + 网页荐读序 + 河东卷加厚**
+
+- 新增 `docs/原则/24_卷册与连载阅读体验.md`：卷定义、番茄 R-读/R-追/R-界/R-装、河东默认章序。
+- `catalog.json`：`volumes[]` + `reading_path`；条目挂 `volume` / `role`（入卷·幕间·残页）。
+- 入卷：HD00《入卷·河东》、QT00《入卷·桥头》；P002/Q002 按连载体感加厚（商帮茶、夜读腕痕）。
+- 网页：导航「卷」、入世荐读序、地脉页「从卷首读」、阅读器上下条按荐读序；角标「探游 · 河东卷」。
+- 总目 / AGENTS / CLAUDE / PROJECT_MAP / stories README 编号至 00–24；`07_组审查` 对照 24。
+- postcheck 河东全组 PASS。
+
+---
+
+## v0.19 — 2026/7/17
+
+**河东线成稿扩写 + 种子成文 + 组自审查**
+
+- 扩写 Y001/R001/G001/Q001/C001（定锚不改核，加互链钉与气味）。
+- 新成文 W001《土地爷讨债》、Q002《半卷话本》、P002《半截杆》。
+- `07_组审查.md` 更新为全组八篇基础通过；`catalog.json` / 组 README / 提纲同步。
+- 旧 `种子_*.md` 改为指针；postcheck 全组 PASS。
+- 不含《桥上第二碗》（P001）改动。
+
+---
+
 ## v0.18.2 — 2026/7/17
 
 **网页展示：文学名优先，弱化工程编号**

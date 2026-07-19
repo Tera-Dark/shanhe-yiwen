@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>山河异闻 · 卷册/番茄指标预览</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600&family=Noto+Serif+SC:wght@500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #1c1612;
+      --ink-soft: #3a322b;
+      --ink-mute: #6b5e52;
+      --paper: #f3ebe0;
+      --gold: #8b6914;
+      --gold-bright: #b8892a;
+      --cinnabar: #8c2f2b;
+      --line: rgba(28, 22, 18, 0.12);
+      --line-strong: rgba(28, 22, 18, 0.22);
+      --serif: "Noto Serif SC", "Songti SC", serif;
+      --sans: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: var(--sans);
+      color: var(--ink);
+      background:
+        radial-gradient(ellipse 80% 50% at 10% -10%, rgba(139,105,20,.08), transparent 50%),
+        linear-gradient(180deg, #f6f0e6 0%, var(--paper) 40%, #e8dfd0 100%);
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+    .wrap { max-width: 1120px; margin: 0 auto; padding: 1.5rem 1.25rem 3rem; }
+    .tabs { display: flex; gap: .35rem; margin-bottom: 1.25rem; flex-wrap: wrap; }
+    .tabs button {
+      padding: .45rem .9rem;
+      border: 1px solid var(--line-strong);
+      background: rgba(255,255,255,.35);
+      font: inherit;
+      letter-spacing: .12em;
+      cursor: pointer;
+      color: var(--ink-soft);
+    }
+    .tabs button.is-active {
+      background: #1a1410;
+      color: #f0e6d6;
+      border-color: #1a1410;
+    }
+    .panel { display: none; }
+    .panel.is-on { display: block; }
+    .kicker {
+      font-size: .72rem;
+      letter-spacing: .28em;
+      color: var(--gold);
+      margin: 0 0 .5rem;
+    }
+    .page-title {
+      font-family: var(--serif);
+      font-weight: 600;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      letter-spacing: .08em;
+      margin: 0 0 .6rem;
+    }
+    .lead { color: var(--ink-soft); max-width: 36rem; margin: 0 0 1.25rem; }
+    .section-head {
+      display: flex; justify-content: space-between; align-items: baseline;
+      margin: 1.75rem 0 .9rem; padding-bottom: .5rem;
+      border-bottom: 1px solid var(--line-strong);
+    }
+    .section-head h2 {
+      margin: 0; font-family: var(--serif); font-size: 1.1rem; letter-spacing: .18em; font-weight: 600;
+    }
+    .section-head span { font-size: .78rem; color: var(--ink-mute); letter-spacing: .08em; }
+
+    .tomato-strip {
+      margin: 0 0 1.25rem;
+      padding: 1rem 1.15rem;
+      background: linear-gradient(135deg, rgba(28,22,18,.04), rgba(139,105,20,.06));
+      border: 1px solid var(--line-strong);
+      border-left: 3px solid var(--gold);
+    }
+    .tomato-strip-head {
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: .5rem; margin-bottom: .75rem;
+    }
+    .tomato-kicker { font-size: .72rem; letter-spacing: .22em; color: var(--gold); font-weight: 600; }
+    .tomato-hint { font-size: .75rem; color: var(--ink-mute); }
+    .tomato-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: .65rem; }
+    .tomato-cell {
+      padding: .65rem .7rem; background: rgba(255,255,255,.45); border: 1px solid var(--line);
+    }
+    .tomato-cell b {
+      display: block; font-family: var(--serif); font-size: .72rem;
+      letter-spacing: .14em; color: var(--cinnabar); margin-bottom: .2rem;
+    }
+    .tomato-cell strong {
+      display: block; font-family: var(--serif); font-size: .95rem;
+      letter-spacing: .1em; margin-bottom: .25rem;
+    }
+    .tomato-cell small { display: block; font-size: .72rem; color: var(--ink-mute); line-height: 1.5; }
+
+    .spine-summary {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: .65rem; margin: 0 0 1rem;
+    }
+    .spine-summary > div {
+      padding: .7rem .85rem; background: rgba(255,255,255,.35); border: 1px solid var(--line);
+    }
+    .spine-summary b {
+      display: block; font-size: .68rem; letter-spacing: .2em; color: var(--gold); margin-bottom: .35rem;
+    }
+    .spine-summary span { font-size: .86rem; color: var(--ink-soft); line-height: 1.55; }
+
+    .spine-rail {
+      list-style: none; margin: 0 0 1.25rem; padding: 0 0 0 .35rem;
+      border-left: 2px solid rgba(139,105,20,.35);
+    }
+    .spine-node button {
+      display: grid;
+      grid-template-columns: 1.1rem 3.2rem 1fr auto auto;
+      gap: .5rem .65rem; align-items: center; width: 100%;
+      padding: .55rem .75rem .55rem .9rem; text-align: left;
+      border: 1px solid transparent; background: none; font: inherit; cursor: pointer; color: inherit;
+    }
+    .spine-node button:hover { background: rgba(255,255,255,.5); border-color: var(--line); }
+    .spine-dot {
+      width: .55rem; height: .55rem; border-radius: 50%; background: var(--gold);
+      border: 2px solid var(--paper); box-shadow: 0 0 0 1px rgba(139,105,20,.5);
+    }
+    .role-prologue .spine-dot { background: var(--cinnabar); }
+    .role-interlude .spine-dot { background: #7a6a4a; }
+    .role-coda .spine-dot { background: var(--ink-mute); }
+    .is-peak .spine-dot {
+      background: var(--gold-bright); width: .7rem; height: .7rem;
+      box-shadow: 0 0 0 2px rgba(184,137,42,.45);
+    }
+    .spine-ord { font-family: var(--serif); font-size: .72rem; color: var(--gold); letter-spacing: .08em; }
+    .spine-title { font-family: var(--serif); font-size: .98rem; font-weight: 600; letter-spacing: .12em; }
+    .spine-peak {
+      font-style: normal; font-size: .65rem; letter-spacing: .12em;
+      color: #f3ebe0; background: var(--gold); padding: .12rem .4rem;
+    }
+    .spine-role { font-size: .7rem; letter-spacing: .1em; color: var(--ink-mute); }
+
+    .role-legend {
+      display: flex; flex-wrap: wrap; gap: .55rem 1rem; margin: 0 0 1rem;
+      font-size: .78rem; letter-spacing: .08em; color: var(--ink-mute);
+    }
+    .role-legend .leg { display: inline-flex; align-items: center; gap: .35rem; }
+    .role-legend i {
+      width: .55rem; height: .55rem; border-radius: 50%; display: inline-block; background: var(--gold);
+    }
+    .role-legend .role-prologue i { background: var(--cinnabar); }
+    .role-legend .role-interlude i { background: #7a6a4a; }
+    .role-legend .role-coda i { background: var(--ink-mute); }
+
+    .entry-list { display: flex; flex-direction: column; gap: .55rem; }
+    .entry-row {
+      display: grid; grid-template-columns: 3.2rem 3.6rem 1fr auto;
+      gap: .75rem 1rem; align-items: center; padding: .95rem 1.1rem;
+      text-align: left; background: rgba(255,255,255,.32); border: 1px solid var(--line);
+      border-left: 3px solid rgba(139,105,20,.45); font: inherit; cursor: pointer; color: inherit;
+    }
+    .entry-row:hover { background: rgba(255,255,255,.55); border-color: rgba(139,105,20,.4); }
+    .entry-row.role-prologue { border-left-color: rgba(140,47,43,.55); }
+    .entry-row.role-interlude { border-left-color: rgba(122,106,74,.55); }
+    .entry-row.role-coda { border-left-color: rgba(107,94,82,.5); }
+    .entry-row.is-peak {
+      background: linear-gradient(90deg, rgba(184,137,42,.08), rgba(255,255,255,.32));
+    }
+    .chap-ord { font-family: var(--serif); font-size: .72rem; color: var(--gold); letter-spacing: .08em; }
+    .genre-tag {
+      font-family: var(--serif); font-size: .82rem; font-weight: 600;
+      letter-spacing: .18em; color: #a84842; border-left: 2px solid rgba(140,47,43,.35); padding-left: .45rem;
+    }
+    .title-block b {
+      display: block; font-family: var(--serif); font-weight: 600; font-size: 1.08rem; letter-spacing: .12em;
+    }
+    .title-block small { display: block; margin-top: .2rem; font-size: .78rem; color: var(--ink-mute); }
+    .badge {
+      font-size: .68rem; letter-spacing: .12em; padding: .22rem .5rem;
+      border: 1px solid rgba(139,105,20,.4); color: var(--gold);
+    }
+    .peak-mark {
+      display: inline-block; margin-left: .45rem; font-family: var(--sans);
+      font-size: .62rem; font-weight: 500; letter-spacing: .12em;
+      color: #f3ebe0; background: var(--gold); padding: .08rem .35rem;
+    }
+
+    /* mock reader */
+    .reader-mock {
+      border: 1px solid var(--line-strong);
+      background: #f7f1e7;
+      box-shadow: 0 18px 50px rgba(28,22,18,.12);
+      overflow: hidden;
+    }
+    .reader-bar {
+      display: grid; grid-template-columns: 1fr minmax(0, 22rem) 1fr;
+      align-items: center; gap: .75rem; min-height: 3.4rem;
+      padding: .45rem 1rem; background: rgba(26,20,16,.96); color: #f0e6d6;
+    }
+    .reader-bar-center { text-align: center; min-width: 0; }
+    .reader-kicker {
+      display: block; font-size: .68rem; letter-spacing: .18em;
+      color: rgba(184,137,42,.9); margin-bottom: .1rem;
+    }
+    .reader-title {
+      margin: 0; font-family: var(--serif); font-size: 1rem; font-weight: 600; letter-spacing: .12em;
+    }
+    .btn-bar {
+      padding: .3rem .55rem; border: 1px solid rgba(240,230,214,.25);
+      color: rgba(240,230,214,.85); background: none; font: inherit; font-size: .8rem; letter-spacing: .1em;
+    }
+    .reader-progress {
+      position: relative; height: 1.35rem; background: #efe6d8; border-bottom: 1px solid var(--line);
+      display: flex; align-items: center;
+    }
+    .reader-progress i {
+      position: absolute; left: 0; top: 0; bottom: 0;
+      background: linear-gradient(90deg, rgba(139,105,20,.18), rgba(184,137,42,.28));
+    }
+    .reader-progress span {
+      position: relative; z-index: 1; margin-left: auto; margin-right: .9rem;
+      font-size: .68rem; letter-spacing: .14em; color: var(--ink-mute); font-family: var(--serif);
+    }
+    .reader-subnav {
+      display: flex; gap: .35rem; overflow-x: auto; padding: .45rem .75rem;
+      border-bottom: 1px solid var(--line); background: rgba(255,255,255,.35);
+    }
+    .reader-subnav button {
+      flex: 0 0 auto; padding: .3rem .55rem; border: 1px solid transparent;
+      background: none; font: inherit; font-size: .78rem; color: var(--ink-mute); cursor: pointer;
+      letter-spacing: .06em;
+    }
+    .reader-subnav button.is-active {
+      color: var(--ink); border-color: rgba(139,105,20,.4); background: rgba(255,255,255,.7);
+    }
+    .reader-subnav button.is-peak i { color: var(--gold-bright); }
+    .reader-body { padding: 1.5rem 1.75rem 2rem; max-width: 40rem; margin: 0 auto; }
+    .reader-body p { margin: 0 0 1rem; font-size: 1rem; line-height: 1.95; color: var(--ink-soft); }
+    .reader-foot {
+      display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+      padding: .55rem 1.1rem; border-top: 1px solid var(--line); background: #efe6d8;
+      font-size: .75rem; color: var(--ink-mute);
+    }
+    .nav-hint {
+      padding: .2rem .5rem; border: 1px solid rgba(139,105,20,.4);
+      color: var(--gold); letter-spacing: .06em; background: none; font: inherit; cursor: pointer;
+    }
+    .note {
+      margin-top: 1.5rem; padding: .85rem 1rem; border: 1px dashed var(--line-strong);
+      font-size: .85rem; color: var(--ink-mute); line-height: 1.7;
+    }
+    .note code { color: var(--cinnabar); font-family: inherit; }
+    @media (max-width: 800px) {
+      .tomato-grid, .spine-summary { grid-template-columns: 1fr 1fr; }
+      .spine-node button { grid-template-columns: 1.1rem 2.6rem 1fr; }
+      .spine-peak, .spine-role { display: none; }
+      .entry-row { grid-template-columns: 2.8rem 3rem 1fr; }
+      .entry-row .badge { display: none; }
+      .reader-bar { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <p class="kicker">效果预览 · 规范 24</p>
+    <h1 class="page-title">卷册与番茄指标 · 界面</h1>
+    <p class="lead">与仓库 <code>web/</code> 同源结构：入世露出四指标与荐读脊柱，卷内按角色分色，阅读器显示程进度与上下程。</p>
+
+    <div class="tabs" role="tablist">
+      <button type="button" class="is-active" data-tab="home">① 入世</button>
+      <button type="button" data-tab="vol">② 卷内</button>
+      <button type="button" data-tab="reader">③ 阅读器</button>
+    </div>
+
+    <!-- 入世 -->
+    <section class="panel is-on" id="tab-home">
+      <div class="tomato-strip">
+        <div class="tomato-strip-head">
+          <span class="tomato-kicker">连载指标 · 规范 24</span>
+          <span class="tomato-hint">地脉成卷 · 卷内有序 · 体例是标签</span>
+        </div>
+        <div class="tomato-grid">
+          <div class="tomato-cell"><b>R-读</b><strong>单章可停</strong><small>约两千至四千五字；幕间标明</small></div>
+          <div class="tomato-cell"><b>R-追</b><strong>卷有脊柱</strong><small>开场立气味 · 有高峰 · 可收束</small></div>
+          <div class="tomato-cell"><b>R-界</b><strong>世界大于主角</strong><small>双读不站队 · 无升级数值</small></div>
+          <div class="tomato-cell"><b>R-装</b><strong>体例怎么装</strong><small>幕间短 · 残页收 · 正章扛</small></div>
+        </div>
+      </div>
+
+      <div class="section-head">
+        <h2>河东卷 · 荐读脊柱</h2>
+        <span>可发 · 9 程</span>
+      </div>
+      <div class="spine-summary">
+        <div><b>开卷</b><span>入卷·河东 → 雨后的官道 → 青驿镖局</span></div>
+        <div><b>高峰</b><span>旗先过桥 · 半截杆</span></div>
+        <div><b>收束</b><span>雨旗不湿</span></div>
+      </div>
+      <ol class="spine-rail">
+        <li class="spine-node role-prologue"><button type="button"><i class="spine-dot"></i><span class="spine-ord">卷首</span><span class="spine-title">入卷·河东</span><span class="spine-role">入卷</span></button></li>
+        <li class="spine-node role-main"><button type="button"><i class="spine-dot"></i><span class="spine-ord">1</span><span class="spine-title">雨后的官道</span><span class="spine-role">正章</span></button></li>
+        <li class="spine-node role-main"><button type="button"><i class="spine-dot"></i><span class="spine-ord">2</span><span class="spine-title">青驿镖局</span><span class="spine-role">正章</span></button></li>
+        <li class="spine-node role-main"><button type="button"><i class="spine-dot"></i><span class="spine-ord">3</span><span class="spine-title">河东三人折</span><span class="spine-role">正章</span></button></li>
+        <li class="spine-node role-main is-peak"><button type="button"><i class="spine-dot"></i><span class="spine-ord">4</span><span class="spine-title">旗先过桥</span><em class="spine-peak">高峰</em><span class="spine-role">正章</span></button></li>
+        <li class="spine-node role-interlude"><button type="button"><i class="spine-dot"></i><span class="spine-ord">幕间</span><span class="spine-title">土地爷讨债</span><span class="spine-role">幕间</span></button></li>
+        <li class="spine-node role-main"><button type="button"><i class="spine-dot"></i><span class="spine-ord">6</span><span class="spine-title">半卷话本</span><span class="spine-role">正章</span></button></li>
+        <li class="spine-node role-main is-peak"><button type="button"><i class="spine-dot"></i><span class="spine-ord">7</span><span class="spine-title">半截杆</span><em class="spine-peak">高峰</em><span class="spine-role">正章</span></button></li>
+        <li class="spine-node role-coda"><button type="button"><i class="spine-dot"></i><span class="spine-ord">残页</span><span class="spine-title">雨旗不湿</span><span class="spine-role">残页</span></button></li>
+      </ol>
+    </section>
+
+    <!-- 卷内 -->
+    <section class="panel" id="tab-vol">
+      <p class="kicker">河东卷 · 地脉 · 河东线</p>
+      <h2 class="page-title" style="font-size:1.75rem">河东卷</h2>
+      <p class="lead">一条泥路上的旗、坑钱与说不清的桥。群像地脉，非单人升级。 <em style="color:#a84842;font-style:normal">「雨后的官道」</em></p>
+      <div class="role-legend">
+        <span class="leg role-prologue"><i></i>入卷 1</span>
+        <span class="leg role-main"><i></i>正章 6</span>
+        <span class="leg role-interlude"><i></i>幕间 1</span>
+        <span class="leg role-coda"><i></i>残页 1</span>
+      </div>
+      <div class="section-head"><h2>本卷章目</h2><span>上一条 / 下一条按此序</span></div>
+      <div class="entry-list">
+        <button type="button" class="entry-row role-prologue"><span class="chap-ord">卷首</span><span class="genre-tag">入卷</span><span class="title-block"><b>入卷·河东</b><small>河东卷 · 江湖 · 市井</small></span><span class="badge">已录</span></button>
+        <button type="button" class="entry-row role-main"><span class="chap-ord">第 1 程</span><span class="genre-tag">正章</span><span class="title-block"><b>雨后的官道</b><small>河东卷 · 江湖 · 市井</small></span><span class="badge">已录</span></button>
+        <button type="button" class="entry-row role-main"><span class="chap-ord">第 2 程</span><span class="genre-tag">正章</span><span class="title-block"><b>青驿镖局</b><small>河东卷 · 江湖</small></span><span class="badge">已录</span></button>
+        <button type="button" class="entry-row role-main"><span class="chap-ord">第 3 程</span><span class="genre-tag">正章</span><span class="title-block"><b>河东三人折</b><small>河东卷 · 江湖</small></span><span class="badge">已录</span></button>
+        <button type="button" class="entry-row role-main is-peak"><span class="chap-ord">第 4 程</span><span class="genre-tag">正章</span><span class="title-block"><b>旗先过桥<span class="peak-mark">高峰</span></b><small>河东卷 · 江湖 · 志异</small></span><span class="badge">已录</span></button>
+        <button type="button" class="entry-row role-interlude"><span class="chap-ord">幕间</span><span class="genre-tag">幕间</span><span class="title-block"><b>土地爷讨债</b><small>河东卷 · 传闻 · 志异</small></span><span class="badge">已录</span></button>
+        <button type="button" class="entry-row role-main"><span class="chap-ord">第 6 程</span><span class="genre-tag">正章</span><span class="title-block"><b>半卷话本</b><small>河东卷 · 江湖 · 志异</small></span><span class="badge">已录</span></button>
+        <button type="button" class="entry-row role-main is-peak"><span class="chap-ord">第 7 程</span><span class="genre-tag">正章</span><span class="title-block"><b>半截杆<span class="peak-mark">高峰</span></b><small>河东卷 · 江湖 · 志异</small></span><span class="badge">已录</span></button>
+        <button type="button" class="entry-row role-coda"><span class="chap-ord">残页</span><span class="genre-tag">残页</span><span class="title-block"><b>雨旗不湿</b><small>河东卷 · 志异 · 传闻</small></span><span class="badge">已录</span></button>
+      </div>
+    </section>
+
+    <!-- 阅读器 -->
+    <section class="panel" id="tab-reader">
+      <div class="reader-mock">
+        <header class="reader-bar">
+          <div><button type="button" class="btn-bar">返回</button> <button type="button" class="btn-bar">入世</button></div>
+          <div class="reader-bar-center">
+            <span class="reader-kicker">正章 · 河东卷 · 高峰</span>
+            <h1 class="reader-title">旗先过桥</h1>
+          </div>
+          <div style="text-align:right">
+            <button type="button" class="btn-bar">上一条</button>
+            <button type="button" class="btn-bar">下一条</button>
+          </div>
+        </header>
+        <div class="reader-progress"><i style="width:56%"></i><span>5/9</span></div>
+        <div class="reader-subnav">
+          <button type="button"><i>卷首</i> 入卷·河东</button>
+          <button type="button"><i>1</i> 雨后的官道</button>
+          <button type="button"><i>2</i> 青驿镖局</button>
+          <button type="button"><i>3</i> 河东三人折</button>
+          <button type="button" class="is-active is-peak"><i>4</i> 旗先过桥 ★</button>
+          <button type="button"><i>幕</i> 土地爷讨债</button>
+          <button type="button"><i>6</i> 半卷话本</button>
+          <button type="button" class="is-peak"><i>7</i> 半截杆 ★</button>
+          <button type="button"><i>残</i> 雨旗不湿</button>
+        </div>
+        <article class="reader-body">
+          <p>雨又大了一寸。旗手先车，桥头尤慎——帖上写得明白，冷旗却把旗杆握得更热。</p>
+          <p>桥心那个孩子伸手讨钱，说的是「不认得」。荷包里半枚坏钱贴肉，像一块还没断的骨头……</p>
+          <p style="color:var(--ink-mute);font-size:.88rem">（节选示意 · 上下条走荐读序，非体例货架）</p>
+        </article>
+        <footer class="reader-foot">
+          <div style="display:flex;gap:.35rem;flex-wrap:wrap">
+            <button type="button" class="nav-hint">← 上程 · 河东三人折</button>
+            <button type="button" class="nav-hint">下程 · 土地爷讨债 →</button>
+          </div>
+          <span>河东卷 · 正章 · 第4程 · 程 5/9</span>
+        </footer>
+      </div>
+    </section>
+
+    <p class="note">
+      完整可点读：仓库根目录双击 <code>启动世界观网页.bat</code>，或 <code>npm start</code> →
+      <code>http://127.0.0.1:4182/</code>。<br />
+      静态同构预览页也在 <code>web/preview-volume.html</code>。
+    </p>
+  </div>
+  <script>
+    document.querySelectorAll(".tabs button").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".tabs button").forEach(b => b.classList.remove("is-active"));
+        document.querySelectorAll(".panel").forEach(p => p.classList.remove("is-on"));
+        btn.classList.add("is-active");
+        document.getElementById("tab-" + btn.dataset.tab).classList.add("is-on");
+      });
+    });
+  </script>
+</body>
+</html>
