@@ -31,3 +31,9 @@ venv/
 
 # Vercel
 .vercel/
+
+# Local secrets (never commit)
+.github-token
+*.token
+.env
+.env.*
