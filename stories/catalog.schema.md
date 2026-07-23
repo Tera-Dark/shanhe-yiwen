@@ -72,7 +72,7 @@
 | `seal` | 展示：验讫 / 朱注 / 退修 / 待勘（可与 state 推导一致） |
 | `source_version` | 审定时正文 frontmatter `Version:` |
 | `date` / `round` / `scope` | 日期、轮次、base 等 |
-| `standard` / `standard_version` | 通常 21 文档与 `0.3` |
+| `standard` / `standard_version` | 通常 21 文档与 `0.4` |
 | `report` | 报告路径（总簿或篇内 07） |
 | `reviewer` / `note` | 可选 |
 
@@ -80,7 +80,8 @@
 
 - 正文 `Version` 与 `source_version` 不一致且 state∈{passed, passed_with_notes} → **审印失效**，应交为 `pending`。  
 - 无 `review` 或 state 非法 → 待勘。  
-- `passed` / `revise` 宜有 `report` + `date` + `standard_version`（`check_reviews.py` 校验）。
+- `passed` / `passed_with_notes` / `revise` 宜有 `report` + `date` + `standard_version`（`check_reviews.py` 校验）。
+- **21 v0.4 硬规则**：`passed*` 须 `round≥1`、`reviewer` 非空、`note` 无「待人工/待写/待勘…」、`standard_version` 等于磁盘 `docs/原则/21_故事审查标准.md` 的 Version（当前 `0.4`）、正文 Version 与 `source_version` 一致；报告中能检索到本条目 id（或总簿批次列出）。
 
 ### world[]（阶段 B · 1.7）
 
@@ -88,14 +89,16 @@
 |---|---|
 | `id` | 如 `WLD-QYBJ` |
 | `name` | 显示名 |
-| `kind` | `faction` \| `place` \| `creature` \| `material` \| `custom` \| `mystery` |
-| `path` | `stories/世界/<类>/…/正文.md` |
-| `fullness` | 0–100，充实度（非战力） |
+| `kind` | `faction` \| `place` \| `creature` \| `material` \| `custom` \| `scrap` \| `mystery` |
+| `path` | `stories/世界/<类>/…/正文.md`（类：势力/地标/生灵/物产/风物/**杂记**） |
+| `fullness` | 0–100，**成文充实度**（非战力） |
 | `status` | 种子 / 框架 / 成档 等 |
-| `see` | 相关 entry id 或 docs 路径 |
+| `see` | 关联：entry id · 其他 WLD- · docs 路径。**打开时先读本卡 path，see 只作关联** |
 | `group` | 可选地脉 |
 
-磁盘约定见 `stories/世界/README.md`。catalog 可只索引；网页以 path 打开。
+磁盘约定见 `stories/世界/README.md`。  
+网页：`#/world/:tab` 分册网格；`#/shard/:id` 碎片阅读器（正文 + 关联面板）。  
+**不是**主线正文；人物全文在 `entries` genre N，不进 `world[]`。
 
 ---
 

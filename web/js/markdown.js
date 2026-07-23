@@ -45,7 +45,7 @@ function markdownToHtml(markdown) {
 
   const flushTable = () => {
     if (!table.length) return;
-    html += `<div class="md-table">${escapeHtml(table.join("\n"))}</div>`;
+    html += renderMdTable(table);
     table = [];
   };
   const closeList = () => {
@@ -55,35 +55,7 @@ function markdownToHtml(markdown) {
     }
   };
   const flushFront = () => {
-    if (!front.length) return;
-    // 解析 YAML 式 frontmatter，只展示读者向字段；隐藏 path / Version / id 等工程键
-    const map = {};
-    for (const line of front) {
-      const m = line.match(/^([A-Za-z_一-鿿]+)\s*[:：]\s*(.*)$/);
-      if (m) map[m[1].trim()] = m[2].trim();
-    }
-    const hide = /^(version|id|path|legacy_id|group|genre|links|status|title|标题|更新时间)$/i;
-    const prefer = ["group_name", "地脉", "scent", "气味", "people", "人物", "factions", "势力", "era_feel", "时代", "史料"];
-    const chips = [];
-    const used = new Set();
-    for (const key of prefer) {
-      const found = Object.keys(map).find(k => k.toLowerCase() === key.toLowerCase() || k === key);
-      if (found && map[found] && !hide.test(found)) {
-        chips.push(`<span class="meta-chip"><i>${escapeHtml(labelMetaKey(found))}</i>${escapeHtml(stripBrackets(map[found]))}</span>`);
-        used.add(found);
-      }
-    }
-    // 若有 scent/people 等未命中 prefer 的中文键，补充若干
-    for (const [k, v] of Object.entries(map)) {
-      if (used.has(k) || hide.test(k) || !v) continue;
-      if (/title|group_name|scent|people|era|史料|气味|人物|标题/.test(k)) {
-        chips.push(`<span class="meta-chip"><i>${escapeHtml(labelMetaKey(k))}</i>${escapeHtml(stripBrackets(v))}</span>`);
-      }
-    }
-    if (chips.length) {
-      html += `<div class="reader-meta">${chips.join("")}</div>`;
-    }
-    // 默认不展示原始 YAML 块
+    // frontmatter 只作工程字段：剥离，不进阅读区（审印/标题在 chrome）
     front = [];
   };
 
@@ -171,4 +143,51 @@ function inlineMd(text) {
     .replace(/\*([^*]+)\*/g, "<em>$1</em>");
 }
 
-export { escapeHtml, labelMetaKey, stripBrackets, markdownToHtml, inlineMd };
+/** 解析 GFM 管道表：| a | b | / |---|---| / | c | d | */
+function splitTableRow(line) {
+  let s = String(line).trim();
+  if (s.startsWith("|")) s = s.slice(1);
+  if (s.endsWith("|")) s = s.slice(0, -1);
+  return s.split("|").map(c => c.trim());
+}
+
+function isSeparatorRow(cells) {
+  if (!cells.length) return false;
+  return cells.every(c => /^:?-{1,}:?$/.test(c.replace(/\s/g, "")));
+}
+
+function renderMdTable(rows) {
+  if (!rows.length) return "";
+  const parsed = rows.map(splitTableRow);
+  let head = null;
+  let bodyStart = 0;
+  if (parsed.length >= 2 && isSeparatorRow(parsed[1])) {
+    head = parsed[0];
+    bodyStart = 2;
+  } else if (parsed.length >= 1 && isSeparatorRow(parsed[0])) {
+    bodyStart = 1;
+  }
+  const body = parsed.slice(bodyStart).filter(r => r.length && !isSeparatorRow(r));
+  if (!head && !body.length) {
+    return `<div class="md-table">${escapeHtml(rows.join("\n"))}</div>`;
+  }
+  let out = '<div class="md-table-wrap"><table class="md-table">';
+  if (head) {
+    out += "<thead><tr>";
+    for (const c of head) out += `<th>${inlineMd(c)}</th>`;
+    out += "</tr></thead>";
+  }
+  if (body.length) {
+    out += "<tbody>";
+    for (const row of body) {
+      out += "<tr>";
+      for (const c of row) out += `<td>${inlineMd(c)}</td>`;
+      out += "</tr>";
+    }
+    out += "</tbody>";
+  }
+  out += "</table></div>";
+  return out;
+}
+
+export { escapeHtml, labelMetaKey, stripBrackets, markdownToHtml, inlineMd, renderMdTable };

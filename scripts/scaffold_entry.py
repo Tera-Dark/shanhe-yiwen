@@ -47,6 +47,8 @@ KIND_DIRS = {
     "creature": "生灵",
     "material": "物产",
     "custom": "风物",
+    "scrap": "杂记",
+    "mystery": "杂记",  # 未解可落杂记夹，或只挂 docs
 }
 
 TRACKS = {"main", "side", "other"}
@@ -316,7 +318,10 @@ def main() -> int:
     parser.add_argument("--track", default="other", help="main|side|other")
     parser.add_argument("--title", help="标题（条目）")
     parser.add_argument("--name", help="名称（世界碎片）")
-    parser.add_argument("--kind", help="faction|place|creature|material|custom")
+    parser.add_argument(
+        "--kind",
+        help="faction|place|creature|material|custom|scrap|mystery",
+    )
     parser.add_argument("--fullness", type=int, default=15, help="世界碎片充实度 0–100")
     parser.add_argument("--force", action="store_true", help="允许覆盖已存在正文文件")
     args = parser.parse_args()

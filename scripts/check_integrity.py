@@ -22,7 +22,7 @@ PERSON_ROOT = ROOT / "stories" / "人物志"
 
 ALLOWED_GENRE = set("VZPCQYWRNGX")
 ALLOWED_TRACK = {"main", "side", "other"}
-ALLOWED_KIND = {"faction", "place", "creature", "material", "custom", "mystery"}
+ALLOWED_KIND = {"faction", "place", "creature", "material", "custom", "mystery", "scrap"}
 
 
 def main() -> int:

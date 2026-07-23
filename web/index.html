@@ -6,11 +6,19 @@
   <meta name="theme-color" content="#12100e" />
   <meta name="description" content="山河异闻 · 地脉浏览台。雨后驿路，卷册可读。" />
   <title>山河异闻 · 入世</title>
+  <!-- 首屏：系统字体兜底，避免 Google 字体阻塞 + FOUT 跳变 -->
+  <style>
+    html { font-family: "Songti SC", "STSong", "Noto Serif CJK SC", "Source Han Serif SC", "SimSun", serif; }
+    body { margin: 0; background: #ebe6dc; color: #1a1612; }
+    .empty { opacity: 0.7; padding: 2rem 1.25rem; }
+  </style>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Sans+SC:wght@300;400;500;600&family=Noto+Serif+SC:wght@300;400;500;600;700&family=ZCOOL+XiaoWei&family=LXGW+WenKai+TC:wght@400;700&display=swap" rel="stylesheet" />
+  <!-- 仅默认档：标题马善政 + 正文思源宋 400；display=optional 超时不换字，消除有感跳字体 -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600&display=optional" />
   <link rel="stylesheet" href="./styles.css" />
-  <link rel="stylesheet" href="./review-seals.css" />
+  <link rel="stylesheet" href="./review-seals.css" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="./review-seals.css" /></noscript>
 </head>
 <body data-mode="light" data-theme="mistgold" data-font="shoujin" data-size="medium" data-lh="comfy" data-readw="mid">
 
@@ -92,8 +100,8 @@
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
-  <script src="./motion.js"></script>
+  <!-- GSAP 空闲后再挂；motion 无 GSAP 时走静态回退 -->
+  <script src="./motion.js" defer></script>
   <script type="module" src="./app.js"></script>
 </body>
 </html>

@@ -14,6 +14,8 @@ import {
   GOLD_PAGE_SIZE,
   REVIEW_STAGES,
   WORLD_TABS,
+  WORLD_KIND_TAB,
+  WORLD_KIND_LABEL,
   PLACE_VERSE
 } from "./js/constants.js";
 import {
@@ -31,7 +33,7 @@ const state = {
   groupId: null,
   genreId: "all",
   reviewStage: "all",
-  worldTab: "people",
+  worldTab: "shards",
   era: "嘉靖",
   goldPage: {},
   exploreFilter: "track:main",
@@ -175,6 +177,118 @@ const SETTINGS_DEFAULTS = {
   seal: "on"
 };
 
+/* ---------- 轻量网络 / 缓存 / 字体按需 ---------- */
+const textCache = new Map(); // path -> markdown text
+const FONT_SHEETS = {
+  core: "https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600&display=optional",
+  wenkai: "https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@400;700&display=optional",
+  xiaowei: "https://fonts.googleapis.com/css2?family=ZCOOL+XiaoWei&display=optional",
+  sans: "https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500&display=optional"
+};
+const loadedFontSheets = new Set();
+
+function ensureFontSheet(key) {
+  const href = FONT_SHEETS[key];
+  if (!href || loadedFontSheets.has(key)) return;
+  if (document.querySelector(`link[data-font-pack="${key}"]`)) {
+    loadedFontSheets.add(key);
+    return;
+  }
+  // 默认 core 已在 index.html 注入，无 data 属性时按 href 去重
+  const existing = [...document.querySelectorAll('link[rel="stylesheet"]')].find(
+    l => l.href && l.href.includes("fonts.googleapis.com") && l.href.includes(
+      key === "core" ? "Ma+Shan" : key === "wenkai" ? "LXGW" : key === "xiaowei" ? "XiaoWei" : "Noto+Sans"
+    )
+  );
+  if (existing) {
+    existing.dataset.fontPack = key;
+    loadedFontSheets.add(key);
+    return;
+  }
+  const link = document.createElement("link");
+  link.rel = "stylesheet";
+  link.href = href;
+  link.dataset.fontPack = key;
+  document.head.appendChild(link);
+  loadedFontSheets.add(key);
+}
+
+function ensureFontsFor(fontKey) {
+  // 默认档已在 index 注入 core；其余按需
+  if (fontKey === "wenkai") ensureFontSheet("wenkai");
+  else if (fontKey === "xiaowei") ensureFontSheet("xiaowei");
+  else if (fontKey === "sans") ensureFontSheet("sans");
+  else if (fontKey === "serif" || fontKey === "mashan" || fontKey === "shoujin") {
+    ensureFontSheet("core");
+  }
+}
+
+function loadGsapIdle() {
+  if (typeof window === "undefined") return;
+  if (window.gsap || document.querySelector("script[data-gsap]")) return;
+  const inject = () => {
+    if (window.gsap || document.querySelector("script[data-gsap]")) return;
+    const s = document.createElement("script");
+    s.src = "https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js";
+    s.async = true;
+    s.dataset.gsap = "1";
+    s.onerror = () => {
+      /* 动效可选；motion 会走静态回退 */
+    };
+    document.head.appendChild(s);
+  };
+  if ("requestIdleCallback" in window) {
+    requestIdleCallback(inject, { timeout: 2500 });
+  } else {
+    setTimeout(inject, 400);
+  }
+}
+
+/**
+ * 带超时的 fetch；默认允许浏览器缓存（server 已给短 TTL）。
+ * @param {string} url
+ * @param {{ timeout?: number, cache?: RequestCache, signal?: AbortSignal }} [opts]
+ */
+async function fetchText(url, opts = {}) {
+  const timeout = opts.timeout ?? 12000;
+  const cache = opts.cache ?? "default";
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), timeout);
+  if (opts.signal) {
+    if (opts.signal.aborted) ctrl.abort();
+    else opts.signal.addEventListener("abort", () => ctrl.abort(), { once: true });
+  }
+  try {
+    const res = await fetch(url, { cache, signal: ctrl.signal });
+    if (!res.ok) {
+      const err = new Error(`HTTP ${res.status}`);
+      err.status = res.status;
+      throw err;
+    }
+    return await res.text();
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function fetchJson(url, opts = {}) {
+  const timeout = opts.timeout ?? 12000;
+  const cache = opts.cache ?? "default";
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), timeout);
+  try {
+    const res = await fetch(url, { cache, signal: ctrl.signal });
+    if (!res.ok) {
+      const err = new Error(`HTTP ${res.status}`);
+      err.status = res.status;
+      throw err;
+    }
+    return await res.json();
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 const SETTINGS_META = {
   mode: {
     title: "明暗",
@@ -207,7 +321,7 @@ const SETTINGS_META = {
   },
   font: {
     title: "字体",
-    hint: "标题书法感 · 正文另配。默认「瘦金卷」：标题马善政/文楷，正文瘦金系。",
+    hint: "标题书法感 · 正文另配。默认「瘦金卷」：标题马善政（可选加载），正文系统宋/瘦金系，避免首屏跳字。",
     options: [
       { value: "shoujin", label: "瘦金卷", note: "默认 · 题书正瘦" },
       { value: "wenkai", label: "霞鹜文楷", note: "通篇文楷" },
@@ -282,6 +396,7 @@ function applySettings(s) {
     body.dataset[k] = v;
     if (k === "size" || k === "mode" || k === "theme") root.dataset[k] = v;
   }
+  ensureFontsFor(cfg.font || SETTINGS_DEFAULTS.font);
   // theme-color for mobile chrome
   const meta = document.querySelector('meta[name="theme-color"]');
   if (meta) meta.content = cfg.mode === "dark" ? "#1a1612" : "#1a1612";
@@ -291,6 +406,7 @@ function applySettings(s) {
 function updateSetting(key, value) {
   const next = { ...(state.settings || loadSettings()), [key]: value };
   saveSettings(next);
+  if (key === "font") ensureFontsFor(value);
   applySettings(next);
   if (state.view === "settings") renderSettings();
 }
@@ -1381,66 +1497,75 @@ function renderGenres() {
   `;
 }
 
-/* ---------- 世界栏 · 设定集 ---------- */
+/* ---------- 世界栏 · 碎片仓（非正文） ---------- */
 
-/** 世界碎片 kind → 栏 tab */
-const WORLD_KIND_TAB = {
-  faction: "factions",
-  place: "places",
-  creature: "creatures",
-  material: "materials",
-  custom: "customs",
-  mystery: "mysteries"
-};
+function worldById(id) {
+  if (!id) return null;
+  return (state.catalog?.world || []).find(w => w.id === id) || null;
+}
 
-/** catalog.world[] 条目 → 卡片 */
+function kindLabel(kind) {
+  return (WORLD_KIND_LABEL && WORLD_KIND_LABEL[kind]) || kind || "碎片";
+}
+
+/** catalog.world[] → 卡片；点卡永远先开本碎片 */
 function worldItemToCard(w) {
-  const see = w.see || [];
-  const firstSee = see[0] || "";
-  const card = {
+  const kind = w.kind || "custom";
+  const gName = w.group ? groupById(w.group)?.name : "";
+  const seeN = (w.see || []).length;
+  return {
     id: w.id,
     name: w.name || w.id,
-    kind: w.kind || "custom",
+    kind,
     status: w.status || "种子",
     pct: typeof w.fullness === "number" ? w.fullness : 15,
-    sub: [w.group && groupById(w.group)?.name, w.status].filter(Boolean).join(" · ") || (w.kind || ""),
+    sub: [kindLabel(kind), gName, seeN ? `联 ${seeN}` : null].filter(Boolean).join(" · "),
     seal: (w.name || w.id || "·")[0],
-    path: w.path
+    path: w.path,
+    see: w.see || [],
+    group: w.group || null,
+    openShard: w.id
   };
-  if (firstSee.startsWith("docs/") || firstSee.endsWith(".md")) {
-    card.openDoc = firstSee;
-  } else if (firstSee && entryById(firstSee)) {
-    card.openEntry = firstSee;
-  } else if (w.path) {
-    card.openDoc = w.path;
-  }
-  if (w.group && !card.openEntry && !card.openDoc) card.openGroup = w.group;
-  return card;
 }
 
 /**
- * 汇总世界卡：优先 catalog.world；人物仍来自 N 志 + entries 提及；
- * 地脉卷级卡来自 groups；未解/卷宗摘来自常量与 ARCHIVE。
+ * 汇总世界卡：catalog.world 为真源；人物 N 志 + 提及折叠；
+ * 未解/卷宗摘来自常量。点碎片 → openShard，不抢开正文。
  */
 function collectWorldAtlas() {
   const entries = state.catalog?.entries || [];
-  const groups = state.catalog?.groups || [];
   const worldList = state.catalog?.world || [];
-  const peopleMap = new Map();
-  const factionMap = new Map();
+  const peopleDossier = [];
+  const peopleMention = [];
   const byTab = {
+    factions: [],
     places: [],
     creatures: [],
     materials: [],
-    customs: []
+    customs: [],
+    scraps: []
   };
+  const shards = [];
+  const factionNames = new Set();
 
-  // —— 人物：N 志 + 正文提及（非 JS 写死势力清单）——
+  for (const w of worldList) {
+    const card = worldItemToCard(w);
+    shards.push(card);
+    const tab = (WORLD_KIND_TAB && WORLD_KIND_TAB[w.kind]) || "customs";
+    if (tab === "factions") {
+      byTab.factions.push(card);
+      factionNames.add(w.name);
+    } else if (byTab[tab]) {
+      byTab[tab].push(card);
+    } else {
+      byTab.customs.push(card);
+    }
+  }
+
   for (const e of entries) {
     if (e.genre === "N") {
       const name = (e.people && e.people[0]) || displayTitle(e).replace(/^人物志[·・]?/, "");
-      const key = name || e.id;
-      peopleMap.set(key, {
+      peopleDossier.push({
         id: e.id,
         name,
         kind: "dossier",
@@ -1452,86 +1577,45 @@ function collectWorldAtlas() {
         seal: (name || "人")[0]
       });
     }
+  }
+  const dossierNames = new Set(peopleDossier.map(p => p.name));
+  for (const e of entries) {
     for (const p of e.people || []) {
-      if (!peopleMap.has(p)) {
-        peopleMap.set(p, {
-          id: `p:${p}`,
-          name: p,
-          kind: "mention",
-          status: "见诸正文",
-          pct: 45,
-          sub: "正文提及 · 未立志",
-          openEntry: e.id,
-          seal: p[0]
-        });
-      }
+      if (dossierNames.has(p)) continue;
+      if (peopleMention.some(m => m.name === p)) continue;
+      peopleMention.push({
+        id: `p:${p}`,
+        name: p,
+        kind: "mention",
+        status: "名录",
+        pct: 20,
+        sub: "正文提及 · 未立志",
+        openEntry: e.id,
+        seal: p[0]
+      });
     }
     for (const f of e.factions || []) {
-      if (!factionMap.has(f)) {
-        factionMap.set(f, {
-          id: `f:${f}`,
-          name: f,
-          kind: "faction",
-          status: "见诸正文",
-          pct: 40,
-          sub: "势力 · 正文提及",
-          openEntry: e.id,
-          seal: f[0]
-        });
-      }
-    }
-  }
-
-  // —— catalog.world 真源 ——
-  for (const w of worldList) {
-    const card = worldItemToCard(w);
-    const tab = WORLD_KIND_TAB[w.kind] || "customs";
-    if (w.kind === "faction") {
-      factionMap.set(w.name, {
-        ...card,
-        // 同名正文提及时以档案充实度覆盖
-        pct: card.pct,
-        status: w.status || card.status,
-        sub: card.sub || "世界碎片"
+      if (factionNames.has(f)) continue;
+      factionNames.add(f);
+      byTab.factions.push({
+        id: `f:${f}`,
+        name: f,
+        kind: "faction",
+        status: "见诸正文",
+        pct: 25,
+        sub: "正文提及 · 未立卡",
+        openEntry: e.id,
+        seal: f[0]
       });
-    } else if (tab === "places") {
-      byTab.places.push(card);
-    } else if (tab === "creatures") {
-      byTab.creatures.push(card);
-    } else if (tab === "materials") {
-      byTab.materials.push(card);
-    } else if (tab === "customs") {
-      byTab.customs.push(card);
     }
   }
 
-  // 地脉卷级（groups）补到地标栏前端
-  const placeCards = [];
-  for (const g of groups) {
-    const vol = volumeForGroup(g.id);
-    const verse = placeVerse(g.id);
-    placeCards.push({
-      id: `place:${g.id}`,
-      name: vol?.name || g.name,
-      seal: (vol?.name || g.name || "地")[0],
-      status: vol?.status || g.status || "地脉",
-      pct: formalCount(g.id) ? Math.min(100, formalCount(g.id) * 8) : 20,
-      sub: (g.kernel || []).slice(0, 3).join(" · ") || vol?.subtitle || "",
-      openGroup: g.id
-    });
-  }
-  // 去重：world place 与卷级同名时保留 fuller
-  const placeNames = new Set(placeCards.map(p => p.name));
-  for (const p of byTab.places) {
-    if (!placeNames.has(p.name)) placeCards.push(p);
-  }
-
-  // 民俗总录入口（docs，非假碎片）
+  // 卷宗入口（非碎片卡）
   byTab.customs.push(
     {
       name: "民俗总录",
       seal: "俗",
-      sub: "节气婚丧",
+      sub: "卷宗 · 节气婚丧",
       pct: 40,
       status: "卷宗",
       openDoc: "docs/社会/15_民俗文化设定.md"
@@ -1539,7 +1623,7 @@ function collectWorldAtlas() {
     {
       name: "俗语黑话",
       seal: "话",
-      sub: "行话忌讳",
+      sub: "卷宗 · 行话忌讳",
       pct: 40,
       status: "卷宗",
       openDoc: "docs/社会/18_民间俗语与黑话.md"
@@ -1552,7 +1636,7 @@ function collectWorldAtlas() {
     ["docs/素材/09_怪谈异闻录.md", "怪谈异闻录", "种子与使用状态"],
     ["docs/素材/19_伏笔与未解之谜.md", "未解之谜", "七个核心谜团"],
     ["stories/人物志/目录.md", "人物志目录", "N 志总目"],
-    ["stories/世界/README.md", "世界碎片仓", "势力·地标·生灵·物产·风物"]
+    ["stories/世界/README.md", "世界碎片仓", "势力·地标·生灵·物产·风物·杂记"]
   ].map(([path, title, note]) => ({
     path, title, note, seal: title[0]
   }));
@@ -1560,12 +1644,16 @@ function collectWorldAtlas() {
   const sortPct = (a, b) => (b.pct || 0) - (a.pct || 0);
 
   return {
-    people: [...peopleMap.values()].sort(sortPct),
-    factions: [...factionMap.values()].sort(sortPct),
-    places: placeCards,
+    shards: shards.sort(sortPct),
+    people: [...peopleDossier.sort(sortPct), ...peopleMention],
+    peopleDossier: peopleDossier.sort(sortPct),
+    peopleMention,
+    factions: byTab.factions.sort(sortPct),
+    places: byTab.places.sort(sortPct),
     creatures: byTab.creatures.sort(sortPct),
     materials: byTab.materials.sort(sortPct),
     customs: byTab.customs.sort(sortPct),
+    scraps: byTab.scraps.sort(sortPct),
     mysteries: MYSTERIES.map(([id, title, note]) => ({
       id: `m:${id}`,
       name: title,
@@ -1579,21 +1667,83 @@ function collectWorldAtlas() {
   };
 }
 
+/** 解析 see[]：正文 / 碎片 / 卷宗 / 未知 */
+function resolveSeeLinks(seeList) {
+  const out = { entries: [], shards: [], docs: [], other: [] };
+  for (const raw of seeList || []) {
+    const s = String(raw || "").trim();
+    if (!s) continue;
+    if (s.startsWith("docs/") || (s.endsWith(".md") && !s.startsWith("stories/世界/"))) {
+      out.docs.push({ path: s, label: s.split("/").pop().replace(/\.md$/i, "") });
+      continue;
+    }
+    const w = worldById(s);
+    if (w) {
+      out.shards.push(w);
+      continue;
+    }
+    const e = entryById(s);
+    if (e) {
+      out.entries.push(e);
+      continue;
+    }
+    // 反向：正文 people/factions 名命中碎片名
+    const byName = (state.catalog?.world || []).find(x => x.name === s);
+    if (byName) {
+      out.shards.push(byName);
+      continue;
+    }
+    out.other.push(s);
+  }
+  return out;
+}
+
+/** 谁在 see 里指回本卡 + 正文 links/people 弱关联 */
+function reverseLinksForShard(w) {
+  if (!w?.id) return { shards: [], entries: [] };
+  const shards = [];
+  for (const other of state.catalog?.world || []) {
+    if (other.id === w.id) continue;
+    const see = other.see || [];
+    if (see.includes(w.id) || see.includes(w.name)) shards.push(other);
+  }
+  const entries = [];
+  for (const e of state.catalog?.entries || []) {
+    const links = e.links || [];
+    const people = e.people || [];
+    const factions = e.factions || [];
+    if (
+      links.includes(w.id) ||
+      people.includes(w.name) ||
+      factions.includes(w.name) ||
+      (e.scent || []).some(s => s === w.name)
+    ) {
+      entries.push(e);
+    }
+  }
+  return { shards, entries };
+}
+
 function renderWorldCard(item) {
   const locked = item.locked || item.pct < 10;
   const pct = Math.max(0, Math.min(100, item.pct || 0));
-  const badge = item.status && item.status !== "见诸正文"
-    ? `<span class="w-badge">${escapeHtml(item.status)}</span>`
-    : (item.kind === "dossier" ? `<span class="w-badge">志</span>` : "");
+  let badge = "";
+  if (item.kind === "dossier") badge = `<span class="w-badge">志</span>`;
+  else if (item.kind === "mention") badge = `<span class="w-badge w-badge-mute">名</span>`;
+  else if (item.status && item.status !== "见诸正文") {
+    badge = `<span class="w-badge">${escapeHtml(item.status)}</span>`;
+  }
   const attrs = [];
+  if (item.openShard) attrs.push(`data-open-shard="${escapeHtml(item.openShard)}"`);
   if (item.openEntry) attrs.push(`data-open-entry="${escapeHtml(item.openEntry)}"`);
   if (item.openDoc) attrs.push(`data-open-doc="${escapeHtml(item.openDoc)}"`);
   if (item.openGroup) attrs.push(`data-open-group="${escapeHtml(item.openGroup)}"`);
   const clickable = attrs.length > 0;
   const tag = clickable ? "button" : "div";
   const typeAttr = clickable ? `type="button"` : "";
+  const kindCls = item.openShard ? "is-shard" : "";
   return `
-    <${tag} ${typeAttr} class="world-card ${locked ? "is-locked" : ""}" ${attrs.join(" ")}>
+    <${tag} ${typeAttr} class="world-card ${locked ? "is-locked" : ""} ${kindCls}" ${attrs.join(" ")}>
       ${badge}
       <div class="world-card-art" aria-hidden="true">
         <span class="seal-char">${escapeHtml(item.seal || "·")}</span>
@@ -1607,7 +1757,7 @@ function renderWorldCard(item) {
 }
 
 function renderWorld() {
-  const tab = state.worldTab || "people";
+  const tab = state.worldTab || "shards";
   const atlas = collectWorldAtlas();
   const tabs = WORLD_TABS.map(t => `
     <button type="button" class="world-tab ${tab === t.id ? "is-active" : ""}" data-world-tab="${escapeHtml(t.id)}" title="${escapeHtml(t.hint)}">
@@ -1617,7 +1767,7 @@ function renderWorld() {
   let body = "";
   if (tab === "docs") {
     body = `
-      <p class="world-subhead">设定原文 · 点开卷宗</p>
+      <p class="world-subhead">设定原文 · 点开卷宗（长文在 docs，不进碎片仓）</p>
       <div class="world-doc-list">
         ${atlas.docs.map(d => `
           <button type="button" class="entry-row" data-open-doc="${escapeHtml(d.path)}">
@@ -1632,20 +1782,34 @@ function renderWorld() {
       <div class="world-grid" data-motion="stagger">
         ${atlas.mysteries.map(renderWorldCard).join("")}
       </div>`;
+  } else if (tab === "people") {
+    body = `
+      <p class="world-subhead">已立志 · ${atlas.peopleDossier.length} 条</p>
+      <div class="world-grid" data-motion="stagger">
+        ${atlas.peopleDossier.map(renderWorldCard).join("") || `<p class="empty">尚无人物志。</p>`}
+      </div>
+      ${atlas.peopleMention.length ? `
+        <details class="world-fold">
+          <summary>正文名录 · ${atlas.peopleMention.length} 人（未立志，点开最近出场章）</summary>
+          <div class="world-grid world-grid-dense" data-motion="stagger">
+            ${atlas.peopleMention.map(renderWorldCard).join("")}
+          </div>
+        </details>` : ""}`;
   } else {
     const items = atlas[tab] || [];
     const hint = WORLD_TABS.find(t => t.id === tab)?.hint || "";
     body = `
-      <p class="world-subhead">${escapeHtml(hint)} · ${items.length} 条</p>
+      <p class="world-subhead">${escapeHtml(hint)} · ${items.length} 条 · 点卡先看本碎片</p>
       <div class="world-grid" data-motion="stagger">
-        ${items.map(renderWorldCard).join("") || `<p class="empty">此分册尚无碎片。</p>`}
+        ${items.map(renderWorldCard).join("") || `<p class="empty">此分册尚无碎片。用 scaffold --world 开卡。</p>`}
       </div>`;
   }
 
+  const nWorld = (state.catalog?.world || []).length;
   $("#mainView").innerHTML = `
-    <p class="kicker">世界 · 设定集</p>
-    <h1 class="page-title">碎片成册，点到为止</h1>
-    <p class="lead">势力、人物、地脉、生灵、物产、风物——杂乱可查，不为展览。进度条只表示「已写进正文/志的充实度」，不是战力。</p>
+    <p class="kicker">世界 · 碎片仓</p>
+    <h1 class="page-title">杂乱可查，点到为止</h1>
+    <p class="lead">此处是设定短卡、杂记、规矩钉子——不是主线正文。已挂 <b>${nWorld}</b> 片；进度条只表成文充实度。点卡开碎片，底栏看关联章与互链卡。</p>
     <div class="world-tabs" role="tablist">${tabs}</div>
     ${body}
   `;
@@ -1803,6 +1967,43 @@ function docToNav(path, title) {
   };
 }
 
+function shardToNav(w) {
+  return {
+    kind: "shard",
+    id: w.id,
+    path: w.path,
+    title: w.name || w.id,
+    kicker: `碎片 · ${kindLabel(w.kind)}`,
+    see: w.see || [],
+    status: w.status || "",
+    fullness: w.fullness,
+    group: w.group || null
+  };
+}
+
+function shardListForTab(kind) {
+  const tab = (WORLD_KIND_TAB && WORLD_KIND_TAB[kind]) || "customs";
+  const list = (state.catalog?.world || [])
+    .filter(w => ((WORLD_KIND_TAB && WORLD_KIND_TAB[w.kind]) || "customs") === tab)
+    .map(shardToNav);
+  return list.length ? list : null;
+}
+
+function openShard(id) {
+  const w = worldById(id);
+  if (!w) {
+    $("#statusRight").textContent = `未找到碎片 ${id}`;
+    return;
+  }
+  if (!w.path) {
+    $("#statusRight").textContent = `${w.name || id} 无正文路径`;
+    return;
+  }
+  const item = shardToNav(w);
+  const list = shardListForTab(w.kind) || [item];
+  openReaderWithList(item, list);
+}
+
 function openReaderWithList(item, list) {
   const navList = list && list.length ? list : [item];
   let index = navList.findIndex(x => x.kind === item.kind && x.id === item.id);
@@ -1851,6 +2052,7 @@ function showReader(show, onDone) {
 function tocMarkForItem(item, indexInList) {
   if (!item) return String(indexInList + 1);
   if (item.kind === "doc") return "宗";
+  if (item.kind === "shard") return "片";
   const entry = entryById(item.id);
   if (!entry) return String(indexInList + 1);
   const role = resolveRole(entry);
@@ -1865,6 +2067,10 @@ function tocMarkForItem(item, indexInList) {
 function tocSubForItem(item) {
   if (!item) return "";
   if (item.kind === "doc") return "卷宗";
+  if (item.kind === "shard") {
+    const w = worldById(item.id);
+    return kindLabel(w?.kind || item.kicker) + (item.status ? ` · ${item.status}` : "");
+  }
   const entry = entryById(item.id);
   if (!entry) return item.kicker || "";
   const role = resolveRole(entry);
@@ -1879,6 +2085,10 @@ function tocSubForItem(item) {
 function tocSectionLabel(item) {
   if (!item) return "";
   if (item.kind === "doc") return "卷宗";
+  if (item.kind === "shard") {
+    const w = worldById(item.id);
+    return kindLabel(w?.kind) || "碎片";
+  }
   const entry = entryById(item.id);
   if (!entry) return "程目";
   const track = entry.track || "other";
@@ -1927,6 +2137,10 @@ function renderReaderToc() {
       const vol = e ? volumeForEntry(e) : null;
       const g = e ? groupById(e.group) : null;
       return vol?.name || g?.name || "本卷";
+    }
+    if (item?.kind === "shard") {
+      const w = worldById(item.id);
+      return `碎片 · ${kindLabel(w?.kind)}`;
     }
     return "卷宗";
   })();
@@ -2025,6 +2239,20 @@ function applyReaderChrome() {
       readerReview.hidden = false;
       readerReview.className = `reader-review review-${meta.className}`;
       readerReview.innerHTML = `${renderReviewSeal(entry)}<span><b>${escapeHtml(meta.label)}</b>${escapeHtml(meta.note)}${meta.date ? `<small>${escapeHtml(meta.date)} · 第 ${escapeHtml(String(meta.round || 1))} 轮</small>` : ""}</span>${meta.report ? `<button type="button" data-open-doc="${escapeHtml(meta.report)}">看批注</button>` : ""}`;
+    } else if (item.kind === "shard") {
+      const w = worldById(item.id);
+      const pct = typeof w?.fullness === "number" ? w.fullness : item.fullness || 0;
+      const kind = kindLabel(w?.kind);
+      readerReview.hidden = false;
+      readerReview.className = "reader-review review-shard";
+      // 紧凑印：勿用 flex:1 的长 pill；信息叠在一块
+      readerReview.innerHTML = `
+        <span class="shard-mark" aria-hidden="true">片</span>
+        <span class="shard-meta">
+          <b>${escapeHtml(kind)}</b>
+          <em>${escapeHtml(w?.status || "种子")} · ${pct}%</em>
+        </span>
+        <button type="button" data-nav="world" data-world-tab="${escapeHtml((WORLD_KIND_TAB && WORLD_KIND_TAB[w?.kind]) || "shards")}">回分册</button>`;
     } else {
       readerReview.hidden = true;
       readerReview.innerHTML = "";
@@ -2071,10 +2299,55 @@ function applyReaderChrome() {
           `<button type="button" data-open-entry="${escapeHtml(e.id)}">另见 · ${escapeHtml(displayTitle(e))}</button>`
         ).join("")
       : "";
-    linksEl.innerHTML = `${navBits.join("")}${linkBits}`;
+    // 正文也可跳到关联碎片
+    const worldHits = (state.catalog?.world || []).filter(w =>
+      (w.see || []).includes(item.id) || (entry?.people || []).includes(w.name) || (entry?.factions || []).includes(w.name)
+    ).slice(0, 6);
+    const shardBits = worldHits.map(w =>
+      `<button type="button" data-open-shard="${escapeHtml(w.id)}">碎片 · ${escapeHtml(w.name)}</button>`
+    ).join("");
+    linksEl.innerHTML = `${navBits.join("")}${linkBits}${shardBits}`;
+  } else if (item.kind === "shard") {
+    linksEl.innerHTML = renderShardLinkBar(item);
   } else {
     linksEl.innerHTML = "";
   }
+}
+
+function renderShardLinkBar(item) {
+  const w = worldById(item.id) || { id: item.id, name: item.title, see: item.see || [] };
+  const fwd = resolveSeeLinks(w.see || item.see || []);
+  const rev = reverseLinksForShard(w);
+  const bits = [];
+  const prevItem = state.reader.index > 0 ? state.reader.list[state.reader.index - 1] : null;
+  const nextItem = state.reader.index < state.reader.list.length - 1 ? state.reader.list[state.reader.index + 1] : null;
+  if (prevItem?.kind === "shard") {
+    bits.push(`<button type="button" class="nav-hint prev" data-reader-delta="-1">← ${escapeHtml(prevItem.title)}</button>`);
+  }
+  if (nextItem?.kind === "shard") {
+    bits.push(`<button type="button" class="nav-hint next" data-reader-delta="1">${escapeHtml(nextItem.title)} →</button>`);
+  }
+  for (const e of fwd.entries) {
+    bits.push(`<button type="button" data-open-entry="${escapeHtml(e.id)}">章 · ${escapeHtml(displayTitle(e))}</button>`);
+  }
+  for (const s of fwd.shards) {
+    bits.push(`<button type="button" data-open-shard="${escapeHtml(s.id)}">联 · ${escapeHtml(s.name)}</button>`);
+  }
+  for (const d of fwd.docs) {
+    bits.push(`<button type="button" data-open-doc="${escapeHtml(d.path)}">宗 · ${escapeHtml(d.label)}</button>`);
+  }
+  for (const s of rev.shards) {
+    if ((w.see || []).includes(s.id)) continue;
+    bits.push(`<button type="button" data-open-shard="${escapeHtml(s.id)}">回指 · ${escapeHtml(s.name)}</button>`);
+  }
+  for (const e of rev.entries.slice(0, 8)) {
+    if (fwd.entries.some(x => x.id === e.id)) continue;
+    bits.push(`<button type="button" data-open-entry="${escapeHtml(e.id)}">出场 · ${escapeHtml(displayTitle(e))}</button>`);
+  }
+  if (!bits.length) {
+    return `<span class="reader-links-empty">暂无关联 · 可在碎片 frontmatter 的 see 里挂章/卡</span>`;
+  }
+  return bits.join("");
 }
 
 async function loadReaderBody() {
@@ -2085,20 +2358,83 @@ async function loadReaderBody() {
     body.innerHTML = `<div class="reader-inner"><p class="empty">无路径可读取。</p></div>`;
     return;
   }
+  const pathKey = item.path;
+  const reqId = `${pathKey}#${Date.now()}`;
+  r._bodyReq = reqId;
+
+  if (textCache.has(pathKey)) {
+    body.innerHTML = composeReaderBodyHtml(item, textCache.get(pathKey));
+    body.scrollTop = 0;
+    return;
+  }
+
   body.innerHTML = `<div class="reader-inner"><p class="empty">正在取卷……</p></div>`;
   try {
-    const response = await fetch(`/project/${encodeURI(item.path)}`, { cache: "no-store" });
-    if (!response.ok) throw new Error("not found");
-    const text = await response.text();
-    body.innerHTML = `<div class="reader-inner">${markdownToHtml(text)}</div>`;
+    const text = await fetchText(`/project/${encodeURI(pathKey)}`, { timeout: 15000 });
+    if (r._bodyReq !== reqId) return; // 已翻到别的程
+    if (textCache.size > 40) {
+      const first = textCache.keys().next().value;
+      textCache.delete(first);
+    }
+    textCache.set(pathKey, text);
+    body.innerHTML = composeReaderBodyHtml(item, text);
     body.scrollTop = 0;
-  } catch {
+  } catch (err) {
+    if (r._bodyReq !== reqId) return;
+    const aborted = err?.name === "AbortError";
     body.innerHTML = `<div class="reader-inner">
-      <h2 class="md-h2">无法读取</h2>
-      <p>请通过仓库根目录「启动世界观网页.bat」打开本地服务。file:// 无法读取 Markdown。</p>
-      <pre>${escapeHtml(item.path)}</pre>
+      <h2 class="md-h2">${aborted ? "取卷超时" : "无法读取"}</h2>
+      <p>${aborted
+        ? "路途稍远，请再点一次下程，或检查本机服务是否仍在跑。"
+        : "请通过仓库根目录「启动世界观网页.bat」或 npm start 打开本地服务。file:// 无法读取 Markdown。"}</p>
+      <pre>${escapeHtml(pathKey)}</pre>
+      <p style="margin-top:1rem"><button type="button" class="btn-bar" data-retry-body="1">再取一次</button></p>
     </div>`;
   }
+}
+
+/** 正文 HTML；碎片附加关联面板 */
+function composeReaderBodyHtml(item, mdText) {
+  const main = markdownToHtml(mdText);
+  if (item?.kind !== "shard") {
+    return `<div class="reader-inner">${main}</div>`;
+  }
+  const panel = renderShardRelatedPanel(item);
+  return `<div class="reader-inner is-shard">${main}${panel}</div>`;
+}
+
+function renderShardRelatedPanel(item) {
+  const w = worldById(item.id) || { id: item.id, name: item.title, see: item.see || [], kind: "custom" };
+  const fwd = resolveSeeLinks(w.see || []);
+  const rev = reverseLinksForShard(w);
+  const row = (label, buttons) =>
+    buttons
+      ? `<div class="shard-rel-row"><span class="shard-rel-k">${escapeHtml(label)}</span><div class="shard-rel-btns">${buttons}</div></div>`
+      : "";
+  const entryBtns = [...fwd.entries, ...rev.entries.filter(e => !fwd.entries.some(x => x.id === e.id))]
+    .slice(0, 12)
+    .map(e => `<button type="button" class="shard-chip" data-open-entry="${escapeHtml(e.id)}">${escapeHtml(displayTitle(e))}<small>${escapeHtml(e.id)}</small></button>`)
+    .join("");
+  const shardBtns = [...fwd.shards, ...rev.shards.filter(s => !fwd.shards.some(x => x.id === s.id))]
+    .slice(0, 12)
+    .map(s => `<button type="button" class="shard-chip" data-open-shard="${escapeHtml(s.id)}">${escapeHtml(s.name)}<small>${escapeHtml(kindLabel(s.kind))}</small></button>`)
+    .join("");
+  const docBtns = fwd.docs
+    .map(d => `<button type="button" class="shard-chip" data-open-doc="${escapeHtml(d.path)}">${escapeHtml(d.label)}<small>卷宗</small></button>`)
+    .join("");
+  const empty = !entryBtns && !shardBtns && !docBtns;
+  return `
+    <aside class="shard-related" aria-label="关联">
+      <header class="shard-related-head">
+        <span class="kicker">关联</span>
+        <h2>从这张碎片出发</h2>
+        <p>见诸正文 · 互链碎片 · 卷宗长文。点开可跳，不改本卡。</p>
+      </header>
+      ${empty ? `<p class="empty">尚无 see / 回指。写卡时在 frontmatter 挂上 Z00x 或 WLD- 即可。</p>` : ""}
+      ${row("正文", entryBtns)}
+      ${row("碎片", shardBtns)}
+      ${row("卷宗", docBtns)}
+    </aside>`;
 }
 
 async function readerGo(delta) {
@@ -2119,6 +2455,7 @@ async function readerGoTo(index) {
   if (item.kind === "entry" && item.id) markEntryRead(item.id);
   applyReaderChrome();
   await loadReaderBody();
+  syncHashFromState();
   if (window.ShanheMotion) ShanheMotion.turnPage();
   // 窄屏点选后自动收起程目，让正文露出来
   if (typeof matchMedia === "function" && matchMedia("(max-width: 860px)").matches) {
@@ -2228,11 +2565,11 @@ function allSearchItems() {
   for (const w of state.catalog?.world || []) {
     const see = (w.see || []).join(" ");
     const action = w.path
-      ? { type: "doc", path: w.path }
-      : { type: "world", tab: WORLD_KIND_TAB[w.kind] || "factions" };
+      ? { type: "shard", id: w.id }
+      : { type: "world", tab: (WORLD_KIND_TAB && WORLD_KIND_TAB[w.kind]) || "shards" };
     items.push({
       title: w.name || w.id,
-      meta: `世界 · ${w.kind || ""} · ${w.status || ""}`,
+      meta: `碎片 · ${kindLabel(w.kind)} · ${w.status || ""}`,
       text: `${w.name} ${w.id} ${w.kind} ${w.status || ""} ${see}`,
       action
     });
@@ -2270,8 +2607,9 @@ function renderSearch(query = "") {
     ? items.map(i => {
         let attrs = "";
         if (i.action.type === "entry") attrs = `data-open-entry="${escapeHtml(i.action.id)}"`;
+        else if (i.action.type === "shard") attrs = `data-open-shard="${escapeHtml(i.action.id)}"`;
         else if (i.action.type === "group") attrs = `data-open-group="${escapeHtml(i.action.id)}"`;
-        else if (i.action.type === "world") attrs = `data-world-tab="${escapeHtml(i.action.tab || "people")}"`;
+        else if (i.action.type === "world") attrs = `data-world-tab="${escapeHtml(i.action.tab || "shards")}"`;
         else attrs = `data-open-doc="${escapeHtml(i.action.path)}"`;
         return `<button type="button" class="search-result" ${attrs}><b>${escapeHtml(i.title)}</b><small>${escapeHtml(i.meta)}</small></button>`;
       }).join("")
@@ -2335,6 +2673,7 @@ function syncHashFromState() {
     let hash = "#/home";
     if (state.reader.open && state.reader.id) {
       if (state.reader.kind === "entry") hash = `#/read/${encodeURIComponent(state.reader.id)}`;
+      else if (state.reader.kind === "shard") hash = `#/shard/${encodeURIComponent(state.reader.id)}`;
       else if (state.reader.kind === "doc" && state.reader.path) {
         hash = `#/doc/${encodeURIComponent(state.reader.path)}`;
       }
@@ -2346,7 +2685,7 @@ function syncHashFromState() {
       const st = state.reviewStage && state.reviewStage !== "all" ? state.reviewStage : "all";
       hash = `#/seal/${encodeURIComponent(st)}`;
     } else if (state.view === "world") {
-      hash = `#/world/${encodeURIComponent(state.worldTab || "people")}`;
+      hash = `#/world/${encodeURIComponent(state.worldTab || "shards")}`;
     } else if (state.view === "archives") hash = "#/archives";
     else if (state.view === "time") hash = "#/time";
     else if (state.view === "settings") hash = "#/settings";
@@ -2375,7 +2714,7 @@ function applyHashRoute() {
     state.reviewStage = parts[1] ? decodeURIComponent(parts[1]) : "all";
   } else if (head === "world") {
     state.view = "world";
-    state.worldTab = parts[1] ? decodeURIComponent(parts[1]) : "people";
+    state.worldTab = parts[1] ? decodeURIComponent(parts[1]) : "shards";
   } else if (head === "archives") {
     state.view = "archives";
   } else if (head === "time") {
@@ -2386,6 +2725,8 @@ function applyHashRoute() {
     const id = decodeURIComponent(parts[1]);
     // 开卷在 boot / hashchange 里调用 openEntry
     state._pendingRead = id;
+  } else if (head === "shard" && parts[1]) {
+    state._pendingShard = decodeURIComponent(parts[1]);
   } else if (head === "doc" && parts[1]) {
     state._pendingDoc = decodeURIComponent(parts.slice(1).join("/"));
   } else {
@@ -2399,7 +2740,7 @@ function renderCatalogError(msg) {
   main.innerHTML = `
     <section class="panel empty-panel" style="padding:2.5rem 1.5rem;text-align:center;max-width:28rem;margin:3rem auto;">
       <p class="kicker">驿路不通</p>
-      <h2 style="font-family:var(--font-display);font-weight:400;margin:0.5rem 0 1rem;">卷册未送达</h2>
+      <h2 style="font-family:var(--display);font-weight:400;margin:0.5rem 0 1rem;">卷册未送达</h2>
       <p class="lede" style="opacity:0.85;line-height:1.7;">${escapeHtml(msg || "catalog 未能加载。请用仓库根目录 npm start 或「启动世界观网页.bat」打开本机服务。")}</p>
       <p style="margin-top:1.25rem;font-size:0.9rem;opacity:0.7;">目标地址 <code>http://127.0.0.1:4182/</code></p>
     </section>`;
@@ -2407,32 +2748,60 @@ function renderCatalogError(msg) {
 
 /* ---------- Bootstrap ---------- */
 
+function catalogStatusLine() {
+  const n = state.catalog?.entries?.length || 0;
+  const g = state.catalog?.groups?.length || 0;
+  const v = state.catalog?.volumes?.length || 0;
+  const w = state.catalog?.world?.length || 0;
+  const p = state.projectFiles?.length || 0;
+  if (p) return `已连接 · ${v} 卷 · ${g} 地脉 · ${n} 篇 · ${w} 碎片 · ${p} 卷宗`;
+  return `已连接 · ${v} 卷 · ${g} 地脉 · ${n} 篇 · ${w} 碎片`;
+}
+
 async function loadCatalog() {
   try {
-    const res = await fetch("/stories/catalog.json", { cache: "no-store" });
-    if (!res.ok) throw new Error("catalog HTTP " + res.status);
-    state.catalog = await res.json();
+    const data = await fetchJson("/stories/catalog.json", { timeout: 10000, cache: "default" });
+    if (!data || typeof data !== "object") throw new Error("catalog 格式异常");
+    state.catalog = {
+      ...data,
+      groups: Array.isArray(data.groups) ? data.groups : [],
+      entries: Array.isArray(data.entries) ? data.entries : [],
+      world: Array.isArray(data.world) ? data.world : [],
+      volumes: Array.isArray(data.volumes) ? data.volumes : []
+    };
+    state._catalogError = null;
     return true;
   } catch (err) {
     state.catalog = { groups: [], entries: [], world: [], volumes: [] };
-    state._catalogError = err?.message || "catalog";
+    const msg = err?.name === "AbortError"
+      ? "catalog 加载超时"
+      : (err?.message || "catalog");
+    state._catalogError = msg;
     return false;
   }
 }
 
+/** 卷宗索引较重：首屏后空闲再拉，不挡入世 */
 async function connectProject() {
   try {
-    const res = await fetch("/__project-index", { cache: "no-store" });
-    if (!res.ok) throw new Error();
-    const data = await res.json();
-    state.projectFiles = data.files || [];
-    const n = state.catalog?.entries?.length || 0;
-    const g = state.catalog?.groups?.length || 0;
-    const v = state.catalog?.volumes?.length || 0;
-    const w = state.catalog?.world?.length || 0;
-    $("#statusRight").textContent = `已连接 · ${v} 卷 · ${g} 地脉 · ${n} 篇 · ${w} 碎片 · ${state.projectFiles.length} 卷宗`;
+    const data = await fetchJson("/__project-index", { timeout: 20000, cache: "default" });
+    state.projectFiles = Array.isArray(data?.files) ? data.files : [];
+    $("#statusRight").textContent = catalogStatusLine();
   } catch {
-    $("#statusRight").textContent = "静态预览 · 请用 BAT 启动以读正文";
+    if (!state.projectFiles?.length) {
+      $("#statusRight").textContent = catalogStatusLine() + " · 卷宗索引稍后/静态";
+    }
+  }
+}
+
+function scheduleConnectProject() {
+  const run = () => {
+    connectProject().catch(() => { /* status already set */ });
+  };
+  if ("requestIdleCallback" in window) {
+    requestIdleCallback(run, { timeout: 3000 });
+  } else {
+    setTimeout(run, 200);
   }
 }
 
@@ -2447,8 +2816,15 @@ function bindEvents() {
         state.groupId = null;
         goView("groups");
       } else if (v === "genres") goView("genres");
-      else if (v === "world") goView("world");
-      else if (v === "archives") goView("archives");
+      else if (v === "world") {
+        if (nav.dataset.worldTab) state.worldTab = nav.dataset.worldTab;
+        // 从碎片阅读器回分册时先掩卷
+        if (state.reader.open) {
+          showReader(false, () => goView("world", { worldTab: state.worldTab }));
+        } else {
+          goView("world", { worldTab: state.worldTab });
+        }
+      } else if (v === "archives") goView("archives");
       else if (v === "time") goView("time");
       else if (v === "settings") goView("settings");
       return;
@@ -2467,7 +2843,7 @@ function bindEvents() {
     const worldTab = event.target.closest("[data-world-tab]");
     if (worldTab) {
       event.preventDefault();
-      state.worldTab = worldTab.dataset.worldTab || "people";
+      state.worldTab = worldTab.dataset.worldTab || "shards";
       if (state.view !== "world") state.view = "world";
       renderView();
       syncHashFromState();
@@ -2578,10 +2954,26 @@ function bindEvents() {
       return;
     }
 
+    const shard = event.target.closest("[data-open-shard]");
+    if (shard) {
+      closeSearch();
+      openShard(shard.dataset.openShard);
+      return;
+    }
+
     const doc = event.target.closest("[data-open-doc]");
     if (doc) {
       closeSearch();
       openDoc(doc.dataset.openDoc);
+      return;
+    }
+
+    if (event.target.closest("[data-retry-body]")) {
+      event.preventDefault();
+      // 清掉该程缓存再取
+      const p = state.reader?.path;
+      if (p) textCache.delete(p);
+      loadReaderBody();
       return;
     }
   });
@@ -2681,56 +3073,86 @@ function bindEvents() {
 }
 
 async function boot() {
-  applySettings(loadSettings());
-  $("#mainView").innerHTML = `<p class="empty">入世中……</p>`;
-  $("#statusRight").textContent = "连接中…";
-  bindEvents();
-  window.addEventListener("hashchange", () => {
+  try {
+    applySettings(loadSettings());
+    loadGsapIdle();
+    $("#mainView").innerHTML = `<p class="empty">入世中……</p>`;
+    $("#statusRight").textContent = "连接中…";
+    bindEvents();
+    window.addEventListener("hashchange", () => {
+      try {
+        applyHashRoute();
+        if (state._pendingRead) {
+          const id = state._pendingRead;
+          state._pendingRead = null;
+          openEntry(id);
+          return;
+        }
+        if (state._pendingShard) {
+          const id = state._pendingShard;
+          state._pendingShard = null;
+          openShard(id);
+          return;
+        }
+        if (state._pendingDoc) {
+          const p = state._pendingDoc;
+          state._pendingDoc = null;
+          openDoc(p);
+          return;
+        }
+        if (state.reader.open) {
+          showReader(false, () => {
+            renderView();
+            if (window.ShanheMotion) ShanheMotion.enterView();
+          });
+        } else {
+          renderView();
+        }
+      } catch (e) {
+        console.error("[hashchange]", e);
+        $("#statusRight").textContent = "路由异常 · 请刷新";
+      }
+    });
+
+    const ok = await loadCatalog();
+    if (!ok) {
+      $("#statusRight").textContent = "catalog 未加载 · 请用本地服务打开";
+      renderCatalogError(state._catalogError);
+      // 仍尝试拉索引，便于诊断
+      scheduleConnectProject();
+      return;
+    }
+
+    $("#statusRight").textContent = catalogStatusLine();
     applyHashRoute();
     if (state._pendingRead) {
       const id = state._pendingRead;
       state._pendingRead = null;
+      renderView();
       openEntry(id);
-      return;
-    }
-    if (state._pendingDoc) {
+    } else if (state._pendingShard) {
+      const id = state._pendingShard;
+      state._pendingShard = null;
+      renderView();
+      openShard(id);
+    } else if (state._pendingDoc) {
       const p = state._pendingDoc;
       state._pendingDoc = null;
+      renderView();
       openDoc(p);
-      return;
-    }
-    if (state.reader.open) {
-      showReader(false, () => {
-        renderView();
-        if (window.ShanheMotion) ShanheMotion.enterView();
-      });
     } else {
       renderView();
+      syncHashFromState();
     }
-  });
-  const ok = await loadCatalog();
-  if (!ok) {
-    $("#statusRight").textContent = "catalog 未加载 · 请用本地服务打开";
-    renderCatalogError(state._catalogError);
-    return;
+    if (window.ShanheMotion) ShanheMotion.enterView({ first: true });
+
+    // 重索引不挡首屏
+    scheduleConnectProject();
+  } catch (e) {
+    console.error("[boot]", e);
+    $("#statusRight").textContent = "启动失败";
+    renderCatalogError(e?.message || "未知错误");
   }
-  await connectProject();
-  applyHashRoute();
-  if (state._pendingRead) {
-    const id = state._pendingRead;
-    state._pendingRead = null;
-    renderView();
-    openEntry(id);
-  } else if (state._pendingDoc) {
-    const p = state._pendingDoc;
-    state._pendingDoc = null;
-    renderView();
-    openDoc(p);
-  } else {
-    renderView();
-    syncHashFromState();
-  }
-  if (window.ShanheMotion) ShanheMotion.enterView({ first: true });
 }
 
 boot();

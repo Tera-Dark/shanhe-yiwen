@@ -21,10 +21,11 @@
   --shadow-soft: 0 4px 20px rgba(20, 16, 12, 0.06);
   --line: rgba(26, 22, 18, 0.08);
   --line-strong: rgba(26, 22, 18, 0.16);
-  --display: "Ma Shan Zheng", "ZCOOL XiaoWei", "Noto Serif SC", serif;
-  --serif: "FZShouJinShu-S", "方正瘦金书简体", "Noto Serif SC", "Songti SC", serif;
+  /* 系统宋/楷在前：web 字体 optional 未到也不跳 metrics */
+  --display: "Ma Shan Zheng", "STKaiti", "KaiTi", "Noto Serif SC", "Songti SC", serif;
+  --serif: "FZShouJinShu-S", "方正瘦金书简体", "Noto Serif SC", "Songti SC", "STSong", "SimSun", serif;
   --body: var(--serif);
-  --sans: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --sans: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", "Helvetica Neue", sans-serif;
   --max: 1080px;
   --read-max: 38rem;
   --chrome-h: 3.1rem;
@@ -59,31 +60,31 @@ html[data-size="medium"], body[data-size="medium"] { font-size: 16.5px; }
 html[data-size="large"], body[data-size="large"] { font-size: 18px; }
 html[data-size="xlarge"], body[data-size="xlarge"] { font-size: 20px; }
 
-/* —— 字体方案 —— */
+/* —— 字体方案（web 字在后；未加载时系统栈撑住，无跳字） —— */
 body[data-font="shoujin"] {
-  --display: "Ma Shan Zheng", "ZCOOL XiaoWei", "Noto Serif SC", serif;
-  --body: "FZShouJinShu-S", "方正瘦金书简体", "Noto Serif SC", serif;
+  --display: "Ma Shan Zheng", "STKaiti", "KaiTi", "Noto Serif SC", "Songti SC", serif;
+  --body: "FZShouJinShu-S", "方正瘦金书简体", "Noto Serif SC", "Songti SC", "STSong", serif;
   --serif: var(--body);
 }
 body[data-font="wenkai"] {
-  --display: "LXGW WenKai TC", "Noto Serif SC", serif;
-  --body: "LXGW WenKai TC", "Noto Serif SC", serif;
+  --display: "LXGW WenKai TC", "STKaiti", "KaiTi", "Noto Serif SC", serif;
+  --body: "LXGW WenKai TC", "STKaiti", "KaiTi", "Noto Serif SC", "Songti SC", serif;
 }
 body[data-font="mashan"] {
-  --display: "Ma Shan Zheng", "Noto Serif SC", serif;
-  --body: "Noto Serif SC", serif;
+  --display: "Ma Shan Zheng", "STKaiti", "KaiTi", "Noto Serif SC", serif;
+  --body: "Noto Serif SC", "Songti SC", "STSong", serif;
 }
 body[data-font="xiaowei"] {
-  --display: "ZCOOL XiaoWei", "Noto Serif SC", serif;
-  --body: "ZCOOL XiaoWei", "Noto Serif SC", serif;
+  --display: "ZCOOL XiaoWei", "Noto Serif SC", "Songti SC", serif;
+  --body: "ZCOOL XiaoWei", "Noto Serif SC", "Songti SC", serif;
 }
 body[data-font="serif"] {
-  --display: "Noto Serif SC", serif;
-  --body: "Noto Serif SC", serif;
+  --display: "Noto Serif SC", "Songti SC", "STSong", serif;
+  --body: "Noto Serif SC", "Songti SC", "STSong", serif;
 }
 body[data-font="sans"] {
-  --display: "Noto Sans SC", sans-serif;
-  --body: "Noto Sans SC", sans-serif;
+  --display: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --body: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
 }
 
 /* —— 配色主题 —— */
@@ -1293,6 +1294,42 @@ body[data-mode="dark"] .gold-path-bg {
   letter-spacing: 0.16em;
   color: var(--gold);
 }
+.world-card.is-shard .world-card-art {
+  background:
+    linear-gradient(160deg, rgba(122, 46, 40, 0.08), transparent 50%),
+    linear-gradient(180deg, #ebe4d6, #e0d8c8);
+}
+.world-card .w-badge.w-badge-mute {
+  color: var(--ink-mute);
+  border-color: rgba(26, 22, 18, 0.18);
+}
+.world-fold {
+  margin: 1.5rem 0 0;
+  border: 1px solid var(--line);
+  background: rgba(247, 244, 237, 0.55);
+  padding: 0.35rem 0.85rem 0.85rem;
+}
+.world-fold > summary {
+  cursor: pointer;
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  color: var(--ink-mute);
+  padding: 0.55rem 0.15rem;
+  list-style: none;
+}
+.world-fold > summary::-webkit-details-marker { display: none; }
+.world-fold > summary::before {
+  content: "▸ ";
+  color: var(--gold);
+}
+.world-fold[open] > summary::before { content: "▾ "; }
+.world-grid-dense {
+  grid-template-columns: repeat(auto-fill, minmax(7.5rem, 1fr));
+}
+.world-grid-dense .world-card { min-height: 9rem; }
+.world-grid-dense .world-card-art { min-height: 4.5rem; }
+.world-grid-dense .seal-char { font-size: 1.6rem; }
 
 @media (max-width: 900px) {
   .entry-row.has-ord,
@@ -2410,16 +2447,35 @@ body[data-readw="wide"] { --read-max: 46rem; }
   color: var(--ink-soft);
 }
 .reader-inner ul, .reader-inner ol { padding-left: 1.4rem; }
-.reader-inner table {
+.reader-inner .md-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  margin: 1em 0;
+  -webkit-overflow-scrolling: touch;
+}
+.reader-inner table,
+.reader-inner table.md-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.9em;
-  margin: 1em 0;
+  margin: 0;
 }
-.reader-inner th, .reader-inner td {
+.reader-inner th,
+.reader-inner td {
   border: 1px solid var(--line-strong);
-  padding: 0.4rem 0.55rem;
+  padding: 0.45rem 0.65rem;
   text-align: left;
+  vertical-align: top;
+  line-height: 1.45;
+}
+.reader-inner thead th {
+  background: rgba(26, 22, 18, 0.06);
+  font-weight: 600;
+  color: var(--ink);
+  white-space: nowrap;
+}
+.reader-inner tbody tr:nth-child(even) td {
+  background: rgba(26, 22, 18, 0.025);
 }
 .reader-front {
   margin-bottom: 1.5rem;
@@ -2455,7 +2511,182 @@ body[data-mode="dark"] .reader-foot {
   background: rgba(26, 22, 18, 0.95);
 }
 .reader-links { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.reader-links .nav-hint,
+.reader-links button {
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  padding: 0.28rem 0.55rem;
+  border: 1px solid var(--line);
+  background: var(--paper-solid, #f7f4ed);
+  color: var(--ink);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+.reader-links button:hover {
+  border-color: rgba(201, 162, 39, 0.55);
+  background: rgba(201, 162, 39, 0.08);
+}
+.reader-links-empty {
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  color: var(--ink-mute);
+  letter-spacing: 0.06em;
+}
 .reader-path { letter-spacing: 0.04em; opacity: 0.7; }
+
+/* 碎片阅读 · 顶条（紧凑，勿被 review-seals 的 span{flex:1} 拉成条） */
+.reader-review.review-shard {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 0.65rem 0.85rem;
+  min-height: 2.75rem;
+  padding: 0.45rem 1.1rem;
+  border-color: rgba(122, 46, 40, 0.22);
+  background: linear-gradient(90deg, rgba(122, 46, 40, 0.07), transparent 55%), var(--paper-card, #f7f4ed);
+}
+.reader-review.review-shard .shard-mark {
+  flex: 0 0 auto;
+  width: 1.85rem;
+  height: 1.85rem;
+  display: grid;
+  place-items: center;
+  font-family: var(--display);
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  color: #7a2e28;
+  border: 1px solid rgba(122, 46, 40, 0.42);
+  background: rgba(247, 244, 237, 0.98);
+  box-shadow: inset 0 0 0 1px rgba(255, 252, 246, 0.6);
+}
+.reader-review.review-shard .shard-meta {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.15rem 0.65rem;
+  font-size: 0.86rem;
+  color: var(--ink-soft, #3a342c);
+}
+.reader-review.review-shard .shard-meta b {
+  display: inline;
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  color: #7a2e28;
+}
+.reader-review.review-shard .shard-meta em {
+  font-style: normal;
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-mute, #6a6258);
+}
+.reader-review.review-shard button {
+  flex: 0 0 auto;
+  margin-left: auto;
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  padding: 0.28rem 0.65rem;
+  border: 1px solid rgba(201, 162, 39, 0.45);
+  background: transparent;
+  color: var(--gold-deep, #8a7020);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.reader-inner.is-shard {
+  max-width: 42rem;
+}
+.shard-related {
+  margin: 2.25rem 0 1rem;
+  padding: 1.25rem 1.15rem 1.4rem;
+  border: 1px solid rgba(26, 22, 18, 0.1);
+  background:
+    linear-gradient(165deg, rgba(201, 162, 39, 0.06), transparent 42%),
+    var(--paper-card, #f7f4ed);
+}
+.shard-related-head {
+  margin-bottom: 1rem;
+}
+.shard-related-head .kicker {
+  display: block;
+  margin-bottom: 0.35rem;
+}
+.shard-related-head h2 {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 1.25rem;
+  letter-spacing: 0.1em;
+  margin: 0 0 0.4rem;
+  color: var(--ink);
+}
+.shard-related-head p {
+  margin: 0;
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  line-height: 1.55;
+  color: var(--ink-mute);
+  letter-spacing: 0.04em;
+}
+.shard-rel-row {
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1fr);
+  gap: 0.55rem 0.75rem;
+  margin-top: 0.85rem;
+  align-items: start;
+}
+.shard-rel-k {
+  font-family: var(--sans);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  color: var(--gold);
+  padding-top: 0.35rem;
+}
+.shard-rel-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.shard-chip {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.1rem;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  padding: 0.4rem 0.65rem;
+  border: 1px solid var(--line);
+  background: rgba(255, 252, 246, 0.9);
+  color: var(--ink);
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.shard-chip small {
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-mute);
+}
+.shard-chip:hover {
+  border-color: rgba(201, 162, 39, 0.55);
+  box-shadow: 0 2px 10px rgba(30, 20, 12, 0.06);
+}
+body[data-mode="dark"] .shard-related {
+  background:
+    linear-gradient(165deg, rgba(201, 162, 39, 0.08), transparent 42%),
+    rgba(36, 30, 24, 0.95);
+  border-color: rgba(232, 224, 208, 0.12);
+}
+body[data-mode="dark"] .shard-chip {
+  background: rgba(28, 24, 20, 0.9);
+  color: rgba(232, 224, 208, 0.92);
+  border-color: rgba(232, 224, 208, 0.14);
+}
 
 body.is-reading { overflow: hidden; }
 body.is-reading .atm-mist,

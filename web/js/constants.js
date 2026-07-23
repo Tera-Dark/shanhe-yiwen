@@ -42,11 +42,13 @@ const ARCHIVE_SECTIONS = [
     id: "world",
     title: "世界与历史",
     docs: [
-      ["docs/世界/01_世界底层规则.md", "世界底层规则", "边界与不可验证"],
+      ["docs/世界/01_世界底层规则.md", "世界底层规则", "边界与武学/异闻分账"],
       ["docs/世界/02_时代与历史.md", "时代与历史", "嘉靖—崇祯"],
       ["docs/世界/04_玄幻志异规则.md", "玄幻志异规则", "执念与怪谈边界"],
       ["docs/世界/10_天启大爆炸专设.md", "王恭厂专设", "资料分层"],
       ["docs/世界/17_世界年表.md", "世界年表", "年号坐标"],
+      ["docs/世界/27_武学与奇术总纲.md", "武学与奇术", "金庸式上限·四层·五科"],
+      ["docs/世界/29_设定复杂度与补全序.md", "设定复杂度", "四本账·卡上限·补全序"],
       ["docs/世界/SOURCES.md", "史料与来源", "A/B/C/D 登记"]
     ]
   },
@@ -59,6 +61,7 @@ const ARCHIVE_SECTIONS = [
       ["docs/社会/06_职业设定集.md", "职业设定集", "朝廷市井江湖"],
       ["docs/社会/07_组织势力.md", "组织势力", "局帮线与结社"],
       ["docs/社会/08_诸地风土志.md", "诸地风土志", "地域框架"],
+      ["docs/社会/28_地脉卷与诸地规划.md", "地脉卷规划", "已立卷与候选地脉"],
       ["docs/社会/15_民俗文化设定.md", "民俗文化", "节气婚丧"],
       ["docs/社会/18_民间俗语与黑话.md", "俗语与黑话", "行话忌讳"]
     ]
@@ -136,17 +139,42 @@ const REVIEW_STAGES = [
   }
 ];
 
-/** 世界栏 · 设定集分区（碎片化可读） */
+/** 世界栏 · 碎片分册（stories/世界 + 人物志入口） */
 const WORLD_TABS = [
-  { id: "people", name: "人物", hint: "志立档 · 折写魂" },
+  { id: "shards", name: "碎片", hint: "全部世界卡 · 按充实度" },
   { id: "factions", name: "势力", hint: "局帮 · 结社 · 衙署" },
-  { id: "places", name: "地脉", hint: "村镇渡口 · 风土" },
-  { id: "creatures", name: "生灵", hint: "动植 · 传闻之兽" },
-  { id: "materials", name: "物产", hint: "矿物 · 器用 · 货色" },
-  { id: "customs", name: "风物", hint: "民俗 · 俗语 · 规矩" },
+  { id: "places", name: "地标", hint: "渡口市口 · 碑桥" },
+  { id: "creatures", name: "生灵", hint: "传闻之兽 · 土地" },
+  { id: "materials", name: "物产", hint: "器用 · 契纸 · 货色" },
+  { id: "customs", name: "风物", hint: "规矩 · 忌讳 · 价码" },
+  { id: "scraps", name: "杂记", hint: "随笔 · 市声 · 书信残" },
+  { id: "people", name: "人物", hint: "志立档 · 名录另折" },
   { id: "mysteries", name: "未解", hint: "伏笔 · 谜团" },
-  { id: "docs", name: "卷宗摘", hint: "设定原文入口" }
+  { id: "docs", name: "卷宗摘", hint: "docs 长设定入口" }
 ];
+
+/** kind → 世界栏 tab id */
+const WORLD_KIND_TAB = {
+  faction: "factions",
+  place: "places",
+  creature: "creatures",
+  material: "materials",
+  custom: "customs",
+  scrap: "scraps",
+  mystery: "mysteries"
+};
+
+const WORLD_KIND_LABEL = {
+  faction: "势力",
+  place: "地标",
+  creature: "生灵",
+  material: "物产",
+  custom: "风物",
+  scrap: "杂记",
+  mystery: "未解",
+  dossier: "人物志",
+  mention: "名录"
+};
 
 const PLACE_VERSE = {
   hedong: {
@@ -171,5 +199,6 @@ export {
   GENRE, GENRE_ORDER, ROLE_LABEL, TRACK_LABEL,
   ARCHIVE_SECTIONS, ERAS, MYSTERIES,
   PROGRESS_KEY, GOLD_PAGE_SIZE, REVIEW_STAGES, WORLD_TABS,
+  WORLD_KIND_TAB, WORLD_KIND_LABEL,
   PLACE_VERSE
 };
