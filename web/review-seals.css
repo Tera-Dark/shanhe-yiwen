@@ -173,27 +173,22 @@
 .track-lane-list .review-seal { margin-left: auto; }
 
 .reader-review {
-  display: flex;
-  align-items: center;
-  gap: .8rem;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: start;
+  gap: .55rem .75rem;
   padding: .62rem 1.25rem;
   border-bottom: 1px solid rgba(26, 22, 18, .1);
   background: linear-gradient(90deg, rgba(122, 46, 40, .11), transparent 65%), var(--paper-card, #f7f4ed);
 }
 .reader-review[hidden] { display: none !important; }
-.reader-review > span:not(.review-seal) {
-  flex: 1;
+.reader-review > span:not(.review-seal):not(.shard-mark):not(.shard-meta) {
+  /* 兼容旧结构 */
+  min-width: 0;
   color: var(--ink-soft, #3a342c);
   font-size: .86rem;
 }
-.reader-review > span:not(.review-seal) b {
-  display: block;
-  margin-bottom: .1rem;
-  color: #7a2e28;
-  font-family: var(--display, serif);
-  letter-spacing: .12em;
-}
-.reader-review small { display: block; margin-top: .12rem; color: var(--ink-mute, #6a6258); }
+.reader-review small { color: var(--ink-mute, #6a6258); }
 .reader-review button {
   padding: .35rem .68rem;
   border: 1px solid rgba(122, 46, 40, .42);
@@ -224,7 +219,6 @@ body[data-mode="dark"] .review-count { background: rgba(255, 255, 255, .025); }
   .review-ledger-grid { grid-template-columns: 1fr 1fr; }
   .review-ledger-head { flex-wrap: wrap; }
   .review-ledger-head button { margin-left: 0; }
-  .reader-review { align-items: flex-start; padding: .55rem .75rem; }
-  .reader-review .review-seal { width: 2.65rem; height: 2.65rem; }
-  .reader-review button { align-self: center; }
+  .reader-review { padding: .5rem .75rem; }
+  .reader-review .review-seal { width: 2.35rem; height: 2.35rem; }
 }

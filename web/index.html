@@ -2,8 +2,11 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#12100e" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="format-detection" content="telephone=no" />
   <meta name="description" content="山河异闻 · 地脉浏览台。雨后驿路，卷册可读。" />
   <title>山河异闻 · 入世</title>
   <!-- 首屏：系统字体兜底，避免 Google 字体阻塞 + FOUT 跳变 -->
@@ -87,6 +90,11 @@
       <div id="readerLinks" class="reader-links"></div>
       <span id="readerPath" class="reader-path"></span>
     </footer>
+    <nav class="reader-dock" id="readerDock" aria-label="阅读快捷">
+      <button type="button" class="dock-btn" id="dockPrev" title="上程">上程</button>
+      <button type="button" class="dock-btn is-toc" id="dockToc" title="程目">程目</button>
+      <button type="button" class="dock-btn" id="dockNext" title="下程">下程</button>
+    </nav>
   </div>
 
   <div id="searchLayer" class="search-layer" hidden>

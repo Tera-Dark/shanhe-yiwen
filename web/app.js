@@ -2120,6 +2120,12 @@ function renderReaderToc() {
     toggle.classList.toggle("is-on", open);
     toggle.textContent = open ? "掩目" : "程目";
   }
+  const dockToc = $("#dockToc");
+  if (dockToc) {
+    dockToc.setAttribute("aria-expanded", open ? "true" : "false");
+    dockToc.classList.toggle("is-on", open);
+    dockToc.textContent = open ? "掩目" : "程目";
+  }
   if (scrim) scrim.hidden = !(open && mobile);
   if (edge) {
     // 仅窄屏收起时显示边缘拉手；桌面收起用窄轨
@@ -2236,16 +2242,34 @@ function applyReaderChrome() {
     if (item.kind === "entry") {
       const entry = entryById(item.id);
       const meta = reviewMeta(entry);
+      const note = meta.note || "";
+      const longNote = note.length > 42;
+      const notePreview = longNote ? `${note.slice(0, 42)}…` : note;
+      const dateBit = meta.date
+        ? `<small>${escapeHtml(meta.date)}${meta.round ? ` · 第 ${escapeHtml(String(meta.round))} 轮` : ""}</small>`
+        : "";
       readerReview.hidden = false;
-      readerReview.className = `reader-review review-${meta.className}`;
-      readerReview.innerHTML = `${renderReviewSeal(entry)}<span><b>${escapeHtml(meta.label)}</b>${escapeHtml(meta.note)}${meta.date ? `<small>${escapeHtml(meta.date)} · 第 ${escapeHtml(String(meta.round || 1))} 轮</small>` : ""}</span>${meta.report ? `<button type="button" data-open-doc="${escapeHtml(meta.report)}">看批注</button>` : ""}`;
+      readerReview.className = `reader-review review-${meta.className}${longNote ? " is-collapsible" : ""}`;
+      readerReview.innerHTML = `
+        ${renderReviewSeal(entry)}
+        <div class="rr-body">
+          <div class="rr-head">
+            <b>${escapeHtml(meta.label)}</b>
+            ${dateBit}
+          </div>
+          <p class="rr-note is-preview">${escapeHtml(notePreview)}</p>
+          <p class="rr-note is-full" hidden>${escapeHtml(note)}</p>
+        </div>
+        <div class="rr-actions">
+          ${longNote ? `<button type="button" class="rr-expand" aria-expanded="false" data-rr-expand="1">展开</button>` : ""}
+          ${meta.report ? `<button type="button" class="rr-doc" data-open-doc="${escapeHtml(meta.report)}">批注</button>` : ""}
+        </div>`;
     } else if (item.kind === "shard") {
       const w = worldById(item.id);
       const pct = typeof w?.fullness === "number" ? w.fullness : item.fullness || 0;
       const kind = kindLabel(w?.kind);
       readerReview.hidden = false;
       readerReview.className = "reader-review review-shard";
-      // 紧凑印：勿用 flex:1 的长 pill；信息叠在一块
       readerReview.innerHTML = `
         <span class="shard-mark" aria-hidden="true">片</span>
         <span class="shard-meta">
@@ -2261,8 +2285,14 @@ function applyReaderChrome() {
 
   const prev = $("#readerPrev");
   const next = $("#readerNext");
-  prev.disabled = r.index <= 0;
-  next.disabled = r.index >= r.list.length - 1;
+  const atStart = r.index <= 0;
+  const atEnd = r.index >= r.list.length - 1;
+  prev.disabled = atStart;
+  next.disabled = atEnd;
+  const dockPrev = $("#dockPrev");
+  const dockNext = $("#dockNext");
+  if (dockPrev) dockPrev.disabled = atStart;
+  if (dockNext) dockNext.disabled = atEnd;
 
   // 进度条（按当前列表序）
   let progressEl = $("#readerProgress");
@@ -2282,6 +2312,7 @@ function applyReaderChrome() {
   renderReaderToc();
 
   const linksEl = $("#readerLinks");
+  const footEl = linksEl?.closest(".reader-foot");
   if (item.kind === "entry") {
     const entry = entryById(item.id);
     const links = (entry?.links || []).map(id => entryById(id)).filter(Boolean);
@@ -2307,10 +2338,13 @@ function applyReaderChrome() {
       `<button type="button" data-open-shard="${escapeHtml(w.id)}">碎片 · ${escapeHtml(w.name)}</button>`
     ).join("");
     linksEl.innerHTML = `${navBits.join("")}${linkBits}${shardBits}`;
+    if (footEl) footEl.classList.toggle("is-empty", !(linkBits || shardBits));
   } else if (item.kind === "shard") {
     linksEl.innerHTML = renderShardLinkBar(item);
+    if (footEl) footEl.classList.toggle("is-empty", !linksEl.innerHTML.trim());
   } else {
     linksEl.innerHTML = "";
+    if (footEl) footEl.classList.add("is-empty");
   }
 }
 
@@ -2364,7 +2398,7 @@ async function loadReaderBody() {
 
   if (textCache.has(pathKey)) {
     body.innerHTML = composeReaderBodyHtml(item, textCache.get(pathKey));
-    body.scrollTop = 0;
+    resetReaderScroll();
     return;
   }
 
@@ -2378,7 +2412,7 @@ async function loadReaderBody() {
     }
     textCache.set(pathKey, text);
     body.innerHTML = composeReaderBodyHtml(item, text);
-    body.scrollTop = 0;
+    resetReaderScroll();
   } catch (err) {
     if (r._bodyReq !== reqId) return;
     const aborted = err?.name === "AbortError";
@@ -2461,6 +2495,14 @@ async function readerGoTo(index) {
   if (typeof matchMedia === "function" && matchMedia("(max-width: 860px)").matches) {
     setReaderTocOpen(false);
   }
+  resetReaderScroll();
+}
+
+function resetReaderScroll() {
+  const body = $("#readerBody");
+  const scroller = body?.closest(".reader-scroll") || body;
+  if (scroller) scroller.scrollTop = 0;
+  if (body && body !== scroller) body.scrollTop = 0;
 }
 
 function closeReader() {
@@ -2986,12 +3028,36 @@ function bindEvents() {
   });
   $("#readerPrev").addEventListener("click", () => readerGo(-1));
   $("#readerNext").addEventListener("click", () => readerGo(1));
+  const dockPrev = $("#dockPrev");
+  const dockNext = $("#dockNext");
+  const dockToc = $("#dockToc");
+  if (dockPrev) dockPrev.addEventListener("click", () => readerGo(-1));
+  if (dockNext) dockNext.addEventListener("click", () => readerGo(1));
+  if (dockToc) dockToc.addEventListener("click", toggleReaderToc);
   const tocToggle = $("#readerTocToggle");
   if (tocToggle) tocToggle.addEventListener("click", toggleReaderToc);
   const tocScrim = $("#readerTocScrim");
   if (tocScrim) tocScrim.addEventListener("click", () => setReaderTocOpen(false));
   const tocEdge = $("#readerTocEdge");
   if (tocEdge) tocEdge.addEventListener("click", () => setReaderTocOpen(true));
+
+  // 审印条：展开 / 收起长注
+  const readerReviewRoot = $("#readerReview");
+  if (readerReviewRoot) {
+    readerReviewRoot.addEventListener("click", e => {
+      const btn = e.target.closest("[data-rr-expand]");
+      if (!btn) return;
+      e.preventDefault();
+      const box = readerReviewRoot;
+      const open = box.classList.toggle("is-expanded");
+      btn.setAttribute("aria-expanded", open ? "true" : "false");
+      btn.textContent = open ? "收起" : "展开";
+      const preview = box.querySelector(".rr-note.is-preview");
+      const full = box.querySelector(".rr-note.is-full");
+      if (preview) preview.hidden = open;
+      if (full) full.hidden = !open;
+    });
+  }
 
   // 侧栏内：窄轨展开 / 头栏「掩」（章目仍走 document 委托 data-toc-index）
   const tocRoot = $("#readerToc");
