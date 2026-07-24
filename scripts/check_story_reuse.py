@@ -25,8 +25,6 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_ROOTS = [
-    ROOT / "stories" / "河东线",
-    ROOT / "stories" / "桥头震后",
     ROOT / "stories" / "清洛线",
 ]
 

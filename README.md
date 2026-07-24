@@ -62,8 +62,7 @@
 │   └── 管理/                      # 11–13（含世界痕迹轻表）· 底架计划
 ├── stories/                       # 正文唯一源
 │   ├── catalog.json · catalog.schema.md
-│   ├── 主章线/ · 人物志/ · 世界/
-│   ├── 河东线/ · 桥头震后/ · 清洛线/
+│   ├── 人物志/ · 清洛线/
 │   └── _templates/
 ├── web/                           # 地脉浏览台
 ├── scripts/                       # postcheck · reviews · reuse · integrity · scaffold
