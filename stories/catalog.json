@@ -1,6 +1,6 @@
 {
-  "version": "1.7",
-  "updated": "2026-07-23",
+  "version": "1.8",
+  "updated": "2026-07-24",
   "grouping": {
     "primary": "group",
     "volume": "volumes",
@@ -168,6 +168,35 @@
         "QT00"
       ],
       "platform_note": "独立地脉卷，勿并入河东 main_path。现行仅 QT00 入卷气味；P001《桥上第二碗》已归档（archive/stories/桥头震后/P001_桥上第二碗）。河东 Z040《往桥头去》只钩渡，不焊第二碗。"
+    },
+    {
+      "id": "vol-qingluo",
+      "name": "清洛卷",
+      "group": "qingluo",
+      "subtitle": "烟水与照壁",
+      "blurb": "清洛水软，人情不软。少东家出门一程，还得回家。",
+      "status": "试笔",
+      "main_path": [
+        "QL00",
+        "QL01",
+        "QL02",
+        "QL03",
+        "QL04",
+        "QL05"
+      ],
+      "roam_path": [
+        "QL00",
+        "N-GWT"
+      ],
+      "reading_path": [
+        "QL00",
+        "QL01",
+        "QL02",
+        "QL03",
+        "QL04",
+        "QL05"
+      ],
+      "platform_note": "女主试笔卷；与河东 main_path 不混卷。文案向燕云，路子向少东家。审印默认待勘。"
     }
   ],
   "groups": [
@@ -208,6 +237,23 @@
       "tags": [
         "暂搁"
       ]
+    },
+    {
+      "id": "qingluo",
+      "name": "清洛线",
+      "volume": "vol-qingluo",
+      "path": "stories/清洛线",
+      "kernel": [
+        "清洛河",
+        "烟水桥",
+        "晚棠庄",
+        "顾记镖行",
+        "过期镖帖",
+        "应声不得",
+        "顾晚棠"
+      ],
+      "status": "试笔·入卷+五章",
+      "summary": "清洛水软，人情不软。女少东家第一次把家背在身上出门。"
     }
   ],
   "entries": [
@@ -2269,6 +2315,302 @@
       },
       "source_version": "1.1",
       "version": "1.10"
+    },
+    {
+      "id": "QL00",
+      "title": "入卷·清洛",
+      "genre": "V",
+      "group": "qingluo",
+      "volume": "vol-qingluo",
+      "track": "main",
+      "scent": [
+        "江湖",
+        "市井",
+        "水乡"
+      ],
+      "people": [
+        "顾晚棠"
+      ],
+      "factions": [
+        "顾记镖行"
+      ],
+      "links": [
+        "QL01",
+        "N-GWT"
+      ],
+      "status": "初稿",
+      "role": "prologue",
+      "path": "stories/清洛线/QL00_入卷_清洛/正文.md",
+      "review": {
+        "state": "pending",
+        "seal": "待勘",
+        "round": 0,
+        "date": "2026-07-24",
+        "scope": "base",
+        "standard": "docs/原则/21_故事审查标准.md",
+        "standard_version": "0.4",
+        "report": "stories/审查总簿.md",
+        "reviewer": "",
+        "source_version": "1.0",
+        "note": "清洛试笔新建，待主笔通读；禁自动朱注。",
+        "reviewed_at": "2026-07-24"
+      },
+      "version": "1.0"
+    },
+    {
+      "id": "QL01",
+      "title": "照壁外",
+      "genre": "Z",
+      "group": "qingluo",
+      "volume": "vol-qingluo",
+      "track": "main",
+      "scent": [
+        "江湖",
+        "市井",
+        "水乡"
+      ],
+      "people": [
+        "顾晚棠"
+      ],
+      "factions": [
+        "顾记镖行"
+      ],
+      "links": [
+        "QL00",
+        "QL02",
+        "N-GWT"
+      ],
+      "status": "初稿",
+      "role": "main",
+      "path": "stories/清洛线/QL01_照壁外/正文.md",
+      "review": {
+        "state": "pending",
+        "seal": "待勘",
+        "round": 0,
+        "date": "2026-07-24",
+        "scope": "base",
+        "standard": "docs/原则/21_故事审查标准.md",
+        "standard_version": "0.4",
+        "report": "stories/审查总簿.md",
+        "reviewer": "",
+        "source_version": "1.0",
+        "note": "清洛试笔新建，待主笔通读；禁自动朱注。",
+        "reviewed_at": "2026-07-24"
+      },
+      "version": "1.0"
+    },
+    {
+      "id": "QL02",
+      "title": "烟水桥",
+      "genre": "Z",
+      "group": "qingluo",
+      "volume": "vol-qingluo",
+      "track": "main",
+      "scent": [
+        "江湖",
+        "市井",
+        "水乡"
+      ],
+      "people": [
+        "顾晚棠"
+      ],
+      "factions": [
+        "顾记镖行"
+      ],
+      "links": [
+        "QL01",
+        "QL03",
+        "N-GWT"
+      ],
+      "status": "初稿",
+      "role": "main",
+      "path": "stories/清洛线/QL02_烟水桥/正文.md",
+      "review": {
+        "state": "pending",
+        "seal": "待勘",
+        "round": 0,
+        "date": "2026-07-24",
+        "scope": "base",
+        "standard": "docs/原则/21_故事审查标准.md",
+        "standard_version": "0.4",
+        "report": "stories/审查总簿.md",
+        "reviewer": "",
+        "source_version": "1.0",
+        "note": "清洛试笔新建，待主笔通读；禁自动朱注。",
+        "reviewed_at": "2026-07-24"
+      },
+      "version": "1.0"
+    },
+    {
+      "id": "QL03",
+      "title": "过期镖帖",
+      "genre": "Z",
+      "group": "qingluo",
+      "volume": "vol-qingluo",
+      "track": "main",
+      "scent": [
+        "江湖",
+        "市井",
+        "水乡"
+      ],
+      "people": [
+        "顾晚棠"
+      ],
+      "factions": [
+        "顾记镖行"
+      ],
+      "links": [
+        "QL02",
+        "QL04",
+        "N-GWT"
+      ],
+      "status": "初稿",
+      "role": "main",
+      "path": "stories/清洛线/QL03_过期镖帖/正文.md",
+      "review": {
+        "state": "pending",
+        "seal": "待勘",
+        "round": 0,
+        "date": "2026-07-24",
+        "scope": "base",
+        "standard": "docs/原则/21_故事审查标准.md",
+        "standard_version": "0.4",
+        "report": "stories/审查总簿.md",
+        "reviewer": "",
+        "source_version": "1.0",
+        "note": "清洛试笔新建，待主笔通读；禁自动朱注。",
+        "reviewed_at": "2026-07-24"
+      },
+      "version": "1.0"
+    },
+    {
+      "id": "QL04",
+      "title": "应声不得",
+      "genre": "Z",
+      "group": "qingluo",
+      "volume": "vol-qingluo",
+      "track": "main",
+      "scent": [
+        "江湖",
+        "市井",
+        "水乡"
+      ],
+      "people": [
+        "顾晚棠"
+      ],
+      "factions": [
+        "顾记镖行"
+      ],
+      "links": [
+        "QL03",
+        "QL05",
+        "N-GWT"
+      ],
+      "status": "初稿",
+      "role": "main",
+      "path": "stories/清洛线/QL04_应声不得/正文.md",
+      "review": {
+        "state": "pending",
+        "seal": "待勘",
+        "round": 0,
+        "date": "2026-07-24",
+        "scope": "base",
+        "standard": "docs/原则/21_故事审查标准.md",
+        "standard_version": "0.4",
+        "report": "stories/审查总簿.md",
+        "reviewer": "",
+        "source_version": "1.0",
+        "note": "清洛试笔新建，待主笔通读；禁自动朱注。",
+        "reviewed_at": "2026-07-24"
+      },
+      "version": "1.0"
+    },
+    {
+      "id": "QL05",
+      "title": "棠花还开",
+      "genre": "Z",
+      "group": "qingluo",
+      "volume": "vol-qingluo",
+      "track": "main",
+      "scent": [
+        "江湖",
+        "市井",
+        "水乡"
+      ],
+      "people": [
+        "顾晚棠"
+      ],
+      "factions": [
+        "顾记镖行"
+      ],
+      "links": [
+        "QL04",
+        "QL00",
+        "N-GWT"
+      ],
+      "status": "初稿",
+      "role": "main",
+      "path": "stories/清洛线/QL05_棠花还开/正文.md",
+      "review": {
+        "state": "pending",
+        "seal": "待勘",
+        "round": 0,
+        "date": "2026-07-24",
+        "scope": "base",
+        "standard": "docs/原则/21_故事审查标准.md",
+        "standard_version": "0.4",
+        "report": "stories/审查总簿.md",
+        "reviewer": "",
+        "source_version": "1.0",
+        "note": "清洛试笔新建，待主笔通读；禁自动朱注。",
+        "reviewed_at": "2026-07-24"
+      },
+      "version": "1.0"
+    },
+    {
+      "id": "N-GWT",
+      "title": "人物志·顾晚棠",
+      "genre": "N",
+      "group": "qingluo",
+      "volume": "vol-qingluo",
+      "track": "other",
+      "scent": [
+        "江湖",
+        "市井",
+        "水乡"
+      ],
+      "people": [
+        "顾晚棠"
+      ],
+      "factions": [
+        "顾记镖行"
+      ],
+      "links": [
+        "QL00",
+        "QL01",
+        "QL02",
+        "QL03",
+        "QL04",
+        "QL05"
+      ],
+      "status": "初稿",
+      "role": "side",
+      "path": "stories/人物志/N_顾晚棠/正文.md",
+      "review": {
+        "state": "pending",
+        "seal": "待勘",
+        "round": 0,
+        "date": "2026-07-24",
+        "scope": "base",
+        "standard": "docs/原则/21_故事审查标准.md",
+        "standard_version": "0.4",
+        "report": "stories/审查总簿.md",
+        "reviewer": "",
+        "source_version": "0.1",
+        "note": "清洛试笔新建，待主笔通读；禁自动朱注。",
+        "reviewed_at": "2026-07-24"
+      },
+      "version": "0.1"
     }
   ],
   "world": [

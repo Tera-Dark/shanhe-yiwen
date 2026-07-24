@@ -24,7 +24,11 @@ from collections import defaultdict
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_ROOTS = [ROOT / "stories" / "河东线", ROOT / "stories" / "桥头震后"]
+DEFAULT_ROOTS = [
+    ROOT / "stories" / "河东线",
+    ROOT / "stories" / "桥头震后",
+    ROOT / "stories" / "清洛线",
+]
 
 PATCH_HEADERS = ("## 泥里再一笔", "## 檐下半盏", "## 檐下半盏茶")
 KNOWN_TEMPLATES = (

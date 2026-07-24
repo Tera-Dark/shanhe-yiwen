@@ -73,6 +73,7 @@
 - `stories/主章线/目录骨架.md`：全书 Z 槽规划（槽≠成稿）
 - `stories/人物志/`：档案体人物志（N-SM 等；目录见内）
 - `stories/河东线/`：地脉组 hedong · **河东卷**（连载中；主线 **HD00 + Z001–Z040** 初稿齐；中篇总纲 v1.3；审印主脊多待勘；**阶段C**：`阶段C_手术矩阵.md` · `阶段C_样板报告.md` · 样板四章已交待主笔）
+- `stories/清洛线/`：地脉组 qingluo · **清洛卷试笔**（女主顾晚棠；**QL00–QL05** + N-GWT；中篇总纲 v0.1；文案燕云向；与河东分卷，审印待勘）
 - `stories/桥头震后/`：地脉组 qiaotou · **桥头卷筹备**（现行仅 **QT00** 气味；P001 第二碗在 `archive/`，正章另议）
 - `stories/世界/`：势力/地标/生灵/物产/风物/杂记碎片（含 **WLD-HUO-QIANG 货与枪**）
 - `stories/catalog.json` + `catalog.schema.md`：机器索引（volumes · track · review · world）；**status≠审印**
