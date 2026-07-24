@@ -2311,7 +2311,11 @@ function applyReaderChrome() {
 
   const linksEl = $("#readerLinks");
   const footEl = linksEl?.closest(".reader-foot");
-  if (item.kind === "entry") {
+  // 窄屏不渲染脚链（鸡肋挡读）；桌面保留关联芯片
+  if (isReaderMobile()) {
+    if (linksEl) linksEl.innerHTML = "";
+    if (footEl) footEl.classList.add("is-empty");
+  } else if (item.kind === "entry") {
     const entry = entryById(item.id);
     const links = (entry?.links || []).map(id => entryById(id)).filter(Boolean);
     const prevItem = r.index > 0 ? r.list[r.index - 1] : null;
@@ -2328,20 +2332,19 @@ function applyReaderChrome() {
           `<button type="button" data-open-entry="${escapeHtml(e.id)}">${escapeHtml(displayTitle(e))}</button>`
         ).join("")
       : "";
-    // 正文也可跳到关联碎片
     const worldHits = (state.catalog?.world || []).filter(w =>
       (w.see || []).includes(item.id) || (entry?.people || []).includes(w.name) || (entry?.factions || []).includes(w.name)
     ).slice(0, 6);
     const shardBits = worldHits.map(w =>
       `<button type="button" data-open-shard="${escapeHtml(w.id)}">片·${escapeHtml(w.name)}</button>`
     ).join("");
-    linksEl.innerHTML = `${navBits.join("")}${linkBits}${shardBits}`;
+    if (linksEl) linksEl.innerHTML = `${navBits.join("")}${linkBits}${shardBits}`;
     if (footEl) footEl.classList.toggle("is-empty", !(linkBits || shardBits));
   } else if (item.kind === "shard") {
-    linksEl.innerHTML = renderShardLinkBar(item);
-    if (footEl) footEl.classList.toggle("is-empty", !linksEl.innerHTML.trim());
+    if (linksEl) linksEl.innerHTML = renderShardLinkBar(item);
+    if (footEl) footEl.classList.toggle("is-empty", !(linksEl && linksEl.innerHTML.trim()));
   } else {
-    linksEl.innerHTML = "";
+    if (linksEl) linksEl.innerHTML = "";
     if (footEl) footEl.classList.add("is-empty");
   }
 }
