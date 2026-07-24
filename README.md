@@ -100,20 +100,20 @@
 
 ## 当前状态
 
-- 世界观与创作宪法已建立；设定归入 `docs/` 五类目录（原则 00–26；世界 27/29；社会 28）。
-- 正文按**地脉组 + 卷**归档。河东卷连载中：主线 **HD00 + Z001–Z040 初稿齐**；审印以 catalog 为准（约 **待勘 42 · 朱注 11 · 验讫 3**，阶段 B/C 总编修中，**勿称朱注齐**）。字量多在舒适线（3–5k）下，黄灯。桥头卷 **筹备**：**QT00** 仅气味；**P001《桥上第二碗》已暂撤**（`archive/stories/桥头震后/`，正章另议）。人物志 `stories/人物志/`；世界碎片 `stories/世界/`（含货与枪卷级压）。索引：`stories/catalog.json`。
-- 发布向：地脉成卷 · 踏线人主章 · 审印四档（待勘/退修/朱注/验讫）· **审查 S0 归属**（`21` v0.4）。`status`=写作阶段，`review`=审印，不得混写。
+- 世界观与创作宪法已建立；设定归入 `docs/` 五类目录（原则 00–26·30；世界 27/29；社会 28）。
+- 正文按**地脉组 + 卷**归档。河东卷连载中：主线 **HD00 + Z001–Z040 初稿齐**；审印以 catalog 为准（约 **待勘 42 · 朱注 11 · 验讫 3**，**勿称朱注齐**）。阶段 C 样板四章已交，**停等主笔**（见 `docs/原则/30`）。桥头卷 **筹备**：**QT00** 仅气味；**P001 暂撤**（`archive/stories/桥头震后/`）。人物志 · 世界碎片（含货与枪）。索引：`stories/catalog.json`。
+- 发布向：地脉成卷 · 踏线人 · 审印四档 · **S0+R0–R3**（`21` v0.4）。`status`=写作阶段，`review`=审印。
 - 世界方向：轻玄幻武侠 · 江湖 · 小架空 · 人间尺度。
-- 正式作品名与发布方案尚未确定。近况见 **CHANGELOG v0.44**（状态真相层 · 跨章复写检查 · 伪肉清零）。
+- 正式作品名未定。近况：**CHANGELOG v0.46**（移动阅读）· **v0.45**（阶段 C 样板）。
 
 ## 世界观网页
 
 - 本地：双击 `启动世界观网页.bat`，或根目录 `npm start` → `http://127.0.0.1:4182/`
-- 导航：**入世 · 卷 · 审印 · 世界 · 卷宗 · 时序**；案前设置；正文沉浸阅读（程目侧栏）。
-- 数据：`stories/catalog.json` + `/project/<路径.md>`；世界栏读 `catalog.world` 与人物志。
-- 前端：`web/app.js`（ES module）+ `web/js/constants.js` · `markdown.js`；说明见 `web/README.md`。
-- 网页是导航与展示，不替代 `docs/` 与正文工程。
-- **线上（Vercel）**：仓库根已含 `vercel.json` + `api/`，Import GitHub 仓库即可部署。步骤见 `web/DEPLOY.md`。
+- 导航：**入世 · 卷 · 审印 · 世界 · 卷宗 · 时序**；案前设置；正文沉浸阅读。
+- **阅读器**：桌面程目侧栏；**手机**底坞（上程/程目/下程）· 审印扁条横滑 · **不显示**脚链关联条。
+- 数据：`stories/catalog.json` + `/project/<路径.md>`；世界栏读 `catalog.world`。
+- 前端：`web/app.js` + `js/constants.js` · `markdown.js` · `review-seals.css`；见 `web/README.md`。
+- **线上（Vercel）**：`vercel.json` + `api/`，步骤见 `web/DEPLOY.md`。
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Tera-Dark/shanhe-yiwen)
 

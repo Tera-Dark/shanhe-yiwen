@@ -17,7 +17,7 @@
 | `stories/主章线/目录骨架.md` | 全书 Z 槽规划（非已成稿） |
 | `stories/人物志/` | 档案体人物志（genre N；与 R 折分立） |
 | `stories/河东线/中篇总纲.md` | 河东卷中篇六幕；主线 Z001–Z040 初稿齐 |
-| `web/` | 地脉浏览台（`app.js` + `js/constants.js` · `markdown.js`） |
+| `web/` | 地脉浏览台（`app.js` + `js/*` · 手机底坞 v0.46） |
 | `stories/世界/` | 世界碎片仓（挂 `catalog.world`） |
 | `archive/` | 只读历史，勿当现行 |
 | `scripts/` | postcheck · integrity · reviews · scaffold · `npm run check` |

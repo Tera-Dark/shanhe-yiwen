@@ -12,7 +12,7 @@
 ```text
 .
 ├── CLAUDE.md / AGENTS.md / PROJECT_MAP.md / README.md
-├── docs/{原则,世界,社会,素材,管理}/     # 设定 00–26
+├── docs/{原则,世界,社会,素材,管理}/     # 设定 00–26·30 · 世界27/29 · 社会28
 ├── stories/ + catalog.json              # 正文（地脉组 + volumes 卷 + 主章线）
 ├── web/ · scripts/ · 启动世界观网页.bat
 └── archive/                             # 只读历史
