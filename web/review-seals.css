@@ -173,24 +173,20 @@
 .track-lane-list .review-seal { margin-left: auto; }
 
 .reader-review {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: start;
-  gap: .55rem .75rem;
-  padding: .62rem 1.25rem;
+  /* 结构交给 styles.css 的 rr-strip；此处只保印章与暗色 */
+  padding: 0;
   border-bottom: 1px solid rgba(26, 22, 18, .1);
-  background: linear-gradient(90deg, rgba(122, 46, 40, .11), transparent 65%), var(--paper-card, #f7f4ed);
+  background: linear-gradient(90deg, rgba(122, 46, 40, .1), transparent 70%), var(--paper-card, #f7f4ed);
 }
 .reader-review[hidden] { display: none !important; }
 .reader-review > span:not(.review-seal):not(.shard-mark):not(.shard-meta) {
-  /* 兼容旧结构 */
   min-width: 0;
   color: var(--ink-soft, #3a342c);
   font-size: .86rem;
 }
 .reader-review small { color: var(--ink-mute, #6a6258); }
 .reader-review button {
-  padding: .35rem .68rem;
+  padding: .2rem .45rem;
   border: 1px solid rgba(122, 46, 40, .42);
   color: #7a2e28;
   background: transparent;
@@ -198,7 +194,7 @@
   font-family: var(--serif, serif);
 }
 .reader-review.review-revise {
-  background: linear-gradient(90deg, rgba(103, 41, 34, .18), transparent 70%), var(--paper-card, #f7f4ed);
+  background: linear-gradient(90deg, rgba(103, 41, 34, .14), transparent 70%), var(--paper-card, #f7f4ed);
 }
 
 body[data-mode="dark"] .review-ledger,
@@ -211,6 +207,11 @@ body[data-mode="dark"] .review-seal {
   color: #ce6c61;
 }
 body[data-mode="dark"] .review-count { background: rgba(255, 255, 255, .025); }
+body[data-mode="dark"] .reader-review .rr-chip {
+  background: rgba(255, 255, 255, .04);
+  color: rgba(232, 224, 208, .88);
+  border-color: rgba(196, 88, 75, .28);
+}
 
 @media (max-width: 900px) {
   .entry-review-stack .badge { display: none; }
@@ -219,6 +220,9 @@ body[data-mode="dark"] .review-count { background: rgba(255, 255, 255, .025); }
   .review-ledger-grid { grid-template-columns: 1fr 1fr; }
   .review-ledger-head { flex-wrap: wrap; }
   .review-ledger-head button { margin-left: 0; }
-  .reader-review { padding: .5rem .75rem; }
-  .reader-review .review-seal { width: 2.35rem; height: 2.35rem; }
+  .reader-review .review-seal.is-compact,
+  .reader-review .review-seal {
+    width: 1.55rem;
+    height: 1.55rem;
+  }
 }

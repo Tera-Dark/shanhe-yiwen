@@ -2243,26 +2243,24 @@ function applyReaderChrome() {
       const entry = entryById(item.id);
       const meta = reviewMeta(entry);
       const note = meta.note || "";
-      const longNote = note.length > 42;
-      const notePreview = longNote ? `${note.slice(0, 42)}…` : note;
+      const longNote = note.length > 28;
+      const notePreview = longNote ? `${note.slice(0, 28)}…` : note;
       const dateBit = meta.date
-        ? `<small>${escapeHtml(meta.date)}${meta.round ? ` · 第 ${escapeHtml(String(meta.round))} 轮` : ""}</small>`
+        ? `<small class="rr-date">${escapeHtml(meta.date)}${meta.round ? ` ·${escapeHtml(String(meta.round))}轮` : ""}</small>`
         : "";
       readerReview.hidden = false;
       readerReview.className = `reader-review review-${meta.className}${longNote ? " is-collapsible" : ""}`;
       readerReview.innerHTML = `
-        ${renderReviewSeal(entry)}
-        <div class="rr-body">
-          <div class="rr-head">
-            <b>${escapeHtml(meta.label)}</b>
-            ${dateBit}
-          </div>
-          <p class="rr-note is-preview">${escapeHtml(notePreview)}</p>
-          <p class="rr-note is-full" hidden>${escapeHtml(note)}</p>
+        <div class="rr-strip" role="group" aria-label="审印">
+          ${renderReviewSeal(entry, { compact: true })}
+          <b class="rr-label">${escapeHtml(meta.label)}</b>
+          ${dateBit}
+          ${note ? `<span class="rr-chip is-preview" title="${escapeHtml(note)}">${escapeHtml(notePreview)}</span>` : `<span class="rr-chip is-mute">无批注</span>`}
+          ${longNote ? `<button type="button" class="rr-expand" aria-expanded="false" data-rr-expand="1">详</button>` : ""}
+          ${meta.report ? `<button type="button" class="rr-doc" data-open-doc="${escapeHtml(meta.report)}">批</button>` : ""}
         </div>
-        <div class="rr-actions">
-          ${longNote ? `<button type="button" class="rr-expand" aria-expanded="false" data-rr-expand="1">展开</button>` : ""}
-          ${meta.report ? `<button type="button" class="rr-doc" data-open-doc="${escapeHtml(meta.report)}">批注</button>` : ""}
+        <div class="rr-detail" hidden>
+          <p class="rr-note is-full">${escapeHtml(note)}</p>
         </div>`;
     } else if (item.kind === "shard") {
       const w = worldById(item.id);
@@ -2327,7 +2325,7 @@ function applyReaderChrome() {
     }
     const linkBits = links.length
       ? links.map(e =>
-          `<button type="button" data-open-entry="${escapeHtml(e.id)}">另见 · ${escapeHtml(displayTitle(e))}</button>`
+          `<button type="button" data-open-entry="${escapeHtml(e.id)}">${escapeHtml(displayTitle(e))}</button>`
         ).join("")
       : "";
     // 正文也可跳到关联碎片
@@ -2335,7 +2333,7 @@ function applyReaderChrome() {
       (w.see || []).includes(item.id) || (entry?.people || []).includes(w.name) || (entry?.factions || []).includes(w.name)
     ).slice(0, 6);
     const shardBits = worldHits.map(w =>
-      `<button type="button" data-open-shard="${escapeHtml(w.id)}">碎片 · ${escapeHtml(w.name)}</button>`
+      `<button type="button" data-open-shard="${escapeHtml(w.id)}">片·${escapeHtml(w.name)}</button>`
     ).join("");
     linksEl.innerHTML = `${navBits.join("")}${linkBits}${shardBits}`;
     if (footEl) footEl.classList.toggle("is-empty", !(linkBits || shardBits));
@@ -3041,7 +3039,7 @@ function bindEvents() {
   const tocEdge = $("#readerTocEdge");
   if (tocEdge) tocEdge.addEventListener("click", () => setReaderTocOpen(true));
 
-  // 审印条：展开 / 收起长注
+  // 审印条：扁条「详」展开全文批注
   const readerReviewRoot = $("#readerReview");
   if (readerReviewRoot) {
     readerReviewRoot.addEventListener("click", e => {
@@ -3051,11 +3049,9 @@ function bindEvents() {
       const box = readerReviewRoot;
       const open = box.classList.toggle("is-expanded");
       btn.setAttribute("aria-expanded", open ? "true" : "false");
-      btn.textContent = open ? "收起" : "展开";
-      const preview = box.querySelector(".rr-note.is-preview");
-      const full = box.querySelector(".rr-note.is-full");
-      if (preview) preview.hidden = open;
-      if (full) full.hidden = !open;
+      btn.textContent = open ? "收" : "详";
+      const detail = box.querySelector(".rr-detail");
+      if (detail) detail.hidden = !open;
     });
   }
 
