@@ -34,6 +34,7 @@
 8. 发连载 / 排章前读 `docs/原则/24_卷册与连载阅读体验.md`
 9. 主章线 / 踏线人读 `docs/原则/25_踏线人主章公约.md` 与 `stories/主章线/目录骨架.md`
 10. 人物档案读 `docs/原则/26_人物志规范.md` 与 `stories/人物志/`；河东中篇读 `stories/河东线/中篇总纲.md`
+11. 河东主线**总编修**（阶段 C）：先读 `docs/原则/30_阶段C_河东总编修流程.md` 与 `stories/河东线/阶段C_手术矩阵.md`——**先矩阵、再样板、主笔确认后才推广**；禁止批量灌水/模板补丁
 
 `archive/` 只保存历史短稿与废弃路径，不是现行设定，不得作为创作依据。
 
@@ -75,7 +76,8 @@
 
 - 新条目优先：`python3 scripts/scaffold_entry.py`（见 `stories/_templates/交稿清单.md`）；**勿**自动塞 `main_path`。
 - 若本轮改动了 `stories/**/正文.md`：先运行
-  `python3 scripts/postcheck_story.py stories/<地脉组>/<编号_标题>/正文.md`
+  `python3 scripts/postcheck_story.py stories/<地脉组>/<编号_标题>/正文.md`  
+  跨章复写：`python3 scripts/check_story_reuse.py`（批量加肉后必跑；也含于 `npm run check`）
   退出码非 0 不得交稿；交稿前建议加 `--strict`。
 - 运行 `python3 scripts/check_integrity.py`（或 `npm run check`），确认磁盘↔catalog、三 path、world 路径。
 - 运行 `python3 scripts/check_reviews.py`，确认审印登记、报告路径与正文 Version 一致。

@@ -237,7 +237,7 @@
         "R-SM",
         "N-CB"
       ],
-      "status": "验讫",
+      "status": "初稿",
       "role": "prologue",
       "path": "stories/河东线/HD00_入卷/正文.md",
       "review": {
@@ -254,7 +254,8 @@
         "note": "【阶段B·2026-07-23】剥除批量加肉模板段（檐下半盏/泥里再一笔复写），Version→1.15，审印失效待复审。",
         "reviewed_at": "2026-07-23"
       },
-      "source_version": "1.2"
+      "source_version": "1.2",
+      "version": "1.15"
     },
     {
       "id": "Z001",
@@ -279,23 +280,24 @@
         "HD00",
         "R-SM"
       ],
-      "status": "验讫",
+      "status": "初稿",
       "role": "main",
       "path": "stories/河东线/Z001_第一脚泥/正文.md",
       "review": {
         "state": "pending",
         "seal": "待勘",
         "round": 0,
-        "date": "2026-07-23",
+        "date": "2026-07-24",
         "scope": "base+main",
         "standard": "docs/原则/21_故事审查标准.md",
         "standard_version": "0.4",
         "report": "stories/审查总簿.md",
         "reviewer": "",
-        "source_version": "1.7",
-        "note": "【阶段B·2026-07-23】剥除批量加肉模板段（檐下半盏/泥里再一笔复写），Version→1.7，审印失效待复审。",
-        "reviewed_at": "2026-07-23"
-      }
+        "source_version": "1.9",
+        "note": "【阶段B·2026-07-23】剥除批量加肉模板段（檐下半盏/泥里再一笔复写），Version→1.7，审印失效待复审。 【阶段C样板·2026-07-24】v1.9 并炊饼入天亮；靴钉改走法；删章尾同义补丁。review 仍待勘。",
+        "reviewed_at": "2026-07-24"
+      },
+      "version": "1.8"
     },
     {
       "id": "Z002",
@@ -322,7 +324,7 @@
         "G001",
         "N-CB"
       ],
-      "status": "朱注",
+      "status": "初稿",
       "role": "main",
       "path": "stories/河东线/Z002_碑下三文/正文.md",
       "review": {
@@ -335,11 +337,12 @@
         "standard_version": "0.4",
         "report": "stories/审查总簿.md",
         "reviewer": "",
-        "source_version": "1.10",
+        "source_version": "1.11",
         "note": "【阶段B·2026-07-23】剥除批量加肉模板段（檐下半盏/泥里再一笔复写），Version→1.10，审印失效待复审。",
         "reviewed_at": "2026-07-23",
         "notes": "2026-07-23 加肉；R0 PASS；字量黄灯可再厚"
-      }
+      },
+      "version": "1.11"
     },
     {
       "id": "Z003",
@@ -369,7 +372,7 @@
         "R001",
         "Y001"
       ],
-      "status": "验讫",
+      "status": "初稿",
       "role": "main",
       "path": "stories/河东线/Z003_雨旗过身/正文.md",
       "review": {
@@ -382,11 +385,12 @@
         "standard_version": "0.4",
         "report": "stories/审查总簿.md",
         "reviewer": "",
-        "source_version": "1.10",
+        "source_version": "1.12",
         "note": "【阶段B·2026-07-23】剥除批量加肉模板段（檐下半盏/泥里再一笔复写），Version→1.10，审印失效待复审。",
         "reviewed_at": "2026-07-23"
       },
-      "source_version": "1.2"
+      "source_version": "1.2",
+      "version": "1.12"
     },
     {
       "id": "Z004",
@@ -416,7 +420,7 @@
         "C001",
         "W001"
       ],
-      "status": "朱注",
+      "status": "初稿",
       "role": "main",
       "peak": true,
       "path": "stories/河东线/Z004_桥边看旗/正文.md",
@@ -430,11 +434,12 @@
         "standard_version": "0.4",
         "report": "stories/审查总簿.md",
         "reviewer": "",
-        "source_version": "1.6",
+        "source_version": "1.7",
         "note": "【阶段B·2026-07-23】剥除批量加肉模板段（檐下半盏/泥里再一笔复写），Version→1.6，审印失效待复审。",
         "reviewed_at": "2026-07-23",
         "notes": "2026-07-23 加肉；R0 PASS；字量黄灯可再厚"
-      }
+      },
+      "version": "1.7"
     },
     {
       "id": "R-SM",
@@ -459,7 +464,7 @@
         "Y001",
         "Q001"
       ],
-      "status": "基础通过",
+      "status": "定稿",
       "role": "main",
       "path": "stories/河东线/R_沈陌/正文.md",
       "review": {
@@ -474,7 +479,8 @@
         "reviewer": "Codex·总编审",
         "source_version": "1.0",
         "note": "踏线人边界、懂/债/名与钉子关系清楚，可作连续性基准。"
-      }
+      },
+      "version": "1.0"
     },
     {
       "id": "Y001",
@@ -502,7 +508,7 @@
         "W001",
         "Z002"
       ],
-      "status": "基础通过",
+      "status": "返修稿",
       "role": "main",
       "path": "stories/河东线/Y001_雨后的官道/正文.md",
       "review": {
@@ -517,7 +523,8 @@
         "reviewer": "Codex·总编审",
         "source_version": "1.1",
         "note": "地脉定场鲜明；母题与口头禅密度偏高，后续勿重复扩写。"
-      }
+      },
+      "version": "1.1"
     },
     {
       "id": "R001",
@@ -545,7 +552,7 @@
         "Q002",
         "P002"
       ],
-      "status": "基础通过",
+      "status": "返修稿",
       "role": "main",
       "path": "stories/河东线/R001_河东三人折/正文.md",
       "review": {
@@ -560,7 +567,8 @@
         "reviewer": "Codex·总编审",
         "source_version": "1.1",
         "note": "三人轮廓清楚；人物折偏观念化，正式故事需补非主题性生活。"
-      }
+      },
+      "version": "1.1"
     },
     {
       "id": "G001",
@@ -588,7 +596,7 @@
         "C001",
         "P002"
       ],
-      "status": "基础通过",
+      "status": "返修稿",
       "role": "main",
       "path": "stories/河东线/G001_青驿镖局/正文.md",
       "review": {
@@ -603,7 +611,8 @@
         "reviewer": "Codex·总编审",
         "source_version": "1.1",
         "note": "规矩帖可用；职业制度均为 D 级小架空，外发时勿当史实说明。"
-      }
+      },
+      "version": "1.1"
     },
     {
       "id": "Q001",
@@ -633,7 +642,7 @@
         "P002",
         "Z004"
       ],
-      "status": "基础通过",
+      "status": "定稿",
       "role": "main",
       "peak": true,
       "path": "stories/河东线/Q001_旗先过桥/正文.md",
@@ -649,7 +658,8 @@
         "reviewer": "Codex·总编审",
         "source_version": "1.1",
         "note": "事件、选择、代价与双读完整，冷旗主事权清晰。"
-      }
+      },
+      "version": "1.1"
     },
     {
       "id": "C001",
@@ -675,7 +685,7 @@
         "W001",
         "Q002"
       ],
-      "status": "基础通过",
+      "status": "定稿",
       "role": "coda",
       "path": "stories/河东线/C001_雨旗不湿/正文.md",
       "review": {
@@ -690,7 +700,8 @@
         "reviewer": "Codex·总编审",
         "source_version": "1.1",
         "note": "残章形态成立，第十八回保持阙，未把谜底写死。"
-      }
+      },
+      "version": "1.1"
     },
     {
       "id": "W001",
@@ -717,7 +728,7 @@
         "Q001",
         "Z002"
       ],
-      "status": "基础通过",
+      "status": "幕间稿",
       "role": "interlude",
       "path": "stories/河东线/W001_土地爷讨债/正文.md",
       "review": {
@@ -732,7 +743,8 @@
         "reviewer": "Codex·总编审",
         "source_version": "1.0",
         "note": "三说并置成立；问字/回字等组内套语已接近饱和。"
-      }
+      },
+      "version": "1.0"
     },
     {
       "id": "Q002",
@@ -755,7 +767,7 @@
         "Y001",
         "W001"
       ],
-      "status": "基础通过",
+      "status": "返修稿",
       "role": "main",
       "path": "stories/河东线/Q002_半卷话本/正文.md",
       "review": {
@@ -770,7 +782,8 @@
         "reviewer": "Codex·总编审",
         "source_version": "1.1",
         "note": "奇遇闭合且保留双读；红痕与残书属于现有公式，后续不宜再复制。"
-      }
+      },
+      "version": "1.1"
     },
     {
       "id": "P002",
@@ -801,7 +814,7 @@
         "C001",
         "Z004"
       ],
-      "status": "基础通过",
+      "status": "返修稿",
       "role": "main",
       "peak": true,
       "path": "stories/河东线/P002_半截杆/正文.md",
@@ -817,7 +830,8 @@
         "reviewer": "Codex·总编审",
         "source_version": "1.1",
         "note": "冷旗旧案与代价成立；主题解释和既有回声略密，可在外发修订时收束。"
-      }
+      },
+      "version": "1.1"
     },
     {
       "id": "QT00",
@@ -837,7 +851,7 @@
       ],
       "factions": [],
       "links": [],
-      "status": "待勘",
+      "status": "初稿",
       "role": "prologue",
       "path": "stories/桥头震后/QT00_入卷/正文.md",
       "review": {
@@ -853,7 +867,8 @@
         "source_version": "1.3",
         "note": "【阶段A】入卷改写：去掉「正篇叫第二碗」与连载工程预告；正章另议。须按 21 v0.4 复审后重盖。",
         "reviewed_at": "2026-07-23"
-      }
+      },
+      "version": "1.3"
     },
     {
       "id": "Z005",
@@ -881,7 +896,7 @@
         "Y001",
         "G001"
       ],
-      "status": "朱注",
+      "status": "初稿",
       "role": "main",
       "path": "stories/河东线/Z005_东市半日/正文.md",
       "review": {
@@ -898,7 +913,8 @@
         "note": "【阶段B·2026-07-23】剥除批量加肉模板段（檐下半盏/泥里再一笔复写），Version→1.5，审印失效待复审。",
         "reviewed_at": "2026-07-23",
         "notes": "2026-07-23 加肉；R0 PASS；字量黄灯可再厚"
-      }
+      },
+      "version": "1.5"
     },
     {
       "id": "Z006",
@@ -927,7 +943,7 @@
         "G001",
         "N-CB"
       ],
-      "status": "朱注",
+      "status": "初稿",
       "role": "main",
       "path": "stories/河东线/Z006_茶冷如树/正文.md",
       "review": {
@@ -944,7 +960,8 @@
         "note": "【阶段B·2026-07-23】剥除批量加肉模板段（檐下半盏/泥里再一笔复写），Version→1.4，审印失效待复审。",
         "reviewed_at": "2026-07-23",
         "notes": "2026-07-23 加肉；R0 PASS；字量黄灯可再厚"
-      }
+      },
+      "version": "1.4"
     },
     {
       "id": "N-SM",
@@ -970,7 +987,7 @@
         "Z005",
         "HD00"
       ],
-      "status": "初稿",
+      "status": "返修稿",
       "role": "main",
       "path": "stories/人物志/N_沈陌/正文.md",
       "review": {
@@ -985,7 +1002,8 @@
         "reviewer": "Claude·编审",
         "source_version": "1.2",
         "note": "已补欲望四问；档案向非正章。"
-      }
+      },
+      "version": "1.2"
     },
     {
       "id": "N-LQ",
@@ -1011,7 +1029,7 @@
         "Z003",
         "Z004"
       ],
-      "status": "初稿",
+      "status": "返修稿",
       "role": "side",
       "path": "stories/人物志/N_冷旗/正文.md",
       "review": {
@@ -1026,7 +1044,8 @@
         "reviewer": "Claude·编审",
         "source_version": "1.2",
         "note": "已补欲望四问。"
-      }
+      },
+      "version": "1.2"
     },
     {
       "id": "N-AD",
@@ -1048,7 +1067,7 @@
         "C001",
         "Z011"
       ],
-      "status": "初稿",
+      "status": "返修稿",
       "role": "side",
       "path": "stories/人物志/N_阿段/正文.md",
       "review": {
@@ -1063,7 +1082,8 @@
         "reviewer": "Claude·编审",
         "source_version": "1.2",
         "note": "已补欲望四问。"
-      }
+      },
+      "version": "1.2"
     },
     {
       "id": "N-LX",
@@ -1087,7 +1107,7 @@
         "Z006",
         "W001"
       ],
-      "status": "初稿",
+      "status": "返修稿",
       "role": "side",
       "path": "stories/人物志/N_柳先生/正文.md",
       "review": {
@@ -1102,7 +1122,8 @@
         "reviewer": "Claude·编审",
         "source_version": "1.2",
         "note": "已补欲望四问。"
-      }
+      },
+      "version": "1.2"
     },
     {
       "id": "N-CB",
@@ -1128,7 +1149,7 @@
         "N-SM",
         "N-LQ"
       ],
-      "status": "初稿",
+      "status": "返修稿",
       "role": "side",
       "path": "stories/人物志/N_茶白/正文.md",
       "review": {
@@ -1143,7 +1164,8 @@
         "reviewer": "Claude·编审",
         "source_version": "1.2",
         "note": "已补欲望四问；正文默认匿名。"
-      }
+      },
+      "version": "1.2"
     },
     {
       "id": "Z007",
@@ -1169,7 +1191,7 @@
         "W001",
         "N-SM"
       ],
-      "status": "验讫",
+      "status": "初稿",
       "role": "main",
       "path": "stories/河东线/Z007_夜不入龛/正文.md",
       "review": {
@@ -1182,11 +1204,12 @@
         "standard_version": "0.4",
         "report": "stories/审查总簿.md",
         "reviewer": "",
-        "source_version": "1.7",
+        "source_version": "1.8",
         "note": "【阶段B·2026-07-23】剥除批量加肉模板段（檐下半盏/泥里再一笔复写），Version→1.7，审印失效待复审。",
         "reviewed_at": "2026-07-23"
       },
-      "source_version": "1.2"
+      "source_version": "1.2",
+      "version": "1.8"
     },
     {
       "id": "Z008",
@@ -1218,7 +1241,7 @@
         "N-SM",
         "N-LQ"
       ],
-      "status": "朱注",
+      "status": "初稿",
       "role": "main",
       "path": "stories/河东线/Z008_厚锣远去/正文.md",
       "review": {
@@ -1231,11 +1254,12 @@
         "standard_version": "0.4",
         "report": "stories/审查总簿.md",
         "reviewer": "",
-        "source_version": "1.6",
+        "source_version": "1.7",
         "note": "【阶段B·2026-07-23】剥除批量加肉模板段（檐下半盏/泥里再一笔复写），Version→1.6，审印失效待复审。",
         "reviewed_at": "2026-07-23",
         "notes": "2026-07-23 加肉；R0 PASS；字量黄灯可再厚"
-      }
+      },
+      "version": "1.7"
     },
     {
       "id": "Z009",
@@ -1248,7 +1272,7 @@
       "people": [],
       "factions": [],
       "links": [],
-      "status": "待勘",
+      "status": "初稿",
       "role": "main",
       "path": "stories/河东线/Z009_半壶三说/正文.md",
       "review": {
@@ -1265,7 +1289,8 @@
         "note": "【阶段A·2026-07-23 语义重置】原盖印不符合 21 v0.4（round<1,note待*）。R0 可另记；须人工 S0+R1–R3 且 round≥1、note 无待* 后重盖。",
         "reviewed_at": "2026-07-23",
         "notes": ""
-      }
+      },
+      "version": "1.2"
     },
     {
       "id": "Z010",
@@ -1278,7 +1303,7 @@
       "people": [],
       "factions": [],
       "links": [],
-      "status": "待勘",
+      "status": "初稿",
       "role": "main",
       "path": "stories/河东线/Z010_话本摊边/正文.md",
       "review": {
@@ -1295,7 +1320,8 @@
         "note": "【阶段A·2026-07-23 语义重置】原盖印不符合 21 v0.4（round<1,note待*）。R0 可另记；须人工 S0+R1–R3 且 round≥1、note 无待* 后重盖。",
         "reviewed_at": "2026-07-23",
         "notes": ""
-      }
+      },
+      "version": "1.3"
     },
     {
       "id": "Z011",
@@ -1308,7 +1334,7 @@
       "people": [],
       "factions": [],
       "links": [],
-      "status": "待勘",
+      "status": "初稿",
       "role": "main",
       "path": "stories/河东线/Z011_刀横桌面/正文.md",
       "review": {
@@ -1325,7 +1351,8 @@
         "note": "【阶段A·2026-07-23 语义重置】原盖印不符合 21 v0.4（round<1,note待*,加肉冒充验讫）。R0 可另记；须人工 S0+R1–R3 且 round≥1、note 无待* 后重盖。 【阶段B】已剥模板复写段；待按手术表人工复审。",
         "reviewed_at": "2026-07-23",
         "notes": ""
-      }
+      },
+      "version": "1.4"
     },
     {
       "id": "Z012",
@@ -1338,7 +1365,7 @@
       "people": [],
       "factions": [],
       "links": [],
-      "status": "待勘",
+      "status": "初稿",
       "role": "main",
       "path": "stories/河东线/Z012_雨又来/正文.md",
       "review": {
@@ -1355,7 +1382,8 @@
         "note": "【阶段A·2026-07-23 语义重置】原盖印不符合 21 v0.4（round<1,note待*）。R0 可另记；须人工 S0+R1–R3 且 round≥1、note 无待* 后重盖。",
         "reviewed_at": "2026-07-23",
         "notes": ""
-      }
+      },
+      "version": "1.1"
     },
     {
       "id": "Z013",
@@ -1368,25 +1396,26 @@
       "people": [],
       "factions": [],
       "links": [],
-      "status": "待勘",
+      "status": "初稿",
       "role": "main",
       "path": "stories/河东线/Z013_渡口酱印/正文.md",
       "review": {
         "state": "pending",
         "seal": "待勘",
         "round": 0,
-        "date": "2026-07-23",
+        "date": "2026-07-24",
         "scope": "base+main",
         "standard": "docs/原则/21_故事审查标准.md",
         "standard_version": "0.4",
         "report": "stories/审查总簿.md",
         "reviewer": "Claude·编审",
-        "source_version": "1.1",
-        "note": "【阶段A·2026-07-23 语义重置】原盖印不符合 21 v0.4（round<1,note待*,加肉冒充验讫）。R0 可另记；须人工 S0+R1–R3 且 round≥1、note 无待* 后重盖。",
-        "reviewed_at": "2026-07-23",
+        "source_version": "1.2",
+        "note": "【阶段A·2026-07-23 语义重置】原盖印不符合 21 v0.4（round<1,note待*,加肉冒充验讫）。R0 可另记；须人工 S0+R1–R3 且 round≥1、note 无待* 后重盖。 【阶段C样板·2026-07-24】v1.2 钉肿眼→Z017；回字不写锅；删两边受伤/泥还在转。review 仍待勘。",
+        "reviewed_at": "2026-07-24",
         "notes": ""
       },
-      "source_version": "1.1"
+      "source_version": "1.2",
+      "version": "1.1"
     },
     {
       "id": "Z014",
@@ -1399,7 +1428,7 @@
       "people": [],
       "factions": [],
       "links": [],
-      "status": "待勘",
+      "status": "初稿",
       "role": "main",
       "path": "stories/河东线/Z014_一封回字/正文.md",
       "review": {
@@ -1412,11 +1441,12 @@
         "standard_version": "0.4",
         "report": "stories/审查总簿.md",
         "reviewer": "Claude·编审",
-        "source_version": "1.1",
+        "source_version": "1.2",
         "note": "【阶段A·2026-07-23 语义重置】原盖印不符合 21 v0.4（note待*）。R0 可另记；须人工 S0+R1–R3 且 round≥1、note 无待* 后重盖。",
         "reviewed_at": "2026-07-23"
       },
-      "source_version": "1.2"
+      "source_version": "1.2",
+      "version": "1.2"
     },
     {
       "id": "Z015",
@@ -1429,7 +1459,7 @@
       "people": [],
       "factions": [],
       "links": [],
-      "status": "待勘",
+      "status": "初稿",
       "role": "main",
       "path": "stories/河东线/Z015_脚程钱尽/正文.md",
       "review": {
@@ -1447,7 +1477,8 @@
         "reviewed_at": "2026-07-23",
         "notes": ""
       },
-      "source_version": "1.1"
+      "source_version": "1.1",
+      "version": "1.2"
     },
     {
       "id": "Z016",
@@ -1460,7 +1491,7 @@
       "people": [],
       "factions": [],
       "links": [],
-      "status": "待勘",
+      "status": "初稿",
       "role": "main",
       "path": "stories/河东线/Z016_短活/正文.md",
       "review": {
@@ -1477,7 +1508,8 @@
         "note": "【阶段A·2026-07-23 语义重置】原盖印不符合 21 v0.4（round<1,note待*）。R0 可另记；须人工 S0+R1–R3 且 round≥1、note 无待* 后重盖。",
         "reviewed_at": "2026-07-23",
         "notes": ""
-      }
+      },
+      "version": "1.2"
     },
     {
       "id": "Z017",
@@ -1490,7 +1522,7 @@
       "people": [],
       "factions": [],
       "links": [],
-      "status": "待勘",
+      "status": "初稿",
       "role": "main",
       "path": "stories/河东线/Z017_账房门外/正文.md",
       "review": {
@@ -1508,7 +1540,8 @@
         "reviewed_at": "2026-07-23",
         "notes": ""
       },
-      "source_version": "1.1"
+      "source_version": "1.1",
+      "version": "1.2"
     },
     {
       "id": "Z018",
@@ -1521,7 +1554,7 @@
       "people": [],
       "factions": [],
       "links": [],
-      "status": "待勘",
+      "status": "初稿",
       "role": "main",
       "path": "stories/河东线/Z018_听跪/正文.md",
       "review": {
@@ -1534,11 +1567,12 @@
         "standard_version": "0.4",
         "report": "stories/审查总簿.md",
         "reviewer": "Claude·编审",
-        "source_version": "1.2",
+        "source_version": "1.4",
         "note": "【阶段A·2026-07-23 语义重置】原盖印不符合 21 v0.4（round<1,note待*,加肉冒充验讫）。R0 可另记；须人工 S0+R1–R3 且 round≥1、note 无待* 后重盖。",
         "reviewed_at": "2026-07-23",
         "notes": ""
-      }
+      },
+      "version": "1.4"
     },
     {
       "id": "Z019",
@@ -1551,25 +1585,26 @@
       "people": [],
       "factions": [],
       "links": [],
-      "status": "待勘",
+      "status": "返修稿",
       "role": "main",
       "path": "stories/河东线/Z019_北岔不入/正文.md",
       "review": {
         "state": "pending",
         "seal": "待勘",
         "round": 0,
-        "date": "2026-07-23",
+        "date": "2026-07-24",
         "scope": "base+main",
         "standard": "docs/原则/21_故事审查标准.md",
         "standard_version": "0.4",
         "report": "stories/审查总簿.md",
         "reviewer": "Claude·编审",
-        "source_version": "1.3",
-        "note": "【阶段A·2026-07-23 语义重置】原盖印不符合 21 v0.4（note待*）。R0 可另记；须人工 S0+R1–R3 且 round≥1、note 无待* 后重盖。",
+        "source_version": "1.4",
+        "note": "【阶段A·2026-07-23 语义重置】原盖印不符合 21 v0.4（note待*）。R0 可另记；须人工 S0+R1–R3 且 round≥1、note 无待* 后重盖。 【阶段C样板·2026-07-24】v1.4 外部代价=少半成短活+南仓拒派；删停的价双段。review 仍待勘。",
         "notes": "",
-        "reviewed_at": "2026-07-23"
+        "reviewed_at": "2026-07-24"
       },
-      "source_version": "1.2"
+      "source_version": "1.4",
+      "version": "1.3"
     },
     {
       "id": "Z020",
@@ -1582,7 +1617,7 @@
       "people": [],
       "factions": [],
       "links": [],
-      "status": "待勘",
+      "status": "初稿",
       "role": "main",
       "path": "stories/河东线/Z020_齿印传闻/正文.md",
       "review": {
@@ -1595,12 +1630,13 @@
         "standard_version": "0.4",
         "report": "stories/审查总簿.md",
         "reviewer": "Claude·编审",
-        "source_version": "1.5",
+        "source_version": "1.6",
         "note": "【阶段A·2026-07-23 语义重置】原盖印不符合 21 v0.4（note待*）。R0 可另记；须人工 S0+R1–R3 且 round≥1、note 无待* 后重盖。 【阶段B】已剥模板复写段；待按手术表人工复审。",
         "notes": "",
         "reviewed_at": "2026-07-23"
       },
-      "source_version": "1.2"
+      "source_version": "1.2",
+      "version": "1.6"
     },
     {
       "id": "Z021",
@@ -1613,7 +1649,7 @@
       "people": [],
       "factions": [],
       "links": [],
-      "status": "待勘",
+      "status": "初稿",
       "role": "main",
       "path": "stories/河东线/Z021_空荷包的人/正文.md",
       "review": {
@@ -1626,12 +1662,13 @@
         "standard_version": "0.4",
         "report": "stories/审查总簿.md",
         "reviewer": "Claude·编审",
-        "source_version": "1.7",
+        "source_version": "1.8",
         "note": "【阶段A·2026-07-23 语义重置】原盖印不符合 21 v0.4（note待*）。R0 可另记；须人工 S0+R1–R3 且 round≥1、note 无待* 后重盖。 【阶段B】已剥模板复写段；待按手术表人工复审。",
         "notes": "",
         "reviewed_at": "2026-07-23"
       },
-      "source_version": "1.2"
+      "source_version": "1.2",
+      "version": "1.8"
     },
     {
       "id": "Z022",
@@ -1644,7 +1681,7 @@
       "people": [],
       "factions": [],
       "links": [],
-      "status": "待勘",
+      "status": "初稿",
       "role": "main",
       "path": "stories/河东线/Z022_牙契一角/正文.md",
       "review": {
@@ -1657,11 +1694,12 @@
         "standard_version": "0.4",
         "report": "stories/审查总簿.md",
         "reviewer": "Claude·编审",
-        "source_version": "1.5",
+        "source_version": "1.6",
         "note": "【阶段A·2026-07-23 语义重置】原盖印不符合 21 v0.4（round<1,note待*）。R0 可另记；须人工 S0+R1–R3 且 round≥1、note 无待* 后重盖。 【阶段B】已剥模板复写段；待按手术表人工复审。",
         "notes": "",
         "reviewed_at": "2026-07-23"
-      }
+      },
+      "version": "1.6"
     },
     {
       "id": "Z023",
@@ -1674,7 +1712,7 @@
       "people": [],
       "factions": [],
       "links": [],
-      "status": "待勘",
+      "status": "初稿",
       "role": "main",
       "path": "stories/河东线/Z023_海捕纸边/正文.md",
       "review": {
@@ -1687,11 +1725,12 @@
         "standard_version": "0.4",
         "report": "stories/审查总簿.md",
         "reviewer": "Claude·编审",
-        "source_version": "1.6",
+        "source_version": "1.7",
         "note": "【阶段A·2026-07-23 语义重置】原盖印不符合 21 v0.4（round<1,note待*）。R0 可另记；须人工 S0+R1–R3 且 round≥1、note 无待* 后重盖。 【阶段B】已剥模板复写段；待按手术表人工复审。",
         "notes": "",
         "reviewed_at": "2026-07-23"
-      }
+      },
+      "version": "1.7"
     },
     {
       "id": "Z024",
@@ -1704,7 +1743,7 @@
       "people": [],
       "factions": [],
       "links": [],
-      "status": "待勘",
+      "status": "初稿",
       "role": "main",
       "path": "stories/河东线/Z024_同路半日/正文.md",
       "review": {
@@ -1717,11 +1756,12 @@
         "standard_version": "0.4",
         "report": "stories/审查总簿.md",
         "reviewer": "Claude·编审",
-        "source_version": "1.7",
+        "source_version": "1.8",
         "note": "【阶段A·2026-07-23 语义重置】原盖印不符合 21 v0.4（round<1,note待*）。R0 可另记；须人工 S0+R1–R3 且 round≥1、note 无待* 后重盖。 【阶段B】已剥模板复写段；待按手术表人工复审。",
         "notes": "",
         "reviewed_at": "2026-07-23"
-      }
+      },
+      "version": "1.8"
     },
     {
       "id": "Z025",
@@ -1734,7 +1774,7 @@
       "people": [],
       "factions": [],
       "links": [],
-      "status": "待勘",
+      "status": "初稿",
       "role": "main",
       "path": "stories/河东线/Z025_阿牛的骂/正文.md",
       "review": {
@@ -1747,11 +1787,12 @@
         "standard_version": "0.4",
         "report": "stories/审查总簿.md",
         "reviewer": "Claude·编审",
-        "source_version": "1.6",
+        "source_version": "1.7",
         "note": "【阶段A·2026-07-23 语义重置】原盖印不符合 21 v0.4（round<1,note待*）。R0 可另记；须人工 S0+R1–R3 且 round≥1、note 无待* 后重盖。 【阶段B】已剥模板复写段；待按手术表人工复审。",
         "notes": "",
         "reviewed_at": "2026-07-23"
-      }
+      },
+      "version": "1.7"
     },
     {
       "id": "Z026",
@@ -1764,7 +1805,7 @@
       "people": [],
       "factions": [],
       "links": [],
-      "status": "待勘",
+      "status": "初稿",
       "role": "main",
       "path": "stories/河东线/Z026_遮面钱/正文.md",
       "review": {
@@ -1777,11 +1818,12 @@
         "standard_version": "0.4",
         "report": "stories/审查总簿.md",
         "reviewer": "Claude·编审",
-        "source_version": "1.7",
+        "source_version": "1.8",
         "note": "【阶段A·2026-07-23 语义重置】原盖印不符合 21 v0.4（round<1,note待*）。R0 可另记；须人工 S0+R1–R3 且 round≥1、note 无待* 后重盖。 【阶段B】已剥模板复写段；待按手术表人工复审。",
         "notes": "",
         "reviewed_at": "2026-07-23"
-      }
+      },
+      "version": "1.8"
     },
     {
       "id": "Z027",
@@ -1794,7 +1836,7 @@
       "people": [],
       "factions": [],
       "links": [],
-      "status": "待勘",
+      "status": "初稿",
       "role": "main",
       "path": "stories/河东线/Z027_野刀不入帖/正文.md",
       "review": {
@@ -1807,11 +1849,12 @@
         "standard_version": "0.4",
         "report": "stories/审查总簿.md",
         "reviewer": "Claude·编审",
-        "source_version": "1.8",
+        "source_version": "1.9",
         "note": "【阶段A·2026-07-23 语义重置】原盖印不符合 21 v0.4（round<1,note待*）。R0 可另记；须人工 S0+R1–R3 且 round≥1、note 无待* 后重盖。 【阶段B】已剥模板复写段；待按手术表人工复审。",
         "notes": "",
         "reviewed_at": "2026-07-23"
-      }
+      },
+      "version": "1.9"
     },
     {
       "id": "Z028",
@@ -1824,7 +1867,7 @@
       "people": [],
       "factions": [],
       "links": [],
-      "status": "待勘",
+      "status": "初稿",
       "role": "main",
       "path": "stories/河东线/Z028_黄泥铺/正文.md",
       "review": {
@@ -1837,11 +1880,12 @@
         "standard_version": "0.4",
         "report": "stories/审查总簿.md",
         "reviewer": "Claude·编审",
-        "source_version": "1.8",
+        "source_version": "1.9",
         "note": "【阶段A·2026-07-23 语义重置】原盖印不符合 21 v0.4（round<1,note待*）。R0 可另记；须人工 S0+R1–R3 且 round≥1、note 无待* 后重盖。 【阶段B】已剥模板复写段；待按手术表人工复审。",
         "notes": "",
         "reviewed_at": "2026-07-23"
-      }
+      },
+      "version": "1.9"
     },
     {
       "id": "Z029",
@@ -1854,7 +1898,7 @@
       "people": [],
       "factions": [],
       "links": [],
-      "status": "待勘",
+      "status": "初稿",
       "role": "main",
       "path": "stories/河东线/Z029_第二封话/正文.md",
       "review": {
@@ -1867,11 +1911,12 @@
         "standard_version": "0.4",
         "report": "stories/审查总簿.md",
         "reviewer": "Claude·编审",
-        "source_version": "1.6",
+        "source_version": "1.7",
         "note": "【阶段A·2026-07-23 语义重置】原盖印不符合 21 v0.4（round<1,note待*）。R0 可另记；须人工 S0+R1–R3 且 round≥1、note 无待* 后重盖。 【阶段B】已剥模板复写段；待按手术表人工复审。",
         "notes": "",
         "reviewed_at": "2026-07-23"
-      }
+      },
+      "version": "1.7"
     },
     {
       "id": "Z030",
@@ -1884,7 +1929,7 @@
       "people": [],
       "factions": [],
       "links": [],
-      "status": "待勘",
+      "status": "初稿",
       "role": "main",
       "path": "stories/河东线/Z030_离线前夜/正文.md",
       "review": {
@@ -1897,12 +1942,13 @@
         "standard_version": "0.4",
         "report": "stories/审查总簿.md",
         "reviewer": "Claude·编审",
-        "source_version": "1.7",
+        "source_version": "1.9",
         "note": "【阶段A·2026-07-23 语义重置】原盖印不符合 21 v0.4（note待*）。R0 可另记；须人工 S0+R1–R3 且 round≥1、note 无待* 后重盖。 【阶段B】已剥模板复写段；待按手术表人工复审。",
         "notes": "",
         "reviewed_at": "2026-07-23"
       },
-      "source_version": "1.2"
+      "source_version": "1.2",
+      "version": "1.9"
     },
     {
       "id": "Z031",
@@ -1915,7 +1961,7 @@
       "people": [],
       "factions": [],
       "links": [],
-      "status": "待勘",
+      "status": "初稿",
       "role": "main",
       "path": "stories/河东线/Z031_回望半截碑/正文.md",
       "review": {
@@ -1928,12 +1974,13 @@
         "standard_version": "0.4",
         "report": "stories/审查总簿.md",
         "reviewer": "Claude·编审",
-        "source_version": "1.8",
+        "source_version": "1.9",
         "note": "【阶段A·2026-07-23 语义重置】原盖印不符合 21 v0.4（note待*）。R0 可另记；须人工 S0+R1–R3 且 round≥1、note 无待* 后重盖。 【阶段B】已剥模板复写段；待按手术表人工复审。",
         "notes": "",
         "reviewed_at": "2026-07-23"
       },
-      "source_version": "1.2"
+      "source_version": "1.2",
+      "version": "1.9"
     },
     {
       "id": "Z032",
@@ -1946,7 +1993,7 @@
       "people": [],
       "factions": [],
       "links": [],
-      "status": "待勘",
+      "status": "初稿",
       "role": "main",
       "path": "stories/河东线/Z032_渡口船/正文.md",
       "review": {
@@ -1959,12 +2006,13 @@
         "standard_version": "0.4",
         "report": "stories/审查总簿.md",
         "reviewer": "Claude·编审",
-        "source_version": "1.7",
+        "source_version": "1.8",
         "note": "【阶段A·2026-07-23 语义重置】原盖印不符合 21 v0.4（note待*）。R0 可另记；须人工 S0+R1–R3 且 round≥1、note 无待* 后重盖。 【阶段B】已剥模板复写段；待按手术表人工复审。",
         "notes": "",
         "reviewed_at": "2026-07-23"
       },
-      "source_version": "1.2"
+      "source_version": "1.2",
+      "version": "1.8"
     },
     {
       "id": "Z033",
@@ -1977,7 +2025,7 @@
       "people": [],
       "factions": [],
       "links": [],
-      "status": "待勘",
+      "status": "初稿",
       "role": "main",
       "path": "stories/河东线/Z033_河东余泥/正文.md",
       "review": {
@@ -1990,12 +2038,13 @@
         "standard_version": "0.4",
         "report": "stories/审查总簿.md",
         "reviewer": "Claude·编审",
-        "source_version": "1.8",
+        "source_version": "1.10",
         "note": "【阶段A·2026-07-23 语义重置】原盖印不符合 21 v0.4（note待*）。R0 可另记；须人工 S0+R1–R3 且 round≥1、note 无待* 后重盖。 【阶段B】已剥模板复写段；待按手术表人工复审。",
         "notes": "",
         "reviewed_at": "2026-07-23"
       },
-      "source_version": "1.2"
+      "source_version": "1.2",
+      "version": "1.10"
     },
     {
       "id": "Z034",
@@ -2008,7 +2057,7 @@
       "people": [],
       "factions": [],
       "links": [],
-      "status": "待勘",
+      "status": "初稿",
       "role": "main",
       "path": "stories/河东线/Z034_鞋帮一文/正文.md",
       "review": {
@@ -2021,12 +2070,13 @@
         "standard_version": "0.4",
         "report": "stories/审查总簿.md",
         "reviewer": "Claude·编审",
-        "source_version": "1.9",
+        "source_version": "1.10",
         "note": "【阶段A·2026-07-23 语义重置】原盖印不符合 21 v0.4（round<1,note待*）。R0 可另记；须人工 S0+R1–R3 且 round≥1、note 无待* 后重盖。 【阶段B】已剥模板复写段；待按手术表人工复审。",
         "notes": "",
         "reviewed_at": "2026-07-23"
       },
-      "source_version": "1.1"
+      "source_version": "1.1",
+      "version": "1.10"
     },
     {
       "id": "Z035",
@@ -2039,8 +2089,8 @@
       "people": [],
       "factions": [],
       "links": [],
-      "status": "待勘",
-      "role": "main",
+      "status": "幕间稿",
+      "role": "interlude",
       "path": "stories/河东线/Z035_骂还在/正文.md",
       "review": {
         "state": "pending",
@@ -2052,12 +2102,13 @@
         "standard_version": "0.4",
         "report": "stories/审查总簿.md",
         "reviewer": "Claude·编审",
-        "source_version": "1.8",
+        "source_version": "1.10",
         "note": "【阶段A·2026-07-23 语义重置】原盖印不符合 21 v0.4（round<1,note待*）。R0 可另记；须人工 S0+R1–R3 且 round≥1、note 无待* 后重盖。 【阶段B】已剥模板复写段；待按手术表人工复审。",
         "notes": "",
         "reviewed_at": "2026-07-23"
       },
-      "source_version": "1.1"
+      "source_version": "1.1",
+      "version": "1.10"
     },
     {
       "id": "Z036",
@@ -2070,8 +2121,8 @@
       "people": [],
       "factions": [],
       "links": [],
-      "status": "待勘",
-      "role": "main",
+      "status": "幕间稿",
+      "role": "interlude",
       "path": "stories/河东线/Z036_契角不摊/正文.md",
       "review": {
         "state": "pending",
@@ -2083,12 +2134,13 @@
         "standard_version": "0.4",
         "report": "stories/审查总簿.md",
         "reviewer": "Claude·编审",
-        "source_version": "1.8",
+        "source_version": "1.10",
         "note": "【阶段A·2026-07-23 语义重置】原盖印不符合 21 v0.4（round<1,note待*）。R0 可另记；须人工 S0+R1–R3 且 round≥1、note 无待* 后重盖。 【阶段B】已剥模板复写段；待按手术表人工复审。",
         "notes": "",
         "reviewed_at": "2026-07-23"
       },
-      "source_version": "1.1"
+      "source_version": "1.1",
+      "version": "1.10"
     },
     {
       "id": "Z037",
@@ -2101,8 +2153,8 @@
       "people": [],
       "factions": [],
       "links": [],
-      "status": "待勘",
-      "role": "main",
+      "status": "幕间稿",
+      "role": "interlude",
       "path": "stories/河东线/Z037_空厢灯/正文.md",
       "review": {
         "state": "pending",
@@ -2114,12 +2166,13 @@
         "standard_version": "0.4",
         "report": "stories/审查总簿.md",
         "reviewer": "Claude·编审",
-        "source_version": "1.8",
+        "source_version": "1.10",
         "note": "【阶段A·2026-07-23 语义重置】原盖印不符合 21 v0.4（round<1,note待*）。R0 可另记；须人工 S0+R1–R3 且 round≥1、note 无待* 后重盖。 【阶段B】已剥模板复写段；待按手术表人工复审。",
         "notes": "",
         "reviewed_at": "2026-07-23"
       },
-      "source_version": "1.1"
+      "source_version": "1.1",
+      "version": "1.10"
     },
     {
       "id": "Z038",
@@ -2132,25 +2185,26 @@
       "people": [],
       "factions": [],
       "links": [],
-      "status": "待勘",
+      "status": "初稿",
       "role": "main",
       "path": "stories/河东线/Z038_夜市收灯/正文.md",
       "review": {
         "state": "pending",
         "seal": "待勘",
         "round": 0,
-        "date": "2026-07-23",
+        "date": "2026-07-24",
         "scope": "base",
         "standard": "docs/原则/21_故事审查标准.md",
         "standard_version": "0.4",
         "report": "stories/审查总簿.md",
         "reviewer": "Claude·编审",
-        "source_version": "1.8",
-        "note": "【阶段A·2026-07-23 语义重置】原盖印不符合 21 v0.4（note待*）。R0 可另记；须人工 S0+R1–R3 且 round≥1、note 无待* 后重盖。 【阶段B】已剥模板复写段；待按手术表人工复审。",
+        "source_version": "1.11",
+        "note": "【阶段A·2026-07-23 语义重置】原盖印不符合 21 v0.4（note待*）。R0 可另记；须人工 S0+R1–R3 且 round≥1、note 无待* 后重盖。 【阶段B】已剥模板复写段；待按手术表人工复审。 【阶段C样板·2026-07-24】v1.11 真夜市；假押热帖；说书钩Z039；门房碗钩Z040；删五段同义补丁。review 仍待勘。",
         "notes": "",
-        "reviewed_at": "2026-07-23"
+        "reviewed_at": "2026-07-24"
       },
-      "source_version": "1.2"
+      "source_version": "1.11",
+      "version": "1.10"
     },
     {
       "id": "Z039",
@@ -2163,7 +2217,7 @@
       "people": [],
       "factions": [],
       "links": [],
-      "status": "待勘",
+      "status": "初稿",
       "role": "main",
       "path": "stories/河东线/Z039_入卷回声/正文.md",
       "review": {
@@ -2176,12 +2230,13 @@
         "standard_version": "0.4",
         "report": "stories/审查总簿.md",
         "reviewer": "Claude·编审",
-        "source_version": "1.8",
+        "source_version": "1.10",
         "note": "【阶段A·2026-07-23 语义重置】原盖印不符合 21 v0.4（note待*）。R0 可另记；须人工 S0+R1–R3 且 round≥1、note 无待* 后重盖。 【阶段B】已剥模板复写段；待按手术表人工复审。",
         "notes": "",
         "reviewed_at": "2026-07-23"
       },
-      "source_version": "1.2"
+      "source_version": "1.2",
+      "version": "1.10"
     },
     {
       "id": "Z040",
@@ -2194,7 +2249,7 @@
       "people": [],
       "factions": [],
       "links": [],
-      "status": "待勘",
+      "status": "初稿",
       "role": "main",
       "path": "stories/河东线/Z040_往桥头去/正文.md",
       "review": {
@@ -2207,12 +2262,13 @@
         "standard_version": "0.4",
         "report": "stories/审查总簿.md",
         "reviewer": "Claude·编审",
-        "source_version": "1.7",
+        "source_version": "1.10",
         "note": "【阶段A·2026-07-23 语义重置】原盖印不符合 21 v0.4（round<1,note待*,加肉冒充验讫）。R0 可另记；须人工 S0+R1–R3 且 round≥1、note 无待* 后重盖。 【阶段B】已剥模板复写段；待按手术表人工复审。",
         "notes": "",
         "reviewed_at": "2026-07-23"
       },
-      "source_version": "1.1"
+      "source_version": "1.1",
+      "version": "1.10"
     }
   ],
   "world": [
@@ -2598,6 +2654,25 @@
         "WLD-XINXI-JIA",
         "WLD-HD-HEIHUA",
         "Z005"
+      ]
+    },
+    {
+      "id": "WLD-HUO-QIANG",
+      "name": "货与枪",
+      "kind": "custom",
+      "path": "stories/世界/风物/货与枪/正文.md",
+      "fullness": 70,
+      "status": "成档",
+      "group": "hedong",
+      "see": [
+        "Z017",
+        "Z018",
+        "Z023",
+        "Z026",
+        "Z030",
+        "Z040",
+        "G001",
+        "docs/原则/25_踏线人主章公约.md"
       ]
     }
   ]

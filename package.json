@@ -12,8 +12,9 @@
     "dev": "node web/server.mjs",
     "postcheck": "python3 scripts/postcheck_story.py",
     "reviewcheck": "python3 scripts/check_reviews.py",
+    "reuse": "python3 scripts/check_story_reuse.py",
     "integrity": "python3 scripts/check_integrity.py",
     "scaffold": "python3 scripts/scaffold_entry.py",
-    "check": "python3 scripts/check_integrity.py && python3 scripts/check_reviews.py"
+    "check": "python3 scripts/check_integrity.py && python3 scripts/check_reviews.py && python3 scripts/check_story_reuse.py"
   }
 }

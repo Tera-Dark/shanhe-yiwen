@@ -66,7 +66,7 @@
 │   ├── 河东线/ · 桥头震后/
 │   └── _templates/
 ├── web/                           # 地脉浏览台
-├── scripts/                       # postcheck · check_reviews · integrity · scaffold
+├── scripts/                       # postcheck · reviews · reuse · integrity · scaffold
 ├── 启动世界观网页.bat
 ├── .github/
 └── archive/                       # 只读历史（非现行）
@@ -94,16 +94,17 @@
 6. 为异象准备超自然与理性两种解释。
 7. 正文写完后运行
    `python3 scripts/postcheck_story.py stories/<地脉组>/<编号_标题>/正文.md`
-8. 按 `docs/原则/21_故事审查标准.md` **v0.4** 做 **S0 + R0–R3**，并写本篇 `07_审查报告.md`（或合订总簿）。
-9. 更新 `stories/catalog.json` 的 `review` 与组 README；主线可记 `docs/管理/13` 世界痕迹一行。
+8. 批量加肉后另跑 `python3 scripts/check_story_reuse.py`（跨章复写；补 R0 单文件盲区）。
+9. 按 `docs/原则/21_故事审查标准.md` **v0.4** 做 **S0 + R0–R3**，并写本篇 `07_审查报告.md`（或合订总簿）。
+10. 更新 `stories/catalog.json` 的 `review` 与组 README；主线可记 `docs/管理/13` 世界痕迹一行。
 
 ## 当前状态
 
 - 世界观与创作宪法已建立；设定归入 `docs/` 五类目录（原则 00–26；世界 27/29；社会 28）。
-- 正文按**地脉组 + 卷**归档。河东卷连载中：主线 **HD00 + Z001–Z040** 初稿齐；**主线朱注齐 · 部分验讫**；字量整体偏舒适线下，朱注时继续加肉。桥头卷独立：**QT00** 入卷气味仍在；**P001《桥上第二碗》已暂撤**（`archive/stories/桥头震后/`，另议）。人物志 `stories/人物志/`；世界碎片 `stories/世界/`。索引：`stories/catalog.json`（契约见 `catalog.schema.md`）。
-- 发布向：地脉成卷 · 踏线人主章 · 审印四档（待勘/退修/朱注/验讫）· **审查 S0 归属**（`21` v0.4）。
+- 正文按**地脉组 + 卷**归档。河东卷连载中：主线 **HD00 + Z001–Z040 初稿齐**；审印以 catalog 为准（约 **待勘 42 · 朱注 11 · 验讫 3**，阶段 B/C 总编修中，**勿称朱注齐**）。字量多在舒适线（3–5k）下，黄灯。桥头卷 **筹备**：**QT00** 仅气味；**P001《桥上第二碗》已暂撤**（`archive/stories/桥头震后/`，正章另议）。人物志 `stories/人物志/`；世界碎片 `stories/世界/`（含货与枪卷级压）。索引：`stories/catalog.json`。
+- 发布向：地脉成卷 · 踏线人主章 · 审印四档（待勘/退修/朱注/验讫）· **审查 S0 归属**（`21` v0.4）。`status`=写作阶段，`review`=审印，不得混写。
 - 世界方向：轻玄幻武侠 · 江湖 · 小架空 · 人间尺度。
-- 正式作品名与发布方案尚未确定。近况见 **CHANGELOG v0.40**（主线加肉 · 择优验讫）。
+- 正式作品名与发布方案尚未确定。近况见 **CHANGELOG v0.44**（状态真相层 · 跨章复写检查 · 伪肉清零）。
 
 ## 世界观网页
 

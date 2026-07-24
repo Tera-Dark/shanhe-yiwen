@@ -29,6 +29,7 @@
 - `24_卷册与连载阅读体验.md`：地脉成卷、荐读序、番茄等连载指标
 - `25_踏线人主章公约.md`：沈陌·主线/副线/其他·成长边界（懂/债/名）
 - `26_人物志规范.md`：档案体人物志 N · 欲望四问 · 与 R 折分立
+- `30_阶段C_河东总编修流程.md`：事件/选择/代价总编修 · 样板门闸 · **禁止批量改整卷**
 
 ### 世界 · `docs/世界/`
 
@@ -71,13 +72,12 @@
 - `stories/README.md`：故事目录与标准结构
 - `stories/主章线/目录骨架.md`：全书 Z 槽规划（槽≠成稿）
 - `stories/人物志/`：档案体人物志（N-SM 等；目录见内）
-- `stories/河东线/`：地脉组 hedong · **河东卷**（连载中；主线 **HD00 + Z001–Z040** 初稿齐；中篇总纲 v1.2；幕眼等一批朱注）
-- `stories/桥头震后/`：地脉组 qiaotou · **桥头卷**（独立；现行 **QT00**；P001 第二碗已暂撤归档）
-- `stories/世界/`：势力/地标/生灵/物产/风物碎片（网页「世界」栏主源）
-- `stories/catalog.json` + `catalog.schema.md`：机器索引（volumes · track · review · world）
+- `stories/河东线/`：地脉组 hedong · **河东卷**（连载中；主线 **HD00 + Z001–Z040** 初稿齐；中篇总纲 v1.3；审印主脊多待勘；**阶段C**：`阶段C_手术矩阵.md` · `阶段C_样板报告.md` · 样板四章已交待主笔）
+- `stories/桥头震后/`：地脉组 qiaotou · **桥头卷筹备**（现行仅 **QT00** 气味；P001 第二碗在 `archive/`，正章另议）
+- `stories/世界/`：势力/地标/生灵/物产/风物/杂记碎片（含 **WLD-HUO-QIANG 货与枪**）
+- `stories/catalog.json` + `catalog.schema.md`：机器索引（volumes · track · review · world）；**status≠审印**
 - `stories/审查总簿.md`：总编审结论与返修/待勘说明
-- 长旁纪可含设定、人物、历史、大纲、双解、声纹、正文、版本
-- `scripts/`：postcheck · check_reviews · check_integrity · scaffold_entry
+- `scripts/`：postcheck · check_reviews · **check_story_reuse** · check_integrity · scaffold_entry
 - `stories/_templates/`：条目与审查模板 · 交稿清单
 - `docs/管理/底架打磨计划_2026-07-19.md`：底架 A–D 已收口（v0.26）
 
@@ -88,7 +88,7 @@
 - hash：`#/home` · `#/vol/:id` · `#/read/:id` · `#/seal/:stage` · `#/world/:tab`
 - `启动世界观网页.bat`：Windows 启动本地服务 `http://127.0.0.1:4182/`
 - `web/DEPLOY.md` · 根目录 `vercel.json`：Vercel 一键部署
-- `scripts/postcheck_story.py` · `check_reviews.py` · `check_integrity.py` · `scaffold_entry.py` · `npm run check`
+- `scripts/postcheck_story.py` · `check_reviews.py` · `check_story_reuse.py` · `check_integrity.py` · `scaffold_entry.py` · `npm run check`
 
 ## 五、资料与许可
 
@@ -114,7 +114,7 @@
 | 写历史事件 | 02 → 17 → SOURCES → 相关专设 |
 | 写地方生活 | 08 → 15 → 18 → SOURCES |
 | 写怪谈 | 01 → 04 → 09 → 19 → 20 |
-| 写对白 | 20「对白声纹」→ `stories/桥头震后/P001_桥上第二碗/06_角色声纹表.md`（模板） |
+| 写对白 | 20「对白声纹」→ 组内 `06_角色声纹表.md`（有则用；桥头 P001 模板在 `archive/`） |
 | 审查故事 | 20 交稿检查 → 12 时间线 → 13 伏笔 → 19 未解之谜 → 21 |
 | 修改文档 | AGENTS → docs/README → PROJECT_MAP → CHANGELOG |
 
@@ -124,7 +124,7 @@
 
 - 世界方向：轻玄幻武侠底盘、江湖事、小架空、现代概念可化用——详见 `创作日志.md`。
 - 正式作品名：待定 · 仓库公开 · 主时间轴 1522—1644
-- 设定：`docs/` 五类（原则 00–26）；正文 `stories/` + catalog v1.7（entries 23 · world 21）
-- 河东卷：main_path 至 **Z007**；Z002/Z004 返修待复审；副线/其他见 catalog
-- 桥头卷独立：QT00 + P001（P001 不进河东 main_path）
-- 底架 A–D 收口（v0.26）：世界仓 · scaffold · integrity · hash · app 轻拆
+- 设定：`docs/` 五类（原则 00–26 · 世界 27/29 · 社会 28）；正文 `stories/` + catalog v1.7（entries 56 · world 30）
+- 河东卷：main_path 交错至 **Z040→C001**；主线初稿齐；**待勘为主**，勿称朱注齐；货与枪卷级压
+- 桥头卷 **筹备**：仅 QT00；P001 归档，不进河东 main_path，正章另议
+- 底架 + 阶段 A/B + 状态真相层 / 跨章 reuse 检查（见 CHANGELOG v0.41–v0.44）
